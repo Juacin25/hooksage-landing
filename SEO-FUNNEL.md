@@ -128,6 +128,6 @@ El siguiente paso operativo es recibir un registro real en el destino elegido y 
 
 ## Actualización del plan y del proceso
 
-El usuario confirmó que el Plan Base incluye **20 videos exportados por semana**. Se corrigieron precio, FAQ y proceso con un único origen en `src/data/plan.ts`. El precio previsto de US$14.97 conserva su facturación mensual. Se retiró el cálculo por video porque usaba una cuota mensual incorrecta.
+El usuario confirmó que el Plan Base incluye **15 videos exportados por semana**. Se corrigieron precio, FAQ y proceso con un único origen en `src/data/plan.ts`. El precio previsto es de $299 MXN al mes, IVA incluido, con facturación mensual. Se retiró el cálculo por video porque usaba una cuota mensual incorrecta.
 
 “Cómo funcionará” conserva el destino `#como-funciona`, con fotografía de preparación y tres pasos: grabar, elegir el enfoque y exportar. La galería inferior utiliza cuatro fotografías diferentes de las de portada. Los siete campos y la medición del funnel se mantienen.

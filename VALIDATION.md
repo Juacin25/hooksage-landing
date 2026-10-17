@@ -15,7 +15,7 @@ Versión con galería, SEO y funnel para Instagram/Facebook/TikTok, proceso redi
 
 Informes y capturas en `artifacts/lighthouse-mobile*`, ignorados por Git. `artifacts/como-funciona-mobile.jpg` muestra la nueva sección completa. Las puntuaciones son locales y no prueban posicionamiento ni una mejora de conversión.
 
-El Plan Base tiene **15 videos exportados por semana**, con el precio previsto de US$14.97 al mes. La definición compartida está en `src/data/plan.ts`. Se retiró el cálculo anterior de US$0.75 por video porque usaba una cuota mensual incorrecta.
+El Plan Base tiene **15 videos exportados por semana**, con el precio previsto de $299 MXN al mes, IVA incluido. La definición compartida está en `src/data/plan.ts`. Se retiró el cálculo anterior de US$0.75 por video porque usaba una cuota mensual incorrecta.
 
 “Cómo funcionará” usa una foto de preparación en cocina y tres acciones concretas en una lista editorial. La galería inferior y las páginas de rubro emplean otro juego de cuatro fotos, con créditos en `public/media/CREDITS.md`. Todas siguen identificadas como referencias y tienen formatos responsivos con carga diferida.
 

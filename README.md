@@ -2,7 +2,7 @@
 
 Landing en español para la lista de espera de Hooksage. Astro genera cinco páginas estáticas; un servidor Node guarda los formularios en SQLite. Se conservan las galerías, fotos de referencia, selector de tonos y diseño del kit de marca.
 
-El Plan Base incluye **15 videos exportados por semana**, con facturación de **US$14.97 al mes**. El contacto público es **hooksage.app@gmail.com**.
+El Plan Base incluye **15 videos exportados por semana**, con facturación de **$299 MXN al mes, IVA incluido**. El contacto público es **hooksage.app@gmail.com**.
 
 ## Desarrollo local
 

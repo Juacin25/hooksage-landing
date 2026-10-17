@@ -22,7 +22,7 @@ export const faqs = [
   },
   {
     question: "¿Cuándo podré probarlo y cuánto costará?",
-    answer: `Estamos preparando el lanzamiento y todavía no hay una fecha confirmada. Apuntarte es gratis y tu primer video también será gratis al abrir el acceso. El ${basePlan.name} está previsto en US$${basePlan.monthlyPriceUSD} al mes e incluye ${basePlan.weeklyExports} videos exportados por semana; no necesitas tarjeta para estar en la lista.`,
+    answer: `Estamos preparando el lanzamiento y todavía no hay una fecha confirmada. Apuntarte es gratis y tu primer video también será gratis al abrir el acceso. El ${basePlan.name} está previsto en $${basePlan.monthlyPriceMXN} MXN al mes, IVA incluido, e incluye ${basePlan.weeklyExports} videos exportados por semana; no necesitas tarjeta para estar en la lista.`,
   },
   {
     question: "¿Qué datos tengo que dejar para entrar en la lista?",
