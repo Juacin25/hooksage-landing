@@ -5,6 +5,7 @@ import path from "node:path";
 import os from "node:os";
 import { openDatabase, backupDatabase } from "../server/database.mjs";
 import { createApp } from "../server/app.mjs";
+import { createNotifier } from "../server/notify.mjs";
 
 const origin = "http://127.0.0.1:4321";
 const entry = {
@@ -282,4 +283,40 @@ test("Only built assets are public; no database, secrets, traversal or symlink a
   } finally {
     await f.close();
   }
+});
+
+test("New entries email the team once; email failures never fail the submission", async () => {
+  const sent = [];
+  const notifier = createNotifier({
+    apiKey: "re_test",
+    to: "team@example.test",
+    fetch: async (url, init) => {
+      sent.push({ url, init });
+      return { ok: sent.length === 1 };
+    },
+  });
+  const f = await fixture({ notify: notifier });
+  try {
+    assert.equal((await f.post()).status, 201);
+    assert.equal((await f.post()).status, 200);
+    assert.equal((await f.post({ ...entry, city: "Puebla" })).status, 201);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    assert.equal(sent.length, 2);
+    assert.equal(sent[0].url, "https://api.resend.com/emails");
+    assert.equal(sent[0].init.headers.Authorization, "Bearer re_test");
+    const body = JSON.parse(sent[0].init.body);
+    assert.deepEqual(body.to, ["team@example.test"]);
+    assert.equal(body.reply_to, "example@example.test");
+    assert.match(body.subject, /Tacos de prueba/);
+    assert.match(body.text, /WhatsApp: \+525512345678/);
+    assert.match(body.text, /utm_source: instagram/);
+    assert.deepEqual(f.errors, ["waitlist_notify_failed"]);
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      2,
+    );
+  } finally {
+    await f.close();
+  }
+  assert.equal(createNotifier({ apiKey: "", to: "x@example.test" }), null);
 });

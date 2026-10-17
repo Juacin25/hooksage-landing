@@ -28,6 +28,7 @@ export function createApp({
   rateLimit = 10,
   rateWindowMs = 15 * 60 * 1000,
   logger = console,
+  notify = null,
 }) {
   const root = realpathSync(staticDir);
   const allowedOrigins = new Set(origins);
@@ -144,7 +145,11 @@ export function createApp({
         return json(response, 400, { ok: false, error: "invalid_fields" });
       try {
         const { created } = saveEntry(db, entry);
-        return json(response, created ? 201 : 200, { ok: true, created });
+        json(response, created ? 201 : 200, { ok: true, created });
+        // The database is the source of truth; a failed email never fails the submission.
+        if (created && notify)
+          notify(entry).catch(() => logger.error("waitlist_notify_failed"));
+        return;
       } catch {
         // Never log request bodies or database error strings containing user data.
         logger.error("waitlist_save_failed");

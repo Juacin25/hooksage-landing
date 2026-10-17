@@ -1,0 +1,23 @@
+[Unit]
+Description=Cloudflare Tunnel for Hooksage
+After=network-online.target hooksage.service
+Wants=network-online.target hooksage.service
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/hooksage/cloudflared.env
+# Skip startup while the file still contains a placeholder or a tunnel UUID.
+# The value is read from the environment and never expanded into argv or logs.
+ExecCondition=/usr/bin/python3 -c 'import os,sys; sys.exit(0 if len(os.environ.get("TUNNEL_TOKEN", "")) > 80 else 1)'
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate --protocol http2 run
+Restart=always
+RestartSec=5
+DynamicUser=yes
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

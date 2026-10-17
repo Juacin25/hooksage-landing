@@ -6,7 +6,7 @@
   "runtime": {
     "runAt": "boot",
     "start": {
-      "command": "bash -lc 'until systemctl is-active --quiet hooksage.service; do sleep 1; done; exec sleep infinity'",
+      "command": "bash -lc 'until systemctl is-active --quiet hooksage.service && systemctl is-active --quiet cloudflared.service; do sleep 1; done; exec sleep infinity'",
       "workdir": "/home/tenki"
     },
     "readyWhen": {
@@ -16,7 +16,9 @@
         {
           "http": {
             "url": "http://127.0.0.1:8787/healthz",
-            "successStatusCodes": [200]
+            "successStatusCodes": [
+              200
+            ]
           }
         }
       ]

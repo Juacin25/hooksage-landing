@@ -2,6 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { openDatabase } from "./database.mjs";
 import { createApp } from "./app.mjs";
+import { createNotifier } from "./notify.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const port = Number(process.env.PORT || 8787);
@@ -27,12 +28,20 @@ if (process.env.NODE_ENV === "production" && !process.env.ALLOWED_ORIGINS)
 for (const origin of origins)
   if (new URL(origin).origin !== origin)
     throw new Error("Use exact origins without paths");
+const notify = createNotifier({
+  apiKey: process.env.RESEND_API_KEY,
+  to: process.env.NOTIFY_EMAIL_TO,
+  from: process.env.NOTIFY_EMAIL_FROM || undefined,
+});
+if (!notify)
+  console.warn("Email notifications disabled (RESEND_API_KEY/NOTIFY_EMAIL_TO)");
 const db = openDatabase(databasePath);
 const server = createApp({
   db,
   staticDir,
   origins,
   trustProxy: process.env.TRUST_PROXY === "true",
+  notify,
 });
 server.listen(port, process.env.HOST || "127.0.0.1", () =>
   console.log(`Hooksage listening on port ${port}`),
