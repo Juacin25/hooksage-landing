@@ -1,0 +1,76 @@
+---
+import Icon from "./Icon.astro";
+import VideoCard from "./VideoCard.astro";
+import { businesses } from "../data/content";
+---
+
+<section
+  class="section examples examples--gallery"
+  id="ejemplos"
+  aria-labelledby="examples-title"
+>
+  <div class="container">
+    <div class="section-heading section-heading--row">
+      <div>
+        <p class="overline eyebrow">Explora por negocio</p>
+        <h2 class="heading-1" id="examples-title">
+          Tu mejor contenido
+          <br />
+          ya está en tu cocina.
+        </h2>
+      </div>
+      <p class="body muted">
+        Videos para restaurantes que empiezan con lo que haces todos los días.
+        Mira qué puedes grabar.
+      </p>
+    </div>
+    <nav class="business-rail" aria-label="Explorar ideas por tipo de negocio">
+      {businesses.map((business) => (
+        <a href={`#ejemplo-${business.slug}`} class="hs-btn hs-btn--secondary">
+          <Icon name={business.icon} size={20} />
+          {business.name}
+        </a>
+      ))}
+    </nav>
+    <div class="examples-grid">
+      {businesses.map((business) => (
+        <article class="example-card" id={`ejemplo-${business.slug}`}>
+          <VideoCard
+            tone={business.tone}
+            business={business.singular}
+            poster={business.poster}
+            headline={business.sample}
+            compact
+          />
+          <div class="example-copy">
+            <h3 class="heading-3">
+              <a href={`/videos-para-${business.slug}/`}>
+                {business.name}
+                <Icon name="arrow" size={20} />
+              </a>
+            </h3>
+            <p class="small muted">Tres ideas para empezar:</p>
+            <ul class="small">
+              {business.ideas.map((idea) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  {idea}
+                </li>
+              ))}
+            </ul>
+            <a
+              class="text-link small example-more"
+              href={`/videos-para-${business.slug}/`}
+            >
+              Ver ideas para mi negocio
+              <Icon name="arrow" size={16} />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="small muted examples-note">
+      Fotografías de referencia. Los videos de restaurantes se sumarán aquí.
+    </p>
+  </div>
+</section>

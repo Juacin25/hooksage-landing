@@ -1,0 +1,27 @@
+---
+import Logo from "./Logo.astro";
+const formHref = Astro.params.rubro
+  ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
+  : "/#empezar";
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <Logo />
+    <nav aria-label="Navegación principal">
+      <a href="/#como-funciona">Cómo funciona</a>
+      <a href="/#ejemplos">Ejemplos</a>
+      <a href="/#tonos">Tonos</a>
+      <a href="/#precio">Precio</a>
+      <a href="/#preguntas">Preguntas</a>
+    </nav>
+    <a
+      class="hs-btn hs-btn--primary hs-btn--sm"
+      href={formHref}
+      data-waitlist-cta
+      data-cta-location="header"
+    >
+      Unirme a la lista
+    </a>
+  </div>
+</header>

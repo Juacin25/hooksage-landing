@@ -1,0 +1,132 @@
+---
+import Icon from "./Icon.astro";
+import VideoCard from "./VideoCard.astro";
+import { tones } from "../data/content";
+import { referenceMedia } from "../data/media";
+---
+
+<section
+  class="section tone-section tone-section--studio"
+  id="tonos"
+  aria-labelledby="tone-title"
+>
+  <div class="container">
+    <div class="section-heading section-heading--row">
+      <div>
+        <p class="overline eyebrow">Un negocio. Muchas formas de contarlo.</p>
+        <h2 class="heading-1" id="tone-title">
+          Tú eliges el tono.
+          <br />
+          Nosotros hacemos el resto.
+        </h2>
+      </div>
+      <p class="body muted">
+        Para ese taco que se antoja, la promo del día o lo que pasa detrás de la
+        barra.
+      </p>
+    </div>
+    <div class="tone-studio">
+      <div class="tone-stage" data-tone-preview>
+        <div class="studio-topline">
+          <span class="small">
+            <span class="studio-dot" aria-hidden="true"></span>Vista de estilo
+          </span>
+          <span class="small muted">9:16 / 15 s</span>
+        </div>
+        <VideoCard
+          tone="Antojo"
+          business="Tu restaurante"
+          headline={tones[0].title}
+        />
+        <div class="studio-export small">
+          <span>TikTok</span>
+          <span>Reels</span>
+          <span>Shorts</span>
+        </div>
+      </div>
+      <div class="tone-controls">
+        <span class="overline eyebrow">Dale tu estilo</span>
+        <h3 class="heading-2">¿Qué quieres contar hoy?</h3>
+        <p class="body muted">
+          Elige un tono y explora cómo se vería tu próxima publicación.
+        </p>
+        <div
+          class="tone-pills"
+          role="group"
+          aria-label="Elige el tono del video"
+        >
+          {tones.map((tone, index) => (
+            <button
+              type="button"
+              class="hs-btn hs-btn--secondary tone-pill"
+              aria-pressed={index === 0 ? "true" : "false"}
+              data-tone={tone.name}
+              data-title={tone.title}
+              data-description={tone.description}
+              data-poster={tone.poster}
+              data-alt={referenceMedia[tone.poster].alt}
+              data-position={referenceMedia[tone.poster].position}
+            >
+              <Icon name={tone.icon} size={20} />
+              {tone.name}
+            </button>
+          ))}
+        </div>
+        <div class="tone-description" aria-live="polite" aria-atomic="true">
+          <h4 class="heading-3" id="tone-sample-title">
+            {tones[0].title}
+          </h4>
+          <p class="body muted" id="tone-sample-description">
+            {tones[0].description}
+          </p>
+        </div>
+        <a
+          class="hs-btn hs-btn--primary"
+          href="#empezar"
+          data-waitlist-cta
+          data-cta-location="tones"
+        >
+          Unirme a la lista
+          <Icon name="arrow" />
+        </a>
+        <p class="small muted tone-reference-note">
+          La foto muestra una referencia visual. El video final lleva el
+          material de tu negocio.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const pills = document.querySelectorAll<HTMLButtonElement>("[data-tone]");
+  const preview = document.querySelector<HTMLElement>("[data-tone-preview]");
+  pills.forEach((pill) =>
+    pill.addEventListener("click", () => {
+      pills.forEach((item) =>
+        item.setAttribute("aria-pressed", String(item === pill)),
+      );
+      const title = document.getElementById("tone-sample-title");
+      const description = document.getElementById("tone-sample-description");
+      const badge = preview?.querySelector("[data-sample-badge]");
+      const headline = preview?.querySelector("[data-sample-headline]");
+      const image = preview?.querySelector<HTMLImageElement>(
+        "[data-sample-photo]",
+      );
+      const source = preview?.querySelector<HTMLSourceElement>(
+        "[data-sample-source]",
+      );
+      if (title) title.textContent = pill.dataset.title || "";
+      if (description) description.textContent = pill.dataset.description || "";
+      if (badge) badge.textContent = pill.dataset.tone || "";
+      if (headline) headline.textContent = pill.dataset.title || "";
+      if (image) {
+        image.src = `/media/${pill.dataset.poster}.webp`;
+        image.srcset = `/media/${pill.dataset.poster}-360.webp 360w, /media/${pill.dataset.poster}.webp 720w`;
+        image.alt = pill.dataset.alt || "";
+        image.style.objectPosition = pill.dataset.position || "center";
+      }
+      if (source)
+        source.srcset = `/media/${pill.dataset.poster}-360.avif 360w, /media/${pill.dataset.poster}.avif 720w`;
+    }),
+  );
+</script>

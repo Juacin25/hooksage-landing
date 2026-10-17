@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hooksage.com/sitemap.xml

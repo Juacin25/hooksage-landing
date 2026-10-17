@@ -1,0 +1,112 @@
+---
+import "../styles/tokens.css";
+import "../styles/components.css";
+import "../styles/global.css";
+import "../styles/showcase.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FunnelTracking from "../components/FunnelTracking.astro";
+import { faqs } from "../data/content";
+interface Props {
+  title?: string;
+  description?: string;
+  faqItems?: typeof faqs;
+}
+const {
+  title = "Videos para restaurantes: Reels y TikTok | Hooksage",
+  description = "Crea contenido para las redes de tu restaurante con los clips de tu celular. Únete a la lista de Hooksage en CDMX y recibe el aviso para probarlo.",
+  faqItems = faqs,
+}: Props = Astro.props;
+const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://hooksage.com/#organization",
+      name: "Hooksage",
+      url: "https://hooksage.com/",
+      logo: "https://hooksage.com/logos/hooksage-lockup.svg",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Hooksage",
+      url: "https://hooksage.com/",
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Web",
+      description:
+        "Editor de video con IA para restaurantes. Convierte material grabado con el celular en videos verticales de 15 segundos.",
+      areaServed: { "@type": "City", name: "Ciudad de México" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es-MX" href={canonical} />
+    <link rel="icon" href="/logos/hooksage-app-icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="Hooksage" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://hooksage.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Hooksage. Videos para tu restaurante. Únete a la lista de espera."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://hooksage.com/og.png" />
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin-800-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/dm-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
+    />
+  </head>
+  <body>
+    <a class="skip-link hs-btn hs-btn--primary" href="#contenido">
+      Saltar al contenido
+    </a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <FunnelTracking />
+  </body>
+</html>

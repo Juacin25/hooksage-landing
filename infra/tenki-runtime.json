@@ -1,0 +1,25 @@
+{
+  "specVersion": "tenki.template.v1",
+  "base": {
+    "image": "sandbox"
+  },
+  "runtime": {
+    "runAt": "boot",
+    "start": {
+      "command": "bash -lc 'until systemctl is-active --quiet hooksage.service; do sleep 1; done; exec sleep infinity'",
+      "workdir": "/home/tenki"
+    },
+    "readyWhen": {
+      "timeoutSeconds": 600,
+      "pollIntervalSeconds": 2,
+      "checks": [
+        {
+          "http": {
+            "url": "http://127.0.0.1:8787/healthz",
+            "successStatusCodes": [200]
+          }
+        }
+      ]
+    }
+  }
+}

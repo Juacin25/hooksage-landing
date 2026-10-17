@@ -1,0 +1,386 @@
+---
+import Icon from "./Icon.astro";
+import { formEndpoint, contactUrl } from "../lib/config";
+---
+
+<section class="section form-section" id="empezar" aria-labelledby="form-title">
+  <div class="container form-grid">
+    <div class="form-intro">
+      <span class="hs-badge hs-badge--accent">Primer video gratis</span>
+      <h2 class="heading-1" id="form-title">
+        Tu comida ya está buena.
+        <br />
+        <span>Ahora que la vean.</span>
+      </h2>
+      <p class="body-l muted">
+        Cuéntanos de tu negocio. Te avisamos por correo cuando puedas probar
+        Hooksage.
+      </p>
+      <ul class="form-benefits body">
+        <li>
+          <Icon name="check" />
+          Sin tarjeta ni compromiso
+        </li>
+        <li>
+          <Icon name="check" />
+          Con lo que grabas en tu celular
+        </li>
+        <li>
+          <Icon name="check" />
+          Listo para TikTok, Reels y Shorts
+        </li>
+      </ul>
+      <div class="form-signoff">
+        <img
+          src="/logos/hooksage-mark.svg"
+          alt=""
+          width="40"
+          height="40"
+          loading="lazy"
+        />
+        <p class="small muted">
+          Tú pones la comida.
+          <br />
+          <strong>Nosotros, el video.</strong>
+        </p>
+      </div>
+    </div>
+    <div class="hs-card form-card">
+      <form id="free-video-form" data-endpoint={formEndpoint} novalidate>
+        <div class="form-trap" aria-hidden="true">
+          <label for="website">Sitio web</label>
+          <input
+            id="website"
+            name="website"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+        <h3 class="heading-3">Sé de los primeros en probarlo.</h3>
+        <p class="small muted form-subtitle">
+          Te avisamos del acceso por correo. Los campos con * son obligatorios.
+        </p>
+        <div class="field">
+          <label class="label" for="business-name">
+            Nombre del negocio <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="business-name"
+            name="businessName"
+            type="text"
+            autocomplete="organization"
+            required
+            minlength="2"
+            maxlength="100"
+            placeholder="¿Cómo se llama tu negocio?"
+            aria-describedby="business-name-error"
+          />
+          <span class="field-error small" id="business-name-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="business-type">
+            Tipo de negocio <span aria-hidden="true">*</span>
+          </label>
+          <select
+            id="business-type"
+            name="businessType"
+            required
+            aria-describedby="business-type-error"
+          >
+            <option value="">Elige tu tipo de negocio</option>
+            <option>Taquería</option>
+            <option>Hamburguesería</option>
+            <option>Heladería</option>
+            <option>Sushi</option>
+            <option>Otro</option>
+          </select>
+          <span class="field-error small" id="business-type-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="contact-name">
+            Nombre del contacto <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="contact-name"
+            name="contactName"
+            type="text"
+            autocomplete="name"
+            required
+            minlength="2"
+            maxlength="100"
+            placeholder="¿Cómo te llamas?"
+            aria-describedby="contact-name-error"
+          />
+          <span class="field-error small" id="contact-name-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="email">
+            Correo electrónico <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            inputmode="email"
+            required
+            maxlength="254"
+            placeholder="tu@correo.com"
+            aria-describedby="email-error"
+          />
+          <span class="field-error small" id="email-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="whatsapp">
+            Tu WhatsApp <span aria-hidden="true">*</span>
+          </label>
+          <div class="phone-input">
+            <span aria-hidden="true">+52</span>
+            <input
+              id="whatsapp"
+              name="whatsapp"
+              type="tel"
+              autocomplete="tel-national"
+              inputmode="tel"
+              required
+              maxlength="24"
+              placeholder="55 1234 5678"
+              aria-describedby="whatsapp-help whatsapp-error"
+            />
+          </div>
+          <span class="small muted field-help" id="whatsapp-help">
+            México (+52). Escribe los 10 dígitos de tu número.
+          </span>
+          <span class="field-error small" id="whatsapp-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="city">
+            Ciudad <span aria-hidden="true">*</span>
+          </label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            autocomplete="address-level2"
+            required
+            minlength="2"
+            maxlength="100"
+            placeholder="Ciudad de México"
+            aria-describedby="city-error"
+          />
+          <span class="field-error small" id="city-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="neighborhood">
+            Barrio o colonia <span class="optional">(opcional)</span>
+          </label>
+          <input
+            id="neighborhood"
+            name="neighborhood"
+            type="text"
+            autocomplete="address-level3"
+            maxlength="100"
+            placeholder="Por ejemplo, Coyoacán"
+            aria-describedby="neighborhood-error"
+          />
+          <span class="field-error small" id="neighborhood-error"></span>
+        </div>
+        <p class="small muted form-consent">
+          Usaremos estos datos para avisarte cuando puedas probar Hooksage.
+        </p>
+        <button class="hs-btn hs-btn--primary" type="submit">
+          <span data-submit-label>Quiero estar en la lista</span>
+          <Icon name="arrow" />
+        </button>
+        <p
+          class="form-status small"
+          id="form-status"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        ></p>
+        <noscript>
+          <p class="small">
+            Activa JavaScript para enviar el formulario.
+            <a href={contactUrl}>También puedes escribirnos por correo.</a>
+          </p>
+        </noscript>
+      </form>
+      <div class="form-success" id="form-success" hidden tabindex="-1">
+        <div class="success-icon">
+          <Icon name="check" size={32} />
+        </div>
+        <h3 class="heading-2">¡Listo! Ya estás en la lista.</h3>
+        <p class="body muted">
+          Te avisaremos por correo cuando puedas probar Hooksage.
+        </p>
+        <a
+          class="hs-btn hs-btn--primary"
+          id="success-contact"
+          href={contactUrl}
+        >
+          Escribirnos por correo
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const form = document.querySelector<HTMLFormElement>("#free-video-form");
+  if (form) {
+    const status = document.getElementById("form-status")!;
+    const button = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    )!;
+    const label = form.querySelector<HTMLElement>("[data-submit-label]")!;
+    const fields = {
+      name: form.querySelector<HTMLInputElement>("#business-name")!,
+      type: form.querySelector<HTMLSelectElement>("#business-type")!,
+      contact: form.querySelector<HTMLInputElement>("#contact-name")!,
+      email: form.querySelector<HTMLInputElement>("#email")!,
+      phone: form.querySelector<HTMLInputElement>("#whatsapp")!,
+      city: form.querySelector<HTMLInputElement>("#city")!,
+      neighborhood: form.querySelector<HTMLInputElement>("#neighborhood")!,
+    };
+    let sending = false;
+    form.addEventListener(
+      "input",
+      () => window.HooksageFunnel?.track("waitlist_form_start"),
+      { once: true },
+    );
+    const selectedBusiness = new URLSearchParams(window.location.search).get(
+      "rubro",
+    );
+    const businessTypes: Record<string, string> = {
+      taquerias: "Taquería",
+      hamburgueserias: "Hamburguesería",
+      heladerias: "Heladería",
+      sushi: "Sushi",
+    };
+    if (
+      selectedBusiness &&
+      Object.hasOwn(businessTypes, selectedBusiness) &&
+      !fields.type.value
+    )
+      fields.type.value = businessTypes[selectedBusiness];
+    const phoneDigits = () => fields.phone.value.replace(/\D/g, "");
+    function validate(field: HTMLInputElement | HTMLSelectElement) {
+      let message = "";
+      if (field === fields.name && field.value.trim().length < 2)
+        message = "Escribe el nombre de tu negocio (al menos 2 caracteres).";
+      if (field === fields.type && !field.value)
+        message = "Elige el tipo de negocio.";
+      if (field === fields.contact && field.value.trim().length < 2)
+        message = "Escribe el nombre de la persona de contacto.";
+      if (
+        field === fields.email &&
+        (!field.value.trim() ||
+          fields.email.validity.typeMismatch ||
+          field.value.trim().length > 254)
+      )
+        message = "Escribe un correo electrónico válido.";
+      if (field === fields.phone && !/^\d{10}$/.test(phoneDigits()))
+        message = "Escribe los 10 dígitos de tu WhatsApp, sin +52.";
+      if (field === fields.city && field.value.trim().length < 2)
+        message = "Escribe la ciudad de tu negocio.";
+      if (
+        [
+          fields.name,
+          fields.contact,
+          fields.city,
+          fields.neighborhood,
+        ].includes(field as HTMLInputElement) &&
+        field.value.trim().length > 100
+      )
+        message = "Usa un máximo de 100 caracteres.";
+      field.setAttribute("aria-invalid", String(Boolean(message)));
+      document.getElementById(`${field.id}-error`)!.textContent = message;
+      return !message;
+    }
+    Object.values(fields).forEach((field) => {
+      field.addEventListener("blur", () => validate(field));
+      field.addEventListener("input", () => {
+        if (field.getAttribute("aria-invalid") === "true") validate(field);
+      });
+    });
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (sending || form.hidden) return;
+      status.textContent = "";
+      const invalid = Object.values(fields).filter((field) => !validate(field));
+      if (invalid.length) {
+        window.HooksageFunnel?.track("waitlist_form_error", {
+          error_type: "validation",
+        });
+        invalid[0].focus();
+        return;
+      }
+      const endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        window.HooksageFunnel?.track("waitlist_form_error", {
+          error_type: "not_configured",
+        });
+        status.textContent =
+          "El formulario aún no está disponible. Intenta de nuevo más tarde.";
+        status.dataset.error = "true";
+        status.focus();
+        return;
+      }
+      sending = true;
+      button.disabled = true;
+      form.setAttribute("aria-busy", "true");
+      label.textContent = "Enviando…";
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15000);
+      try {
+        const payload = {
+          businessName: fields.name.value.trim(),
+          businessType: fields.type.value,
+          contactName: fields.contact.value.trim(),
+          email: fields.email.value.trim(),
+          whatsapp: `+52${phoneDigits()}`,
+          city: fields.city.value.trim(),
+          neighborhood: fields.neighborhood.value.trim(),
+          intent: "waitlist",
+          website: form.querySelector<HTMLInputElement>("#website")!.value,
+          attribution: window.HooksageFunnel?.getAttribution() || {
+            landing_path: window.location.pathname,
+          },
+        };
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error("form_request_failed");
+        const result = await response.json();
+        if (result.ok !== true || typeof result.created !== "boolean")
+          throw new Error("form_invalid_confirmation");
+        const success = document.getElementById("form-success")!;
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+        if (result.created) window.HooksageFunnel?.track("generate_lead");
+      } catch {
+        window.HooksageFunnel?.track("waitlist_form_error", {
+          error_type: "request_failed",
+        });
+        status.textContent =
+          "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.";
+        status.dataset.error = "true";
+        status.focus();
+      } finally {
+        window.clearTimeout(timeout);
+        sending = false;
+        button.disabled = false;
+        form.removeAttribute("aria-busy");
+        label.textContent = "Quiero estar en la lista";
+      }
+    });
+  }
+</script>

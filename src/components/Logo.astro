@@ -1,0 +1,26 @@
+---
+const { footer = false } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={["logo", { "logo--footer": footer }]}
+  aria-label="Hooksage, inicio"
+>
+  <img
+    class="logo-light"
+    src="/logos/hooksage-lockup.svg"
+    alt="hooksage"
+    width="156"
+    height="40"
+    loading={footer ? "lazy" : "eager"}
+  />
+  <img
+    class="logo-dark"
+    src="/logos/hooksage-lockup-dark.svg"
+    alt="hooksage"
+    width="156"
+    height="40"
+    loading={footer ? "lazy" : "eager"}
+  />
+</a>

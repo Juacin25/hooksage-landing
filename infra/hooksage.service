@@ -1,0 +1,24 @@
+[Unit]
+Description=Hooksage landing and waitlist database
+After=network-online.target
+Wants=network-online.target
+RequiresMountsFor=/data/hooksage
+
+[Service]
+Type=simple
+User=tenki
+Group=tenki
+WorkingDirectory=/home/tenki/hooksage
+ExecStart=/usr/local/nvm/versions/node/v24.14.0/bin/node --env-file=/home/tenki/hooksage/.service.env /home/tenki/hooksage/server/index.mjs
+Restart=always
+RestartSec=2
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+ReadWritePaths=/data/hooksage
+
+[Install]
+WantedBy=multi-user.target

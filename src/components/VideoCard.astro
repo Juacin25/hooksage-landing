@@ -1,0 +1,107 @@
+---
+import Icon from "./Icon.astro";
+import { referenceMedia } from "../data/media";
+interface Props {
+  tone?: string;
+  business?: string;
+  poster?: string;
+  headline?: string;
+  lift?: boolean;
+  compact?: boolean;
+  dark?: boolean;
+  eager?: boolean;
+  source?: string;
+}
+const {
+  tone = "Antojo",
+  business = "Taquería",
+  poster = "tacos",
+  headline = "Del trompo a tu feed.",
+  lift = false,
+  compact = false,
+  dark = false,
+  eager = false,
+  source,
+}: Props = Astro.props;
+const media = referenceMedia[poster] || referenceMedia.tacos;
+// TODO: replace reference photography with authorized restaurant video and its real poster.
+const formHref = Astro.params.rubro
+  ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
+  : "/#empezar";
+---
+
+<figure
+  class:list={[
+    "hs-video media-card",
+    { "hs-video--lift": lift, "hs-video--compact": compact },
+  ]}
+  data-theme={dark ? "dark" : undefined}
+>
+  <div class="media-window">
+    {source ? (
+      <video
+        class="hs-video__media"
+        src={source}
+        poster={`/media/${poster}.webp`}
+        preload="none"
+        muted
+        playsinline
+        controls
+        width="360"
+        height="640"
+        aria-label={`Video para ${business}: ${tone}`}
+      />
+    ) : (
+      <picture>
+        <source
+          data-sample-source
+          type="image/avif"
+          srcset={`/media/${poster}-360.avif 360w, /media/${poster}.avif 720w`}
+          sizes="(max-width: 650px) 224px, 280px"
+        />
+        <img
+          class="hs-video__media"
+          data-sample-photo
+          src={`/media/${poster}.webp`}
+          srcset={`/media/${poster}-360.webp 360w, /media/${poster}.webp 720w`}
+          sizes="(max-width: 650px) 224px, 280px"
+          alt={media.alt}
+          width={media.width}
+          height={media.height}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          fetchpriority={eager ? "high" : undefined}
+          style={`object-position:${media.position}`}
+        />
+      </picture>
+    )}
+    <div class="hs-video__top">
+      <span class="hs-badge hs-badge--brand" data-sample-badge>
+        {tone}
+      </span>
+      <span class="hs-video__time" aria-label="Formato de salida: 15 segundos">
+        15 s
+      </span>
+    </div>
+    {!source && <span class="media-reference">Foto de referencia</span>}
+  </div>
+  <figcaption class="media-caption">
+    <div>
+      <span class="media-business small">{business}</span>
+      <span class="poster-headline" data-sample-headline>
+        {headline}
+      </span>
+    </div>
+    {!compact && (
+      <a
+        class="media-card-cta"
+        href={formHref}
+        data-waitlist-cta
+        data-cta-location="gallery"
+        aria-label={`Unirme a la lista para crear videos de ${business.toLowerCase()}`}
+      >
+        <Icon name="arrow" size={20} />
+      </a>
+    )}
+  </figcaption>
+</figure>

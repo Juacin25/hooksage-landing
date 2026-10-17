@@ -1,0 +1,120 @@
+---
+import Icon from "./Icon.astro";
+import VideoCard from "./VideoCard.astro";
+const showcase = [
+  {
+    tone: "Antojo",
+    business: "Taquería",
+    poster: "tacos",
+    headline: "Del trompo a tu feed.",
+  },
+  {
+    tone: "Detrás de la barra",
+    business: "Hamburguesería",
+    poster: "burger",
+    headline: "De la plancha a tus clientes.",
+  },
+  {
+    tone: "Promo",
+    business: "Heladería",
+    poster: "icecream",
+    headline: "Un antojo bien servido.",
+  },
+  {
+    tone: "Nocturno",
+    business: "Sushi",
+    poster: "sushi",
+    headline: "Tu próximo rollo favorito.",
+  },
+];
+---
+
+<section class="hero hero--showcase section" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero-intro">
+      <div class="hero-titlebox">
+        <span class="hs-badge hs-badge--accent">
+          <span class="hs-badge__dot" aria-hidden="true"></span>Acceso
+          anticipado
+        </span>
+        <h1 class="display-xl" id="hero-title">
+          <span class="hero-title-line">Videos para</span>{" "}
+          <span>tu restaurante</span>
+        </h1>
+      </div>
+      <div class="hero-pitch">
+        <p class="body-l muted">
+          Convierte los clips de tu celular en videos de 15 segundos para TikTok
+          e Instagram Reels. Contenido para tu restaurante, sin pasar horas
+          editando.
+        </p>
+        <div class="hero-actions">
+          <a
+            class="hs-btn hs-btn--primary"
+            href="#empezar"
+            data-waitlist-cta
+            data-cta-location="hero"
+          >
+            Unirme a la lista
+            <Icon name="arrow" />
+          </a>
+          <a class="text-link" href="#ejemplos">
+            Ver ejemplos
+            <Icon name="arrow" size={18} />
+          </a>
+        </div>
+        <p class="small reassurance">
+          <Icon name="check" size={16} />
+          Lista de espera para la CDMX. Primer video gratis al abrir el acceso.
+        </p>
+      </div>
+    </div>
+    <div class="showcase-window">
+      <div class="showcase-toolbar">
+        <span class="label">
+          <span class="studio-dot" aria-hidden="true"></span>Tu comida. Su
+          próximo antojo.
+        </span>
+        <span class="small muted showcase-format">9:16 / 15 s</span>
+      </div>
+      <div
+        class="showcase-grid"
+        aria-label="Estilos de video para tu restaurante"
+      >
+        {showcase.map((sample, index) => (
+          <div class="showcase-card">
+            <VideoCard {...sample} lift={index === 1} eager={index === 0} />
+          </div>
+        ))}
+      </div>
+      <div class="showcase-footer">
+        <p class="small muted">
+          Muestras visuales con fotos de referencia. Tu video se crea con lo que
+          tú grabas.
+        </p>
+        <span class="small muted swipe-hint">
+          Desliza para explorar
+          <Icon name="arrow" size={16} />
+        </span>
+      </div>
+    </div>
+    <div class="hero-footnote">
+      <span class="overline">De tu cocina al feed</span>
+      <span>
+        TikTok
+        <span class="dot-separator" aria-hidden="true">
+          ·
+        </span>
+        Instagram Reels
+        <span class="dot-separator" aria-hidden="true">
+          ·
+        </span>
+        YouTube Shorts
+      </span>
+      <span class="small">
+        <Icon name="location" size={18} />
+        Hecho para la CDMX
+      </span>
+    </div>
+  </div>
+</section>

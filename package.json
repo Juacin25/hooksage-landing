@@ -1,0 +1,39 @@
+{
+  "name": "hooksage-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "assets": "node scripts/generate-assets.mjs",
+    "audit": "node scripts/audit.mjs",
+    "test": "node scripts/verify.mjs",
+    "format": "prettier --write src scripts astro.config.mjs",
+    "start": "node server/index.mjs",
+    "api:dev": "node --watch server/index.mjs",
+    "test:api": "node --test scripts/verify-api.mjs",
+    "db:count": "node scripts/database.mjs count",
+    "db:backup": "node scripts/database.mjs backup",
+    "db:export": "node scripts/database.mjs export"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.4.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "fontkit": "^2.0.4",
+    "happy-dom": "^21.0.3",
+    "lighthouse": "latest",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "sharp": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "node": ">=22.22.0"
+  }
+}

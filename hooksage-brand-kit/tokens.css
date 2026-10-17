@@ -1,0 +1,93 @@
+/* Hooksage — generado desde tokens.json. Tema claro por defecto, oscuro con [data-theme="dark"] o prefers-color-scheme. */
+@font-face{font-family:'Bricolage Grotesque';src:url('./fonts/bricolage-grotesque-latin-600-normal.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Bricolage Grotesque';src:url('./fonts/bricolage-grotesque-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Bricolage Grotesque';src:url('./fonts/bricolage-grotesque-latin-800-normal.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Sans';src:url('./fonts/dm-sans-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Sans';src:url('./fonts/dm-sans-latin-500-normal.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Sans';src:url('./fonts/dm-sans-latin-600-normal.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap}
+:root,[data-theme="light"]{
+  --surface:#F6FBF4;
+  --surface-raised:#FFFFFF;
+  --surface-sunken:#E9F3E6;
+  --border:#D3E3CF;
+  --border-strong:#6E8A77;
+  --ink:#14211A;
+  --ink-muted:#4A5A50;
+  --brand:#1F9D55;
+  --primary:#157A41;
+  --on-primary:#FFFFFF;
+  --brand-tint:#E3F4E8;
+  --accent:#FF6B4A;
+  --on-accent:#14211A;
+  --accent-text:#A93C22;
+  --accent-tint:#FFE7E0;
+  --danger:#B42318;
+  --shadow-lift:0 1px 2px rgba(20,33,26,0.06), 0 8px 24px rgba(20,33,26,0.08);
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --surface:#0F1913;
+  --surface-raised:#17241C;
+  --surface-sunken:#0A120D;
+  --border:#2A3B30;
+  --border-strong:#5C7264;
+  --ink:#EAF4EC;
+  --ink-muted:#A7B8AD;
+  --brand:#3CC27A;
+  --primary:#3CC27A;
+  --on-primary:#0F1913;
+  --brand-tint:#173A26;
+  --accent:#FF8566;
+  --on-accent:#14211A;
+  --accent-text:#FF9C82;
+  --accent-tint:#3D1F17;
+  --danger:#F97066;
+  --shadow-lift:0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --surface:#0F1913;
+  --surface-raised:#17241C;
+  --surface-sunken:#0A120D;
+  --border:#2A3B30;
+  --border-strong:#5C7264;
+  --ink:#EAF4EC;
+  --ink-muted:#A7B8AD;
+  --brand:#3CC27A;
+  --primary:#3CC27A;
+  --on-primary:#0F1913;
+  --brand-tint:#173A26;
+  --accent:#FF8566;
+  --on-accent:#14211A;
+  --accent-text:#FF9C82;
+  --accent-tint:#3D1F17;
+  --danger:#F97066;
+  --shadow-lift:0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+  color-scheme:dark;
+}}
+:root{
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-12:48px;
+  --space-20:80px;
+  --radius-sm:8px;
+  --radius-md:14px;
+  --radius-lg:24px;
+  --radius-pill:999px;
+  --font-display:"Bricolage Grotesque", "DM Sans", system-ui, sans-serif;
+  --font-sans:"DM Sans", system-ui, sans-serif;
+}
+.display-xl{font-family:var(--font-display);font-size:72px;line-height:1;font-weight:800;letter-spacing:-0.03em;}
+.display-l{font-family:var(--font-display);font-size:52px;line-height:1.05;font-weight:800;letter-spacing:-0.025em;}
+.heading-1{font-family:var(--font-display);font-size:38px;line-height:1.1;font-weight:700;letter-spacing:-0.02em;}
+.heading-2{font-family:var(--font-display);font-size:28px;line-height:1.2;font-weight:700;letter-spacing:-0.015em;}
+.heading-3{font-family:var(--font-display);font-size:21px;line-height:1.3;font-weight:600;}
+.body-l{font-family:var(--font-sans);font-size:19px;line-height:30px;font-weight:400;}
+.body{font-family:var(--font-sans);font-size:16px;line-height:26px;font-weight:400;}
+.small{font-family:var(--font-sans);font-size:14px;line-height:21px;font-weight:400;}
+.label{font-family:var(--font-sans);font-size:15px;line-height:20px;font-weight:600;}
+.overline{font-family:var(--font-sans);font-size:13px;line-height:16px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;}

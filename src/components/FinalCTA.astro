@@ -1,0 +1,34 @@
+---
+import Icon from "./Icon.astro";
+const formHref = Astro.params.rubro
+  ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
+  : "/#empezar";
+---
+
+<section class="section final-cta" aria-labelledby="final-title">
+  <div class="container">
+    <img
+      src="/logos/hooksage-mark.svg"
+      width="56"
+      height="56"
+      alt=""
+      loading="lazy"
+    />
+    <h2 class="heading-1" id="final-title">
+      Tu próximo Reel empieza <br />
+      con lo que ya grabas.
+    </h2>
+    <a
+      class="hs-btn hs-btn--primary"
+      href={formHref}
+      data-waitlist-cta
+      data-cta-location="finalcta"
+    >
+      Unirme a la lista
+      <Icon name="arrow" />
+    </a>
+    <p class="small muted">
+      Te avisamos cuando puedas probar Hooksage. Sin tarjeta.
+    </p>
+  </div>
+</section>

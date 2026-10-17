@@ -1,0 +1,59 @@
+---
+import Icon from "./Icon.astro";
+import { basePlan } from "../data/plan";
+const features = [
+  `${basePlan.weeklyExports} videos exportados por semana`,
+  "Ideas de qué grabar para tu tipo de negocio",
+  "Listos para TikTok, Reels y Shorts",
+  "Cancela cuando quieras",
+];
+---
+
+<section class="section pricing" id="precio" aria-labelledby="price-title">
+  <div class="container">
+    <div class="section-heading centered">
+      <p class="overline eyebrow">Un precio claro</p>
+      <h2 class="heading-1" id="price-title">
+        Más videos. Menos pendientes.
+      </h2>
+      <p class="body muted">Plan Base. Más tiers próximamente.</p>
+    </div>
+    <div class="hs-card hs-price hs-price--featured">
+      <div class="price-header">
+        <h3 class="hs-price__name">{basePlan.name}</h3>
+        <span class="hs-badge hs-badge--brand">
+          {basePlan.weeklyExports} por semana
+        </span>
+      </div>
+      <div class="hs-price__amount">
+        <span class="price-currency">US$</span>
+        {basePlan.monthlyPriceUSD}
+        <span class="hs-price__period">/ mes</span>
+      </div>
+      <p class="small muted">
+        Tu cuota de exportación es semanal. La suscripción se paga al mes.
+      </p>
+      <div class="price-divider"></div>
+      <ul class="hs-price__list">
+        {features.map((feature) => (
+          <li>
+            <Icon name="check" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <a
+        class="hs-btn hs-btn--primary"
+        href="#empezar"
+        data-waitlist-cta
+        data-cta-location="pricing"
+      >
+        Unirme a la lista
+        <Icon name="arrow" />
+      </a>
+      <p class="small price-footnote">
+        Apuntarte no te suscribe al plan. Sin pago ni tarjeta.
+      </p>
+    </div>
+  </div>
+</section>

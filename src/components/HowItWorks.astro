@@ -1,0 +1,93 @@
+---
+import "../styles/workflow.css";
+import Icon from "./Icon.astro";
+import { basePlan } from "../data/plan";
+const steps = [
+  {
+    title: "Graba lo que ya haces.",
+    text: "La plancha, la salsa cayendo, un pedido que sale. Te damos ideas de qué grabar; tú haces las tomas con tu celular.",
+  },
+  {
+    title: "Elige cómo contarlo.",
+    text: "Sube tus clips y elige un tono: antojo, promo o detrás de la barra. Hooksage se encarga del montaje y el ritmo.",
+  },
+  {
+    title: "Exporta y publícalo.",
+    text: `Recibe tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan base incluye ${basePlan.weeklyExports} videos exportados por semana.`,
+  },
+];
+---
+
+<section
+  class="section workflow-section"
+  id="como-funciona"
+  aria-labelledby="how-title"
+  data-theme="dark"
+>
+  <div class="container">
+    <div class="workflow-heading">
+      <div>
+        <p class="overline eyebrow">Cómo funcionará</p>
+        <h2 id="how-title">
+          De lo que grabas
+          <br />a lo que publicas.
+        </h2>
+      </div>
+      <p class="body muted">
+        El contenido ya está en tu cocina. Estamos creando una forma más
+        sencilla de llevarlo a tus redes.
+      </p>
+    </div>
+    <div class="workflow-body">
+      <figure class="workflow-photo">
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/media/kitchen-360.avif 360w, /media/kitchen.avif 720w"
+            sizes="(max-width: 800px) calc(100vw - 32px), 520px"
+          />
+          <img
+            src="/media/kitchen.webp"
+            srcset="/media/kitchen-360.webp 360w, /media/kitchen.webp 720w"
+            sizes="(max-width: 800px) calc(100vw - 32px), 520px"
+            width="720"
+            height="480"
+            alt="Hamburguesas en una parrilla y cocineros preparando pedidos al fondo."
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <figcaption>
+          <span>La preparación también se cuenta.</span>
+          <span>Foto de referencia</span>
+        </figcaption>
+      </figure>
+      <div class="workflow-guide">
+        <ol class="workflow-steps">
+          {steps.map((step, index) => (
+            <li>
+              <span class="workflow-number" aria-hidden="true">
+                0{index + 1}
+              </span>
+              <div>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+    <div class="workflow-action">
+      <a
+        class="hs-btn hs-btn--primary"
+        href="#empezar"
+        data-waitlist-cta
+        data-cta-location="workflow"
+      >
+        Unirme a la lista <Icon name="arrow" />
+      </a>
+      <p>Te avisamos cuando puedas probarlo.</p>
+    </div>
+  </div>
+</section>

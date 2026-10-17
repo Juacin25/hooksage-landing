@@ -1,0 +1,100 @@
+<script is:inline>
+  (() => {
+    const storageKey = "hooksage:campaign";
+    const ttl = 30 * 60 * 1000;
+    const utmKeys = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+    ];
+    const paths = new Set([
+      "/",
+      "/videos-para-taquerias/",
+      "/videos-para-hamburgueserias/",
+      "/videos-para-heladerias/",
+      "/videos-para-sushi/",
+    ]);
+    const path = paths.has(location.pathname) ? location.pathname : "/";
+    const validTag = (value) =>
+      typeof value === "string" && /^[A-Za-z0-9_.-]{1,80}$/.test(value);
+    const params = new URLSearchParams(location.search);
+    const campaign = {};
+    for (const key of utmKeys) {
+      const value = params.get(key);
+      if (validTag(value)) campaign[key] = value;
+    }
+    let context = { landing_path: path };
+    let capturedAt = Date.now();
+    if (!Object.keys(campaign).length) {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(storageKey) || "null");
+        if (
+          saved &&
+          typeof saved.captured_at === "number" &&
+          saved.captured_at <= Date.now() &&
+          Date.now() - saved.captured_at < ttl &&
+          paths.has(saved.landing_path)
+        ) {
+          context = { landing_path: saved.landing_path };
+          capturedAt = saved.captured_at;
+          for (const key of utmKeys)
+            if (validTag(saved[key])) context[key] = saved[key];
+        }
+      } catch {
+        /* Storage is optional; registration works without it. */
+      }
+    } else context = { landing_path: path, ...campaign };
+    try {
+      sessionStorage.setItem(
+        storageKey,
+        JSON.stringify({ ...context, captured_at: capturedAt }),
+      );
+    } catch {}
+    const getAttribution = () =>
+      Date.now() - capturedAt < ttl ? { ...context } : { landing_path: path };
+    const eventNames = new Set([
+      "waitlist_landing_view",
+      "waitlist_cta_click",
+      "waitlist_form_start",
+      "waitlist_form_error",
+      "generate_lead",
+    ]);
+    const track = (name, details = {}) => {
+      if (!eventNames.has(name)) return;
+      const safeDetails = {};
+      for (const key of ["cta_location", "error_type"])
+        if (
+          typeof details[key] === "string" &&
+          /^[a-z_]{1,40}$/.test(details[key])
+        )
+          safeDetails[key] = details[key];
+      const event = {
+        event: name,
+        form_id: "hooksage_waitlist",
+        page_path: path,
+        ...getAttribution(),
+        ...safeDetails,
+      };
+      try {
+        window.dispatchEvent(
+          new CustomEvent("hooksage:funnel", { detail: event }),
+        );
+      } catch {}
+      try {
+        if (Array.isArray(window.dataLayer)) window.dataLayer.push(event);
+      } catch {}
+    };
+    window.HooksageFunnel = { getAttribution, track };
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const link = event.target.closest("a[data-waitlist-cta]");
+      if (link)
+        track("waitlist_cta_click", {
+          cta_location: link.dataset.ctaLocation || "content",
+        });
+    });
+    track("waitlist_landing_view");
+  })();
+</script>

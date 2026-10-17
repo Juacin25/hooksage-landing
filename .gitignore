@@ -1,0 +1,26 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+artifacts/
+.superdesign/tmp/
+
+# Private submissions, backups and runtime files
+/data/
+/backups/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.log
+.server.env
+.tenki/
+
+# Local design tooling and the original working prompt
+/.superdesign/
+/hooksage-brand-kit/PROMPT_LANDING.md
+
+.service.env

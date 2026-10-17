@@ -1,0 +1,26 @@
+---
+import Logo from "./Logo.astro";
+import { contactEmail, contactUrl } from "../lib/config";
+---
+
+<footer class="site-footer" data-theme="dark">
+  <div class="container">
+    <div class="footer-main">
+      <div>
+        <Logo footer />
+        <p class="small muted">Hecho en Latam para Latam</p>
+      </div>
+      <nav aria-label="Navegación del pie">
+        <a href="/#como-funciona">Cómo funciona</a>
+        <a href="/#ejemplos">Ejemplos</a>
+        <a href="/#precio">Precio</a>
+        <a href="/#preguntas">Preguntas</a>
+        <a href={contactUrl}>{contactEmail}</a>
+      </nav>
+    </div>
+    <div class="footer-bottom small">
+      <span>© 2026 Hooksage.</span>
+      <span>Videos para restaurantes. Hechos con lo que tú grabas.</span>
+    </div>
+  </div>
+</footer>

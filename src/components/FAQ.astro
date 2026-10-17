@@ -1,0 +1,27 @@
+---
+import Icon from "./Icon.astro";
+import { faqs } from "../data/content";
+---
+
+<section class="section faq-section" id="preguntas" aria-labelledby="faq-title">
+  <div class="container faq-grid">
+    <div>
+      <p class="overline eyebrow">Sin vueltas</p>
+      <h2 class="heading-1" id="faq-title">
+        Lo que quieres saber antes de empezar.
+      </h2>
+      <p class="body muted">Así funciona Hooksage, de principio a fin.</p>
+    </div>
+    <div class="faq-list">
+      {faqs.map((faq) => (
+        <details>
+          <summary>
+            <span>{faq.question}</span>
+            <Icon name="chevron" size={20} />
+          </summary>
+          <p class="body muted">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
