@@ -7,7 +7,8 @@ function httpsUrl(value: string | undefined) {
     return "";
   }
 }
-export const formEndpoint =
-  httpsUrl(import.meta.env.PUBLIC_FORM_ENDPOINT) || "/api/waitlist";
+export const formEndpoint = import.meta.env.PROD
+  ? "/api/waitlist"
+  : httpsUrl(import.meta.env.PUBLIC_FORM_ENDPOINT) || "/api/waitlist";
 export const contactEmail = "hooksage.app@gmail.com";
 export const contactUrl = `mailto:${contactEmail}`;

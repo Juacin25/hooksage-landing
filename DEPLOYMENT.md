@@ -25,7 +25,7 @@ Usa un CLI autenticado en el workspace correcto. Los IDs del despliegue no son c
 ```sh
 npm ci
 npm run check
-PUBLIC_FORM_ENDPOINT= npm run build
+npm run build
 npm test
 npm run test:api
 COPYFILE_DISABLE=1 tar --no-xattrs -czf /tmp/hooksage-release.tar.gz dist server scripts/database.mjs
@@ -116,6 +116,12 @@ Carga la clave real de forma privada en `RESEND_API_KEY`. El remitente por defec
 El servidor necesita salida HTTPS a `api.resend.com` (TCP 443). Si la sesión utiliza una allowlist, añade solo ese hostname a la política existente. No amplíes la salida al resto de Internet ni reemplaces la sesión o el volumen para habilitar las notificaciones.
 
 Después de subir `server/notify.mjs`, `server/app.mjs` y `server/index.mjs`, ejecuta `sudo systemctl restart hooksage.service`. Revisa el journal de la invocación recién iniciada y confirma que no aparezca `Email notifications disabled`. Comprueba `/healthz`, envía un registro identificado como prueba y verifica su entrega en Resend (`last_event=delivered`) o en el buzón destinatario. La aceptación del formulario y la ausencia de errores, por sí solas, no confirman la entrega del correo. Borra únicamente la fila de prueba una vez verificada, sin alterar otros registros.
+
+## Acceso y compatibilidad del formulario
+
+Producción siempre usa `/api/waitlist` en el mismo dominio. Una variable `PUBLIC_FORM_ENDPOINT` de desarrollo no puede incorporar una URL antigua al build. El formulario conserva `action`, `method=post` y validación nativa: si JavaScript no puede ejecutarse, el servidor recibe el POST HTML y devuelve una confirmación legible. Ambos modos aplican la misma validación, límites, deduplicación y guardado en SQLite. Los datos de contacto nunca se colocan en la URL.
+
+El JavaScript se compila para Chrome/Edge 80+, Firefox 78+ y Safari 14+; el envío HTML básico no necesita JavaScript. Antes de considerar operativo un despliegue, verifica el dominio con resolución DNS normal. `curl --resolve` sirve para aislar problemas de DNS, pero no prueba que el resolvedor de un visitante ya haya actualizado la delegación. Comprueba también los nameservers públicos, el DNS de la conexión afectada y el formulario desde un navegador.
 
 ## Copia consistente y exportación
 

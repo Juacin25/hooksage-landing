@@ -42,7 +42,7 @@ Los datos no se pueden listar, descargar ni modificar desde una API pública. El
 
 Hay una plantilla sin credenciales en `.server.env.example`. En Tenki, `hooksage.service` ejecuta el servidor con el archivo privado `.service.env`. La unidad reinicia el proceso si se detiene y se activa al arrancar la VM.
 
-`PUBLIC_FORM_ENDPOINT` es opcional y público: por defecto se usa `/api/waitlist`. Solo configúralo con una URL HTTPS cuando la landing y el receptor se alojen en dominios distintos. Nunca pongas credenciales en variables `PUBLIC_*`.
+`PUBLIC_FORM_ENDPOINT` es opcional y público, y solo se utiliza en desarrollo. Las compilaciones de producción siempre envían a `/api/waitlist` en el mismo dominio, aunque un `.env` antiguo contenga otra URL. El formulario también permite el envío HTML nativo cuando JavaScript está desactivado o no puede iniciarse. Nunca pongas credenciales en variables `PUBLIC_*`.
 
 ## Consultar, exportar y respaldar
 

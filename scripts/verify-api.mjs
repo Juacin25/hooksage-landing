@@ -320,3 +320,110 @@ test("New entries email the team once; email failures never fail the submission"
   }
   assert.equal(createNotifier({ apiKey: "", to: "x@example.test" }), null);
 });
+
+test("Native HTML forms save and deduplicate entries without exposing submitted values", async () => {
+  const f = await fixture();
+  const fields = { ...entry, whatsapp: "55 1234 5678", landing_path: "/" };
+  delete fields.attribution;
+  const body = new URLSearchParams(fields).toString();
+  const headers = {
+    Origin: origin,
+    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: "text/html,application/xhtml+xml",
+  };
+  try {
+    for (const expected of [201, 200]) {
+      const response = await f.post(undefined, { headers, body });
+      assert.equal(response.status, expected);
+      assert.match(response.headers.get("content-type"), /text\/html/);
+      assert.equal(response.headers.get("cache-control"), "no-store");
+      const html = await response.text();
+      assert.match(html, /Ya estás en la lista/);
+      assert.doesNotMatch(
+        html,
+        /EXAMPLE@example.test|Tacos de prueba|5512345678/,
+      );
+      assert.equal(response.headers.get("location"), null);
+    }
+    const row = f.db.prepare("SELECT * FROM waitlist_entries").get();
+    assert.equal(row.whatsapp, "+525512345678");
+    assert.equal(row.email, "example@example.test");
+    assert.equal(row.landing_path, "/");
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      1,
+    );
+  } finally {
+    await f.close();
+  }
+});
+
+test("Native forms preserve validation, origin checks, limits and honest failure responses", async () => {
+  const f = await fixture();
+  const fields = { ...entry, whatsapp: "55 1234 5678", landing_path: "/" };
+  delete fields.attribution;
+  const headers = {
+    Origin: origin,
+    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: "text/html",
+  };
+  const encode = (patch) =>
+    new URLSearchParams({ ...fields, ...patch }).toString();
+  try {
+    for (const [body, status, extra] of [
+      [encode({ email: "invalid" }), 400],
+      [encode({ whatsapp: "+1 555 123 4567" }), 400],
+      [encode({ website: "spam.example" }), 400],
+      [
+        encode({ businessName: "<script>private-marker</script>", city: "x" }),
+        400,
+      ],
+      [encode({}) + "&email=second@example.test", 400],
+      ["businessName=" + "x".repeat(9000), 413],
+      [encode({}), 403, { ...headers, Origin: "https://attacker.example" }],
+      [
+        encode({}),
+        403,
+        { "Content-Type": headers["Content-Type"], Accept: "text/html" },
+      ],
+    ]) {
+      const response = await f.post(undefined, {
+        headers: extra || headers,
+        body,
+      });
+      assert.equal(response.status, status);
+      const html = await response.text();
+      assert.match(html, /No pudimos completar/);
+      assert.doesNotMatch(
+        html,
+        /Ya estás en la lista|private-marker|EXAMPLE@example.test/,
+      );
+    }
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      0,
+    );
+    f.db.close();
+    const unavailable = await f.post(undefined, { headers, body: encode({}) });
+    assert.equal(unavailable.status, 503);
+    assert.doesNotMatch(await unavailable.text(), /Ya estás en la lista/);
+  } finally {
+    await f.close();
+  }
+  const limited = await fixture({ rateLimit: 1 });
+  try {
+    assert.equal(
+      (await limited.post(undefined, { headers, body: encode({}) })).status,
+      201,
+    );
+    const response = await limited.post(undefined, {
+      headers,
+      body: encode({}),
+    });
+    assert.equal(response.status, 429);
+    assert.match(await response.text(), /Espera unos minutos/);
+    assert.ok(response.headers.get("retry-after"));
+  } finally {
+    await limited.close();
+  }
+});

@@ -30,12 +30,13 @@ async function fixture(fetcher, options = {}) {
         throw new Error("storage_disabled");
       },
     });
-  window.document.write(html);
   window.fetch =
     fetcher ||
     (() => {
       throw new Error("Unexpected network request");
     });
+  if (options.noFetch) window.fetch = undefined;
+  window.document.write(html);
   for (const tag of window.document.querySelectorAll('script[type="module"]')) {
     if (tag.hasAttribute("src")) {
       const source = await fs.readFile(
@@ -225,6 +226,21 @@ ok(
   "The base plan states weekly exports while keeping the monthly billing price",
 );
 
+const fallback = await fixture(undefined, { noFetch: true });
+const fallbackForm = fallback.document.querySelector("form");
+assert.equal(fallbackForm.getAttribute("action"), "/api/waitlist");
+assert.equal(fallbackForm.method, "post");
+assert.equal(fallbackForm.noValidate, false);
+assert.equal(fallbackForm.querySelector('[name="intent"]').value, "waitlist");
+assert.equal(fallbackForm.querySelector('[name="landing_path"]').value, "/");
+assert.equal(doc.querySelector("form").noValidate, true);
+assert.equal(doc.querySelector("form").dataset.endpoint, "/api/waitlist");
+assert.doesNotMatch(html, /hooksage-landing--[^\s"<>]+\.tenki\.sh/);
+await fallback.happyDOM.close();
+ok(
+  "Production keeps the same-origin API and native POST remains available without fetch",
+);
+
 const submit = (win) =>
   win.document
     .querySelector("form")
@@ -242,7 +258,10 @@ const fill = (win) => {
 };
 submit(w);
 assert.equal(doc.querySelectorAll('[aria-invalid="true"]').length, 6);
-assert.equal(doc.querySelectorAll("form input:not(#website)").length, 6);
+assert.equal(
+  doc.querySelectorAll("form input:not(#website):not([type=hidden])").length,
+  6,
+);
 assert.equal(doc.querySelectorAll("form select").length, 1);
 fill(w);
 doc.querySelector("#email").value = "correo-incompleto";

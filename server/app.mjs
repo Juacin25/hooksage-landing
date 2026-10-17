@@ -4,6 +4,7 @@ import path from "node:path";
 import { isIP } from "node:net";
 import { validateEntry } from "./validation.mjs";
 import { saveEntry } from "./database.mjs";
+import { sendFormResponse } from "./form-response.mjs";
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -59,7 +60,7 @@ export function createApp({
     });
     response.end(JSON.stringify(body));
   }
-  function readJson(request) {
+  function readBody(request, encodedForm) {
     return new Promise((resolve, reject) => {
       const chunks = [];
       let length = 0;
@@ -75,7 +76,17 @@ export function createApp({
       request.on("end", () => {
         if (failed) return;
         try {
-          resolve(JSON.parse(Buffer.concat(chunks).toString("utf8")));
+          const body = Buffer.concat(chunks).toString("utf8");
+          if (!encodedForm) return resolve(JSON.parse(body));
+          const params = new URLSearchParams(body);
+          const keys = [...params.keys()];
+          if (new Set(keys).size !== keys.length)
+            throw new Error("duplicate_fields");
+          const input = Object.fromEntries(params);
+          const digits = String(input.whatsapp || "").replace(/\D/g, "");
+          input.whatsapp = digits.length === 10 ? `+52${digits}` : "";
+          input.attribution = { landing_path: input.landing_path || "/" };
+          resolve(input);
         } catch {
           reject(Object.assign(new Error("invalid_json"), { status: 400 }));
         }
@@ -104,11 +115,19 @@ export function createApp({
       }
     }
     if (pathname.startsWith("/api/")) {
-      if (pathname !== "/api/waitlist")
-        return json(response, 404, { ok: false });
+      const contentType = request.headers["content-type"]?.split(";")[0].trim();
+      const encodedForm = contentType === "application/x-www-form-urlencoded";
+      const htmlForm =
+        encodedForm &&
+        String(request.headers.accept || "").includes("text/html");
+      const reply = (status, body, headers = {}) =>
+        htmlForm
+          ? sendFormResponse(response, status, body, headers)
+          : json(response, status, body, headers);
+      if (pathname !== "/api/waitlist") return reply(404, { ok: false });
       const origin = request.headers.origin;
       if (!allowedOrigins.has(origin))
-        return json(response, 403, { ok: false, error: "origin_not_allowed" });
+        return reply(403, { ok: false, error: "origin_not_allowed" });
       response.setHeader("Access-Control-Allow-Origin", origin);
       response.setHeader("Vary", "Origin");
       if (request.method === "OPTIONS") {
@@ -120,32 +139,27 @@ export function createApp({
         return response.end();
       }
       if (request.method !== "POST")
-        return json(response, 405, { ok: false }, { Allow: "POST, OPTIONS" });
+        return reply(405, { ok: false }, { Allow: "POST, OPTIONS" });
       if (limited(request))
-        return json(
-          response,
+        return reply(
           429,
           { ok: false, error: "rate_limited" },
           { "Retry-After": String(Math.ceil(rateWindowMs / 1000)) },
         );
-      if (
-        request.headers["content-type"]?.split(";")[0].trim() !==
-        "application/json"
-      )
-        return json(response, 415, { ok: false });
+      if (contentType !== "application/json" && !encodedForm)
+        return reply(415, { ok: false });
       if (Number(request.headers["content-length"]) > BODY_LIMIT)
-        return json(response, 413, { ok: false });
+        return reply(413, { ok: false });
       let entry;
       try {
-        entry = validateEntry(await readJson(request));
+        entry = validateEntry(await readBody(request, encodedForm));
       } catch (error) {
-        return json(response, error.status || 400, { ok: false });
+        return reply(error.status || 400, { ok: false });
       }
-      if (!entry)
-        return json(response, 400, { ok: false, error: "invalid_fields" });
+      if (!entry) return reply(400, { ok: false, error: "invalid_fields" });
       try {
         const { created } = saveEntry(db, entry);
-        json(response, created ? 201 : 200, { ok: true, created });
+        reply(created ? 201 : 200, { ok: true, created });
         // The database is the source of truth; a failed email never fails the submission.
         if (created && notify)
           notify(entry).catch(() => logger.error("waitlist_notify_failed"));
@@ -153,7 +167,7 @@ export function createApp({
       } catch {
         // Never log request bodies or database error strings containing user data.
         logger.error("waitlist_save_failed");
-        return json(response, 503, {
+        return reply(503, {
           ok: false,
           error: "temporarily_unavailable",
         });

@@ -46,7 +46,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
       </div>
     </div>
     <div class="hs-card form-card">
-      <form id="free-video-form" data-endpoint={formEndpoint} novalidate>
+      <form
+        id="free-video-form"
+        action={formEndpoint}
+        method="post"
+        data-endpoint={formEndpoint}
+      >
+        <input type="hidden" name="intent" value="waitlist" />
+        <input type="hidden" name="landing_path" value={Astro.url.pathname} />
         <div class="form-trap" aria-hidden="true">
           <label for="website">Sitio web</label>
           <input
@@ -145,6 +152,8 @@ import { formEndpoint, contactUrl } from "../lib/config";
               inputmode="tel"
               required
               maxlength="24"
+              pattern="(?:[^0-9]*[0-9]){10}[^0-9]*"
+              title="Escribe los 10 dígitos de tu WhatsApp, sin +52."
               placeholder="55 1234 5678"
               aria-describedby="whatsapp-help whatsapp-error"
             />
@@ -202,7 +211,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         ></p>
         <noscript>
           <p class="small">
-            Activa JavaScript para enviar el formulario.
+            Puedes enviar este formulario sin activar JavaScript.
             <a href={contactUrl}>También puedes escribirnos por correo.</a>
           </p>
         </noscript>
@@ -228,7 +237,11 @@ import { formEndpoint, contactUrl } from "../lib/config";
 </section>
 <script>
   const form = document.querySelector<HTMLFormElement>("#free-video-form");
-  if (form) {
+  if (
+    form &&
+    typeof window.fetch === "function" &&
+    typeof window.AbortController === "function"
+  ) {
     const status = document.getElementById("form-status")!;
     const button = form.querySelector<HTMLButtonElement>(
       'button[type="submit"]',
@@ -260,7 +273,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
     };
     if (
       selectedBusiness &&
-      Object.hasOwn(businessTypes, selectedBusiness) &&
+      Object.prototype.hasOwnProperty.call(businessTypes, selectedBusiness) &&
       !fields.type.value
     )
       fields.type.value = businessTypes[selectedBusiness];
@@ -382,5 +395,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         label.textContent = "Quiero estar en la lista";
       }
     });
+    // Native validation and POST remain available if enhancement cannot start.
+    form.noValidate = true;
   }
 </script>
