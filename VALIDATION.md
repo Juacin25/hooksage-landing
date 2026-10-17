@@ -4,7 +4,7 @@ Versión con galería, SEO y funnel para Instagram/Facebook/TikTok, proceso redi
 
 - `npm run check`: 0 errores, 0 advertencias, 0 hints.
 - `npm run build`: correcto; cinco páginas estáticas.
-- `npm test`: trece grupos correctos. Se verifican los metadatos de cada ruta, FAQ y JSON-LD, galería y cinco tonos, fotos distintas entre portada y galería inferior, assets AVIF/WebP, tres pasos del proceso, cuota de veinte videos exportados por semana, precio de facturación mensual, validación de campos, payload, duplicados, atribución, expiración, navegación, almacenamiento bloqueado y eventos de conversión solo tras confirmar un registro nuevo. Ningún evento incluye los datos personales del formulario. Estas pruebas de interfaz no enviaron registros a terceros; la comprobación de Tenki posterior usó datos ficticios.
+- `npm test`: trece grupos correctos. Se verifican los metadatos de cada ruta, FAQ y JSON-LD, galería y cinco tonos, fotos distintas entre portada y galería inferior, assets AVIF/WebP, tres pasos del proceso, cuota de quince videos exportados por semana, precio de facturación mensual, validación de campos, payload, duplicados, atribución, expiración, navegación, almacenamiento bloqueado y eventos de conversión solo tras confirmar un registro nuevo. Ningún evento incluye los datos personales del formulario. Estas pruebas de interfaz no enviaron registros a terceros; la comprobación de Tenki posterior usó datos ficticios.
 - Navegador: el proceso se revisó a 826, 1456 y 412 px. El botón está centrado debajo de la foto y los pasos en todos estos tamaños; queda fuera de la cuadrícula de contenido. El footer muestra “Hecho en Latam para Latam” y enlaza a `mailto:hooksage.app@gmail.com`. No hay enlaces públicos de WhatsApp. La galería inferior carga las cuatro fotos nuevas. La portada conserva sus imágenes. Sin desborde horizontal; se verificó también la preselección de Sushi al navegar de su página al formulario.
 - `git diff --check`: correcto.
 
@@ -15,13 +15,13 @@ Versión con galería, SEO y funnel para Instagram/Facebook/TikTok, proceso redi
 
 Informes y capturas en `artifacts/lighthouse-mobile*`, ignorados por Git. `artifacts/como-funciona-mobile.jpg` muestra la nueva sección completa. Las puntuaciones son locales y no prueban posicionamiento ni una mejora de conversión.
 
-El Plan Base tiene **20 videos exportados por semana**, con el precio previsto de US$14.97 al mes. La definición compartida está en `src/data/plan.ts`. Se retiró el cálculo anterior de US$0.75 por video porque usaba una cuota mensual incorrecta.
+El Plan Base tiene **15 videos exportados por semana**, con el precio previsto de US$14.97 al mes. La definición compartida está en `src/data/plan.ts`. Se retiró el cálculo anterior de US$0.75 por video porque usaba una cuota mensual incorrecta.
 
 “Cómo funcionará” usa una foto de preparación en cocina y tres acciones concretas en una lista editorial. La galería inferior y las páginas de rubro emplean otro juego de cuatro fotos, con créditos en `public/media/CREDITS.md`. Todas siguen identificadas como referencias y tienen formatos responsivos con carga diferida.
 
-Precio presenta “Plan Base. Más tiers próximamente.”, con veinte exportaciones semanales y facturación mensual. El contacto público y los avisos de acceso usan correo; también se actualizó el enlace de la confirmación, probado con respuesta 2xx simulada. El campo WhatsApp del visitante se conserva.
+Precio presenta “Plan Base. Más tiers próximamente.”, con quince exportaciones semanales y facturación mensual. El contacto público y los avisos de acceso usan correo; también se actualizó el enlace de la confirmación, probado con respuesta 2xx simulada. El campo WhatsApp del visitante se conserva.
 
-Se mantienen los siete campos del formulario. Los textos de entrada, los llamados principales y la confirmación comunican la lista de espera. Los eventos y la atribución están preparados; no se instalaron píxeles ni se conectaron cuentas publicitarias.
+Se mantienen los siete campos del formulario. Los textos de entrada, los llamados principales y la confirmación comunican la lista de espera. Los eventos y la atribución están preparados. El Meta Pixel `1119851420489248` envía `PageView` en cada página y `Lead` solo tras un registro nuevo, sin datos del formulario.
 
 ## Base de datos y Tenki
 

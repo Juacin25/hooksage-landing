@@ -206,16 +206,16 @@ ok(
 );
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
 assert.match(planText, /Plan Base/);
-assert.match(planText, /20 videos exportados por semana/);
+assert.match(planText, /15 videos exportados por semana/);
 assert.match(planText, /14\.97/);
 assert.match(planText, /\/ mes/);
 assert.doesNotMatch(
   doc.body.textContent,
-  /20 videos (?:de 15 segundos )?al mes|0[.,]75 por video/,
+  /20 videos exportados|\b20 por semana|(?:15|20) videos (?:de 15 segundos )?al mes|0[.,]75 por video/,
 );
 assert.ok(
   faq.mainEntity.some((item) =>
-    /20 videos exportados por semana/.test(item.acceptedAnswer.text),
+    /15 videos exportados por semana/.test(item.acceptedAnswer.text),
   ),
 );
 ok(

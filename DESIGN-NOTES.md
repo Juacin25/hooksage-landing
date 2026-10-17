@@ -22,4 +22,4 @@ Se volvió a observar Higgsfield en navegador: protagonismo de medios, fondo osc
 
 La portada conserva sus cuatro fotos originales. La galería inferior y las páginas de rubro usan otras cuatro fotos, y el proceso añade una foto de cocina. Todas son referencias con créditos en `public/media/CREDITS.md`. Las nuevas imágenes se entregan en AVIF/WebP de 360/720 px y se cargan de forma diferida.
 
-La cuota del Plan Base es de veinte videos exportados por semana, con facturación mensual prevista. La definición compartida evita que la FAQ y el precio anuncien cuotas diferentes.
+La cuota del Plan Base es de quince videos exportados por semana, con facturación mensual prevista. La definición compartida evita que la FAQ y el precio anuncien cuotas diferentes.
