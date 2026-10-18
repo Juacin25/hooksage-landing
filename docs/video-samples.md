@@ -1,0 +1,21 @@
+# Muestras en video
+
+Los cinco archivos fueron aportados por el usuario para publicarlos en la landing. Los emparejamientos fueron confirmados antes de armar la comparación:
+
+| Original recibido | Uso | Archivo publicado |
+| --- | --- | --- |
+| WhatsApp Video 2026-10-17 at 15.05.34.mp4 | Antes, sin subtítulos | talking-head-original.mp4 |
+| WhatsApp Video 2026-10-17 at 19.56.26.mp4 | Después, con edición y subtítulos | talking-head-edited.mp4 |
+| WhatsApp Video 2026-10-17 at 17.28.19.mp4 | Ejemplo promocional | promo.mp4 |
+| IMG_4278.MOV | Segundo antes, pitch de Drivo | drivo-original.mp4 |
+| WhatsApp Video 2026-10-18 at 00.35.07.mp4 | Segundo después, pitch editado | drivo-edited.mp4 |
+
+Las copias web están en `public/videos/`. Conservan el audio y la duración de cada muestra: aproximadamente 8,4 s, 5,8 s y 15 s. No se alargaron los clips de la comparación para que coincidan con la duración anunciada del producto.
+
+El segundo par dura aproximadamente 13,6 s y 11,2 s. El crudo de iPhone estaba en HEVC de 10 bits y HLG/HDR, con orientación vertical indicada por una matriz de rotación. Se normalizó a video vertical H.264 SDR BT.709 con tone mapping Hable para reproducirlo en navegadores sin soporte de HDR, sin incorporar ubicación, sensores u otros streams de metadatos del MOV.
+
+Codificación: H.264, píxeles yuv420p, 30 fps, audio AAC de 128 kbps y metadatos MP4 al principio del archivo (`faststart`). Se retiraron los metadatos de los originales. Se conserva la resolución del original de 480×864; las otras copias son de 720×1280. Los originales completos no se incorporan al repositorio. Los posters son fotogramas de cada video convertidos a WebP.
+
+Las etiquetas y descripciones están en español e inglés; los propios videos conservan su español original. Cada editado tiene una pista WebVTT en inglés, seleccionable desde los controles del reproductor. No hay reproducción automática y los MP4 usan `preload=none`. El carrusel cambia de par mediante flechas, anuncia el ejemplo seleccionado y admite teclado. Al cambiar se pausan todos los videos. Sin JavaScript se muestran los dos pares y se ocultan las flechas; los controles HTML siguen funcionando.
+
+La comparación está dentro del hero, antes de las fotografías ilustrativas de las secciones inferiores. El botón secundario lleva a `#ver-edicion`; cada versión mantiene su propio selector ES/EN y su enlace al formulario.

@@ -4,6 +4,8 @@ Landing en español e inglés para startups, pymes, marcas personales y equipos 
 
 Los planes tienen facturación mensual en dólares: **Founder US$14,97 / 15 videos por semana**, **Pyme US$29,99 / 40 videos por semana** y **Marca Personal US$49,99 / 80 videos por semana**. El contacto público es **hooksage.app@gmail.com**.
 
+La portada muestra dos comparaciones antes/después en un carrusel con flechas y un ejemplo promocional con reproducción manual. Las copias optimizadas están en `public/videos/`; su procedencia y preparación se documentan en [docs/video-samples.md](docs/video-samples.md). Las fotos de las secciones inferiores siguen identificadas como referencias.
+
 ## Desarrollo local
 
 Usa Node 24 LTS o superior.

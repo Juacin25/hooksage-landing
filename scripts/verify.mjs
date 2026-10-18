@@ -67,7 +67,7 @@ function schemaOffer() {
 }
 for (const cta of doc.querySelectorAll("a[data-waitlist-cta]"))
   assert.ok(cta.getAttribute("href").includes("#empezar"));
-assert.equal(doc.querySelectorAll(".showcase-card").length, 4);
+assert.equal(doc.querySelectorAll(".sample-player").length, 5);
 assert.ok(doc.querySelector('meta[name="description"]').content.length <= 155);
 assert.equal(
   doc.querySelector('link[rel="canonical"]').href,
@@ -190,7 +190,7 @@ assert.match(previewSource.sizes, /840px/);
 assert.equal(previewPhoto.sizes, previewSource.sizes);
 assert.match(previewSource.srcset, /team-collaboration-360.avif/);
 assert.match(previewPhoto.alt, /referencia/);
-assert.equal(doc.querySelectorAll(".media-reference").length, 9);
+assert.equal(doc.querySelectorAll(".media-reference").length, 5);
 for (const name of [
   "founder-interview",
   "drivo-product",
@@ -209,18 +209,93 @@ ok(
   "Reference media exists in both responsive formats, labels are visible and categories link to content",
 );
 
-const originalGalleryPhotos = new Set(
-  [...doc.querySelectorAll(".showcase-card img")].map((img) =>
-    img.getAttribute("src"),
-  ),
+const players = [...doc.querySelectorAll(".sample-player")];
+const sampleSources = players.map((player) =>
+  player.querySelector("source").getAttribute("src"),
 );
+assert.deepEqual(sampleSources, [
+  "/videos/talking-head-original.mp4",
+  "/videos/talking-head-edited.mp4",
+  "/videos/drivo-original.mp4",
+  "/videos/drivo-edited.mp4",
+  "/videos/promo.mp4",
+]);
+assert.equal(
+  new Set(players.map((player) => player.getAttribute("poster"))).size,
+  5,
+);
+for (const player of players) {
+  assert.equal(player.getAttribute("preload"), "none");
+  assert.ok(player.hasAttribute("controls"));
+  assert.ok(player.hasAttribute("playsinline"));
+  assert.ok(!player.hasAttribute("autoplay"));
+  assert.ok(!player.hasAttribute("muted"));
+  const video = await fs.readFile(
+    path.join(dist, player.querySelector("source").getAttribute("src")),
+  );
+  assert.ok(video.length < 4_500_000);
+  assert.ok(
+    video.indexOf(Buffer.from("moov")) < video.indexOf(Buffer.from("mdat")),
+    "MP4 metadata precedes video data for progressive playback",
+  );
+  await fs.access(path.join(dist, player.getAttribute("poster")));
+}
+assert.match(players[0].getAttribute("aria-label"), /Antes:/);
+assert.match(players[1].getAttribute("aria-label"), /Después:/);
+await fs.access(path.join(dist, "videos/talking-head-edited.en.vtt"));
+await fs.access(path.join(dist, "videos/drivo-edited.en.vtt"));
+const cases = [...doc.querySelectorAll("[data-sample-case]")];
+assert.equal(cases.length, 2);
+assert.equal(cases[0].hidden, false);
+assert.equal(cases[1].hidden, true);
+assert.equal(doc.querySelector("[data-sample-nav]").hidden, false);
+doc.querySelector("[data-sample-next]").click();
+assert.equal(cases[0].hidden, true);
+assert.equal(cases[1].hidden, false);
+assert.match(
+  doc.querySelector("[data-sample-status]").textContent,
+  /2 \/ 2.*Drivo/,
+);
+doc.querySelector("[data-sample-next]").click();
+assert.equal(cases[0].hidden, false);
+doc.querySelector("[data-sample-prev]").click();
+assert.equal(cases[1].hidden, false);
+doc
+  .querySelector("[data-sample-prev]")
+  .dispatchEvent(
+    new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+  );
+assert.equal(cases[0].hidden, false);
+// Without script execution both before/after pairs remain available, with no dead arrows.
+const basic = new Window({
+  settings: {
+    disableJavaScriptEvaluation: true,
+    disableJavaScriptFileLoading: true,
+    disableCSSFileLoading: true,
+  },
+});
+basic.document.write(html);
+assert.equal(
+  [...basic.document.querySelectorAll("[data-sample-case]")].filter(
+    (panel) => !panel.hidden,
+  ).length,
+  2,
+);
+assert.equal(basic.document.querySelector("[data-sample-nav]").hidden, true);
+await basic.happyDOM.close();
+
+assert.equal(
+  doc.querySelector(".hero-actions .text-link").getAttribute("href"),
+  "#ver-edicion",
+);
+assert.match(doc.querySelector("#sample-language-note").textContent, /español/);
 const lowerGalleryPhotos = [
   ...doc.querySelectorAll(".examples-grid .media-card img"),
 ].map((img) => img.getAttribute("src"));
-assert.equal(originalGalleryPhotos.size, 4);
 assert.equal(new Set(lowerGalleryPhotos).size, 4);
-for (const photo of lowerGalleryPhotos)
-  assert.ok(!originalGalleryPhotos.has(photo));
+ok(
+  "Before/after and promo use real optimized videos with native controls, distinct posters and no autoplay",
+);
 for (const name of [
   "startup-talk",
   "business-story",
@@ -624,6 +699,18 @@ const englishWindow = await fixture(
   },
 );
 const en = englishWindow.document;
+assert.match(
+  en.querySelector("#samples-title").textContent,
+  /From raw footage/,
+);
+assert.match(
+  en.querySelectorAll(".sample-player")[0].getAttribute("aria-label"),
+  /Before:/,
+);
+assert.match(
+  en.querySelectorAll(".sample-player")[1].getAttribute("aria-label"),
+  /After:/,
+);
 assert.equal(en.documentElement.lang, "en");
 assert.match(en.querySelector("h1").textContent, /More videos./);
 assert.match(en.querySelector("h1").textContent, /Less time editing./);

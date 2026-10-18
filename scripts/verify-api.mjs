@@ -12,6 +12,72 @@ import { validateEntry } from "../server/validation.mjs";
 import { createNotifier } from "../server/notify.mjs";
 
 const origin = "http://127.0.0.1:4321";
+
+test("Video streams support byte ranges, suffixes, seeking and HEAD; subtitles use the correct MIME type", async () => {
+  const f = await fixture();
+  try {
+    const media = Buffer.from(Array.from({ length: 4096 }, (_, i) => i % 251));
+    await fs.writeFile(path.join(f.folder, "dist/sample.mp4"), media);
+    await fs.writeFile(path.join(f.folder, "dist/sample.vtt"), "WEBVTT\n");
+    const full = await fetch(f.url + "/sample.mp4");
+    assert.equal(full.status, 200);
+    assert.equal(full.headers.get("content-type"), "video/mp4");
+    assert.equal(full.headers.get("accept-ranges"), "bytes");
+    assert.deepEqual(Buffer.from(await full.arrayBuffer()), media);
+    for (const [range, start, end] of [
+      ["bytes=2-7", 2, 7],
+      ["bytes=4000-", 4000, 4095],
+      ["bytes=-16", 4080, 4095],
+      ["bytes=4090-9999", 4090, 4095],
+      ["bytes=-9999", 0, 4095],
+    ]) {
+      const res = await fetch(f.url + "/sample.mp4", {
+        headers: { Range: range },
+      });
+      assert.equal(res.status, 206);
+      assert.equal(
+        res.headers.get("content-range"),
+        "bytes " + start + "-" + end + "/4096",
+      );
+      assert.equal(Number(res.headers.get("content-length")), end - start + 1);
+      assert.deepEqual(
+        Buffer.from(await res.arrayBuffer()),
+        media.subarray(start, end + 1),
+      );
+    }
+    for (const range of [
+      "bytes=4096-",
+      "bytes=9-2",
+      "bytes=-0",
+      "bytes=-",
+      "bytes=1-2,5-6",
+      "bytes=999999999999999999999-",
+    ]) {
+      const res = await fetch(f.url + "/sample.mp4", {
+        headers: { Range: range },
+      });
+      assert.equal(res.status, 416);
+      assert.equal(res.headers.get("content-range"), "bytes */4096");
+      assert.equal((await res.arrayBuffer()).byteLength, 0);
+    }
+    const head = await fetch(f.url + "/sample.mp4", {
+      method: "HEAD",
+      headers: { Range: "bytes=0-1" },
+    });
+    assert.equal(head.status, 200);
+    assert.equal(head.headers.get("content-length"), "4096");
+    assert.equal((await head.arrayBuffer()).byteLength, 0);
+    const subtitle = await fetch(f.url + "/sample.vtt");
+    assert.equal(
+      subtitle.headers.get("content-type"),
+      "text/vtt; charset=utf-8",
+    );
+    assert.equal(await subtitle.text(), "WEBVTT\n");
+    assert.deepEqual(f.errors, []);
+  } finally {
+    await f.close();
+  }
+});
 const entry = {
   businessName: "  Tacos de prueba  ",
   businessType: "Taquería",

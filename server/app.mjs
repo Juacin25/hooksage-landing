@@ -18,6 +18,8 @@ const MIME = {
   ".woff2": "font/woff2",
   ".txt": "text/plain; charset=utf-8",
   ".xml": "application/xml",
+  ".mp4": "video/mp4",
+  ".vtt": "text/vtt; charset=utf-8",
 };
 const BODY_LIMIT = 8192;
 
@@ -211,15 +213,57 @@ export function createApp({
         throw new Error("outside_root");
       const type = MIME[path.extname(filename)];
       if (!type) throw new Error("unsupported_file");
-      response.writeHead(200, {
+      const size = statSync(filename).size;
+      const headers = {
         "Content-Type": type,
-        "Content-Length": statSync(filename).size,
+        "Content-Length": size,
         "Cache-Control": type.startsWith("text/html")
           ? "no-cache"
           : "public, max-age=3600",
-      });
+      };
+      let status = 200;
+      let streamOptions;
+      if (type === "video/mp4") {
+        headers["Accept-Ranges"] = "bytes";
+        const range = request.headers.range;
+        // A single byte range lets browsers seek without downloading the whole video.
+        // Without a matching validator, If-Range falls back to the complete representation.
+        if (request.method === "GET" && range && !request.headers["if-range"]) {
+          const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+          let start = 0;
+          let end = size - 1;
+          let valid = Boolean(match && (match[1] || match[2]) && size > 0);
+          if (valid && !match[1]) {
+            const suffix = Number(match[2]);
+            valid = Number.isSafeInteger(suffix) && suffix > 0;
+            start = Math.max(0, size - suffix);
+          } else if (valid) {
+            start = Number(match[1]);
+            end = match[2] ? Math.min(Number(match[2]), size - 1) : size - 1;
+            valid =
+              Number.isSafeInteger(start) &&
+              Number.isSafeInteger(end) &&
+              start >= 0 &&
+              start <= end &&
+              start < size;
+          }
+          if (!valid) {
+            response.writeHead(416, {
+              "Content-Range": "bytes */" + size,
+              "Accept-Ranges": "bytes",
+              "Content-Length": 0,
+            });
+            return response.end();
+          }
+          status = 206;
+          headers["Content-Range"] = "bytes " + start + "-" + end + "/" + size;
+          headers["Content-Length"] = end - start + 1;
+          streamOptions = { start, end };
+        }
+      }
+      response.writeHead(status, headers);
       if (request.method === "HEAD") return response.end();
-      const stream = createReadStream(filename);
+      const stream = createReadStream(filename, streamOptions);
       stream.on("error", () => response.destroy());
       stream.pipe(response);
     } catch {

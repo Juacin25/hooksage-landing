@@ -1,5 +1,11 @@
 # Despliegue en Tenki
 
+## Muestras y reproducción de video
+
+Sube juntos el build con `dist/videos/` y `server/app.mjs`. El servidor declara `video/mp4` y `text/vtt`, y responde `206` a rangos de bytes válidos de MP4. Esto permite reproducir y adelantar las muestras desde Safari, Chrome, Edge y Firefox sin descargar el archivo completo. HEAD conserva el tamaño total y `Accept-Ranges: bytes`; rangos no satisfacibles devuelven `416` con `Content-Range`. Las pruebas de API cubren estos contratos.
+
+Comprueba desde el dominio público una solicitud `Range: bytes=0-1023`: debe devolver `206`, `Content-Type: video/mp4`, `Content-Length: 1024` y `Content-Range` correcto. Verifica también audio, avance y posters en el navegador. Los players usan `preload=none`, sin autoplay, y no requieren otro servicio ni cambios en la base o configuración privada. La pista inglesa del video editado es `/videos/talking-head-edited.en.vtt`.
+
 La aplicación funciona con Node 24, sin instalar dependencias en el servidor: Astro se compila antes de subir y SQLite está incluido en Node. Se usa una sesión **sticky** de **1 vCPU, 512 MiB de RAM y disco raíz de 5 GiB**, con un **volumen persistente de 1 GiB** montado en `/data/hooksage`.
 
 La base es `/data/hooksage/waitlist.sqlite`. El volumen sobrevive a la terminación de una sesión; debe volver a adjuntarse explícitamente a su reemplazo. No guardes la base en el disco raíz, en `/tmp`, dentro del paquete de despliegue ni en `dist/`.

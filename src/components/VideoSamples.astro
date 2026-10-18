@@ -1,0 +1,459 @@
+---
+import { localeFromPath, translator } from "../lib/i18n";
+import Icon from "./Icon.astro";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const cases = [
+  {
+    id: "talking-head",
+    label: "A cámara",
+    original: 8.4,
+    edited: 5.8,
+    width: 480,
+    height: 864,
+  },
+  {
+    id: "drivo",
+    label: "Pitch de Drivo",
+    original: 13.6,
+    edited: 11.2,
+    width: 720,
+    height: 1280,
+  },
+];
+const versionLabels = { original: "Antes", edited: "Después" };
+const description = {
+  original: "Material original",
+  edited: "Cortes, encuadre y subtítulos",
+};
+const versions = ["original", "edited"] as const;
+const duration = (seconds: number) =>
+  seconds.toLocaleString(lang === "en" ? "en-US" : "es-UY", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }) + (lang === "en" ? " sec" : " s");
+---
+
+<section
+  class="video-samples"
+  data-video-samples
+  id="ver-edicion"
+  aria-labelledby="samples-title"
+>
+  <div class="samples-intro">
+    <div>
+      <p class="overline eyebrow">{t("Muestras en video")}</p>
+      <h2 class="heading-2" id="samples-title">
+        {t("Del video en crudo al corte final.")}
+      </h2>
+    </div>
+    <p class="small muted">
+      {t(
+        "El mismo mensaje, antes y después de editar. Poneles play para comparar el ritmo, el encuadre y los subtítulos.",
+      )}
+    </p>
+  </div>
+  <div class="samples-layout">
+    <div class="sample-comparison">
+      <div class="sample-selector" data-sample-nav hidden>
+        <p
+          class="sample-current small"
+          data-sample-status
+          data-prefix={t("Ejemplo")}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {t("Ejemplo")} 1 / {cases.length} · {t(cases[0].label)}
+        </p>
+        <div class="sample-arrows">
+          <button
+            type="button"
+            data-sample-prev
+            aria-label={t("Ejemplo anterior")}
+            aria-controls="sample-cases"
+          >
+            <Icon name="arrow" size={18} />
+          </button>
+          <button
+            type="button"
+            data-sample-next
+            aria-label={t("Siguiente ejemplo")}
+            aria-controls="sample-cases"
+          >
+            <Icon name="arrow" size={18} />
+          </button>
+        </div>
+      </div>
+      <div class="sample-cases" id="sample-cases">
+        {cases.map((item) => (
+          <div
+            class="sample-case"
+            data-sample-case
+            data-label={t(item.label)}
+            role="group"
+            aria-label={t(item.label)}
+          >
+            <h3 class="sr-only">{t(item.label)}</h3>
+            {versions.map((version) => (
+              <figure
+                class:list={[
+                  "sample-film",
+                  { "sample-film--edited": version === "edited" },
+                ]}
+              >
+                <figcaption class="sample-caption">
+                  <span class="sample-state">{t(versionLabels[version])}</span>
+                  <span class="small muted">{duration(item[version])}</span>
+                </figcaption>
+                <video
+                  class="sample-player"
+                  controls
+                  playsinline
+                  preload="none"
+                  poster={"/videos/" + item.id + "-" + version + "-poster.webp"}
+                  width={version === "original" ? item.width : 720}
+                  height={version === "original" ? item.height : 1280}
+                  aria-label={
+                    t(item.label) +
+                    " · " +
+                    t(versionLabels[version]) +
+                    ": " +
+                    t(description[version])
+                  }
+                  aria-describedby="sample-language-note"
+                >
+                  <source
+                    src={"/videos/" + item.id + "-" + version + ".mp4"}
+                    type="video/mp4"
+                  />
+                  {version === "edited" && (
+                    <track
+                      kind="subtitles"
+                      srclang="en"
+                      label="English"
+                      src={"/videos/" + item.id + "-edited.en.vtt"}
+                    />
+                  )}
+                  <a href={"/videos/" + item.id + "-" + version + ".mp4"}>
+                    {t("Abrir video")}
+                  </a>
+                </video>
+                <p class="small sample-description">
+                  {t(description[version])}
+                </p>
+              </figure>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+    <figure class="sample-film sample-film--promo">
+      <figcaption class="sample-caption">
+        <span class="sample-state">{t("Promocional")}</span>
+        <span class="small muted">{lang === "en" ? "15 sec" : "15 s"}</span>
+      </figcaption>
+      <video
+        class="sample-player"
+        controls
+        playsinline
+        preload="none"
+        poster="/videos/promo-poster.webp"
+        width="720"
+        height="1280"
+        aria-label={t("Ejemplo de video promocional con texto y música")}
+        aria-describedby="sample-language-note"
+      >
+        <source src="/videos/promo.mp4" type="video/mp4" />
+        <a href="/videos/promo.mp4">{t("Abrir video")}</a>
+      </video>
+      <p class="small sample-description">
+        {t("Otro formato: una pieza promocional.")}
+      </p>
+    </figure>
+  </div>
+  <div class="samples-footer">
+    <p class="small muted" id="sample-language-note">
+      {t(
+        "Muestras con audio y texto en español. Los videos editados incluyen subtítulos opcionales en inglés desde CC.",
+      )}
+    </p>
+    <a
+      class="text-link small"
+      href="#empezar"
+      data-waitlist-cta
+      data-cta-location="samples"
+    >
+      {t("Quiero probarlo con mi material")}
+      <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-video-samples]");
+  if (root) {
+    const players = [
+      ...root.querySelectorAll<HTMLVideoElement>(".sample-player"),
+    ];
+    players.forEach((player) =>
+      player.addEventListener("play", () => {
+        players.forEach((other) => {
+          if (other !== player && !other.paused) other.pause();
+        });
+      }),
+    );
+    const cases = [...root.querySelectorAll<HTMLElement>("[data-sample-case]")];
+    const nav = root.querySelector<HTMLElement>("[data-sample-nav]");
+    const status = root.querySelector<HTMLElement>("[data-sample-status]");
+    const previous =
+      root.querySelector<HTMLButtonElement>("[data-sample-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-sample-next]");
+    if (nav && status && previous && next && cases.length > 1) {
+      let selected = 0;
+      const selectCase = (index: number) => {
+        selected = (index + cases.length) % cases.length;
+        players.forEach((player) => {
+          if (!player.paused) player.pause();
+        });
+        cases.forEach((panel, i) => {
+          panel.hidden = i !== selected;
+        });
+        status.textContent =
+          status.dataset.prefix +
+          " " +
+          (selected + 1) +
+          " / " +
+          cases.length +
+          " · " +
+          cases[selected].dataset.label;
+      };
+      previous.addEventListener("click", () => selectCase(selected - 1));
+      next.addEventListener("click", () => selectCase(selected + 1));
+      nav.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        selectCase(selected + (event.key === "ArrowRight" ? 1 : -1));
+      });
+      selectCase(0);
+      nav.hidden = false;
+    }
+  }
+</script>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .video-samples {
+    scroll-margin-top: 104px;
+    padding-top: var(--space-6);
+  }
+  .samples-intro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-8);
+    margin-bottom: var(--space-6);
+  }
+  .samples-intro h2 {
+    max-width: 590px;
+    margin: 0;
+    font-size: clamp(25px, 2.7vw, 34px);
+    letter-spacing: -0.025em;
+  }
+  .samples-intro .eyebrow {
+    margin-bottom: var(--space-2);
+  }
+  .samples-intro > p {
+    max-width: 330px;
+    margin: 0;
+    line-height: 1.65;
+  }
+  .samples-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-8);
+    max-width: 960px;
+    margin-inline: auto;
+  }
+  .sample-comparison {
+    min-width: 0;
+  }
+  .sample-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 44px;
+    margin-bottom: var(--space-2);
+  }
+  .sample-selector[hidden],
+  .sample-case[hidden] {
+    display: none;
+  }
+  .sample-current {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+  .sample-arrows {
+    display: flex;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+  .sample-arrows button {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface-sunken);
+    color: var(--ink);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+  .sample-arrows button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .sample-arrows button:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+  }
+  [data-sample-prev] :global(svg) {
+    transform: rotate(180deg);
+  }
+  .sample-case {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  .sample-cases {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .sample-film--promo {
+    align-self: start;
+  }
+  [data-sample-nav]:not([hidden]) ~ .sample-cases {
+    margin-top: 0;
+  }
+  .sample-film {
+    min-width: 0;
+    margin: 0;
+  }
+  .sample-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    align-items: center;
+    padding-block: var(--space-3);
+  }
+  .sample-state {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .sample-film--edited .sample-state {
+    color: var(--primary);
+  }
+  .sample-player {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9/16;
+    object-fit: contain;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .sample-player:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
+  }
+  .sample-film--edited .sample-player {
+    border-color: var(--primary);
+  }
+  .sample-film--promo {
+    padding-top: 52px;
+    padding-left: var(--space-8);
+    border-left: 1px solid var(--border);
+  }
+  .sample-film--promo .sample-caption {
+    padding-top: var(--space-3);
+  }
+  .sample-description {
+    margin: var(--space-3) 0 0;
+    line-height: 1.5;
+  }
+  .samples-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-6);
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    margin-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+  .samples-footer > p {
+    margin: 0;
+    max-width: 570px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .samples-footer > a {
+    flex-shrink: 0;
+  }
+  @media (max-width: 760px) {
+    .samples-intro {
+      display: block;
+    }
+    .samples-intro > p {
+      max-width: 500px;
+      margin-top: var(--space-3);
+    }
+    .samples-layout {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      max-width: 550px;
+    }
+    .sample-film--promo {
+      padding-top: 0;
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--border);
+      max-width: 280px;
+      width: 100%;
+      justify-self: center;
+    }
+    .samples-footer {
+      align-items: start;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+  }
+  @media (max-width: 420px) {
+    .sample-case {
+      gap: var(--space-3);
+    }
+    .sample-caption .small {
+      font-size: 11px;
+    }
+    .sample-state {
+      font-size: 13px;
+    }
+    .sample-description {
+      font-size: 12px;
+    }
+  }
+</style>
