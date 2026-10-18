@@ -2,7 +2,7 @@
 import Icon from "./Icon.astro";
 import VideoCard from "./VideoCard.astro";
 import { tones } from "../data/content";
-import { referenceMedia } from "../data/media";
+import { referenceMedia, mediaSizes } from "../data/media";
 ---
 
 <section
@@ -67,6 +67,7 @@ import { referenceMedia } from "../data/media";
               data-poster={tone.poster}
               data-alt={referenceMedia[tone.poster].alt}
               data-position={referenceMedia[tone.poster].position}
+              data-sizes={mediaSizes(referenceMedia[tone.poster])}
               data-width={referenceMedia[tone.poster].width}
               data-height={referenceMedia[tone.poster].height}
               data-kind={referenceMedia[tone.poster].kind}
@@ -132,13 +133,16 @@ import { referenceMedia } from "../data/media";
       if (image) {
         image.src = `/media/${pill.dataset.poster}.webp`;
         image.srcset = `/media/${pill.dataset.poster}-360.webp 360w, /media/${pill.dataset.poster}.webp ${pill.dataset.width}w`;
+        image.sizes = pill.dataset.sizes || "280px";
         image.alt = pill.dataset.alt || "";
         image.width = Number(pill.dataset.width);
         image.height = Number(pill.dataset.height);
         image.style.objectPosition = pill.dataset.position || "center";
       }
-      if (source)
+      if (source) {
+        source.sizes = pill.dataset.sizes || "280px";
         source.srcset = `/media/${pill.dataset.poster}-360.avif 360w, /media/${pill.dataset.poster}.avif ${pill.dataset.width}w`;
+      }
     }),
   );
 </script>

@@ -83,3 +83,10 @@ export const referenceMedia: Record<
     kind: "photo",
   },
 };
+
+export function mediaSizes(media: { width: number; height: number }) {
+  // A landscape photo fills the height of a portrait card; request enough pixels for that crop.
+  return media.width > media.height
+    ? "(max-width: 650px) 720px, 840px"
+    : "(max-width: 650px) 224px, 280px";
+}

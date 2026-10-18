@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { referenceMedia } from "../data/media";
+import { referenceMedia, mediaSizes } from "../data/media";
 interface Props {
   tone?: string;
   business?: string;
@@ -25,6 +25,7 @@ const {
 }: Props = Astro.props;
 const resolvedPoster = referenceMedia[poster] ? poster : "founder-interview";
 const media = referenceMedia[resolvedPoster];
+const imageSizes = mediaSizes(media);
 // TODO: replace reference photography with authorized customer video and its real poster.
 const formHref = Astro.params.rubro
   ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
@@ -58,14 +59,14 @@ const formHref = Astro.params.rubro
           data-sample-source
           type="image/avif"
           srcset={`/media/${resolvedPoster}-360.avif 360w, /media/${resolvedPoster}.avif ${media.width}w`}
-          sizes="(max-width: 650px) 224px, 280px"
+          sizes={imageSizes}
         />
         <img
           class="hs-video__media"
           data-sample-photo
           src={`/media/${resolvedPoster}.webp`}
           srcset={`/media/${resolvedPoster}-360.webp 360w, /media/${resolvedPoster}.webp ${media.width}w`}
-          sizes="(max-width: 650px) 224px, 280px"
+          sizes={imageSizes}
           alt={media.alt}
           width={media.width}
           height={media.height}

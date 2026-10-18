@@ -186,6 +186,8 @@ const previewSource = doc.querySelector(
   "[data-tone-preview] [data-sample-source]",
 );
 assert.match(previewPhoto.srcset, /team-collaboration-360.webp/);
+assert.match(previewSource.sizes, /840px/);
+assert.equal(previewPhoto.sizes, previewSource.sizes);
 assert.match(previewSource.srcset, /team-collaboration-360.avif/);
 assert.match(previewPhoto.alt, /referencia/);
 assert.equal(doc.querySelectorAll(".media-reference").length, 9);
