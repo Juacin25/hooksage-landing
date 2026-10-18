@@ -1533,3 +1533,80 @@ svg {
   height: 1px;
   overflow: hidden;
 }
+
+/* Three launch plans share the same visual weight and editing features. */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.pricing-grid .hs-price {
+  min-width: 0;
+  padding: 28px;
+  gap: 24px;
+}
+.pricing-grid .price-description {
+  min-height: 44px;
+}
+.pricing-grid .hs-price__amount {
+  font-size: 52px;
+  gap: 4px;
+  white-space: nowrap;
+}
+.pricing-grid .price-currency {
+  font-size: 20px;
+}
+.pricing-grid .hs-price__period {
+  font-size: 14px;
+  margin-left: 4px;
+}
+.price-quota {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-block: 24px;
+  border-block: 1px solid var(--border);
+}
+.price-quota strong {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1;
+  color: var(--primary);
+}
+.price-quota span {
+  font-size: 13px;
+  line-height: 20px;
+  max-width: 136px;
+}
+.pricing-grid .hs-price__list {
+  font-size: 14px;
+  line-height: 22px;
+}
+.pricing-grid .hs-price .hs-btn {
+  margin-top: auto;
+  padding-inline: 12px;
+  font-size: 13px;
+}
+.pricing-note {
+  text-align: center;
+  margin: 28px auto 0;
+  line-height: 1.7;
+}
+@media (max-width: 1000px) {
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 490px;
+    margin-inline: auto;
+  }
+  .pricing-grid .price-description {
+    min-height: 0;
+  }
+}
+@media (max-width: 650px) {
+  .pricing-grid .hs-price {
+    padding: 24px;
+  }
+  .pricing-grid .hs-price__amount {
+    font-size: 50px;
+  }
+}

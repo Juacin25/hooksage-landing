@@ -4,12 +4,12 @@ The user approved real food reference photography for the landing redesign on 20
 
 All photographs are from Pexels, under the Pexels License: https://www.pexels.com/license/
 
-| Asset | Photographer | Source |
-| --- | --- | --- |
-| tacos | Gonzalo Guzmán García | https://www.pexels.com/photo/close-up-shot-of-tacos-14179985/ |
-| burger | Thiago Lazaro | https://www.pexels.com/photo/close-up-photo-of-burger-2874981/ |
-| sushi | Valeria Boltneva | https://www.pexels.com/photo/close-up-of-sushi-18408872/ |
-| icecream | Moises Caro | https://www.pexels.com/photo/ice-creams-cone-14944752/ |
+| Asset    | Photographer          | Source                                                         |
+| -------- | --------------------- | -------------------------------------------------------------- |
+| tacos    | Gonzalo Guzmán García | https://www.pexels.com/photo/close-up-shot-of-tacos-14179985/  |
+| burger   | Thiago Lazaro         | https://www.pexels.com/photo/close-up-photo-of-burger-2874981/ |
+| sushi    | Valeria Boltneva      | https://www.pexels.com/photo/close-up-of-sushi-18408872/       |
+| icecream | Moises Caro           | https://www.pexels.com/photo/ice-creams-cone-14944752/         |
 
 Responsive AVIF and WebP variants preserve the photographs; the page frames them with CSS object-fit. No Higgsfield images, videos, fonts, logos or code were copied.
 
@@ -17,14 +17,13 @@ Responsive AVIF and WebP variants preserve the photographs; the page frames them
 
 The user requested distinct photos for the lower business gallery and a new visual for the process section. The hero keeps its original set. These images also use the Pexels License and are labeled as references.
 
-| Asset | Photographer | Source |
-| --- | --- | --- |
-| tacos-detail | Los Muertos Crew | https://www.pexels.com/photo/tacos-on-the-plate-8448169/ |
-| burger-detail | Andres Alaniz | https://www.pexels.com/photo/cheeseburger-with-fries-22119664/ |
-| icecream-detail | Adriel Macedo | https://www.pexels.com/photo/three-scoops-of-yellow-ice-cream-in-a-glass-cup-15766466/ |
-| sushi-detail | Airam Dato-on | https://www.pexels.com/photo/delicious-sushi-nigiri-platter-close-up-33712134/ |
-| kitchen | Emil Lazarian | https://www.pexels.com/photo/chef-cooking-in-a-kitchen-5251019/ |
-
+| Asset           | Photographer     | Source                                                                                 |
+| --------------- | ---------------- | -------------------------------------------------------------------------------------- |
+| tacos-detail    | Los Muertos Crew | https://www.pexels.com/photo/tacos-on-the-plate-8448169/                               |
+| burger-detail   | Andres Alaniz    | https://www.pexels.com/photo/cheeseburger-with-fries-22119664/                         |
+| icecream-detail | Adriel Macedo    | https://www.pexels.com/photo/three-scoops-of-yellow-ice-cream-in-a-glass-cup-15766466/ |
+| sushi-detail    | Airam Dato-on    | https://www.pexels.com/photo/delicious-sushi-nigiri-platter-close-up-33712134/         |
+| kitchen         | Emil Lazarian    | https://www.pexels.com/photo/chef-cooking-in-a-kitchen-5251019/                        |
 
 ## Startups y pymes · fotografías de referencia
 
@@ -40,3 +39,14 @@ Licencia: https://www.pexels.com/license/
 - `creator-detail`: https://www.pexels.com/photo/18999177/
 - `team-detail`: https://www.pexels.com/photo/8171209/
 - `workspace`: https://www.pexels.com/photo/2977547/
+
+## Revisión de calidad y producto · octubre 2026
+
+- `demo`: captura de Drivo facilitada por Joaquín para esta landing. Se conserva completa; no se presenta como video generado ni como testimonio.
+- `founder`: Reza Tavakoli, [Pexels 23220998](https://www.pexels.com/photo/man-listening-to-an-answer-on-a-podcast-23220998/), licencia Pexels.
+- `campaign`: fotografía de producto, [fuente Unsplash](https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77), [licencia Unsplash](https://unsplash.com/license). Referencia de composición publicitaria; no indica relación comercial con la marca mostrada.
+- `team-detail`: RDNE Stock project, [Pexels 7414217](https://www.pexels.com/photo/marketing-people-exit-office-7414217/), licencia Pexels.
+- `workspace`: Annie Spratt, [Unsplash QckxruozjRg](https://unsplash.com/photos/QckxruozjRg), licencia Unsplash.
+- Las demás imágenes activas se volvieron a preparar desde sus fuentes en mayor resolución. Versiones AVIF y WebP de 360 px y hasta 1080 px; Drivo conserva su resolución nativa de 739 px.
+
+Los assets de esta revisión usan nombres nuevos (`founder-interview`, `drivo-product`, `product-campaign`, `creator-podcast`, `startup-talk`, `business-story`, `personal-story`, `team-collaboration`, `team-workspace`) para evitar imágenes antiguas retenidas en caché. Corresponden a los créditos anteriores con los mismos roles.

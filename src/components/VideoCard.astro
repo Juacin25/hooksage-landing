@@ -15,7 +15,7 @@ interface Props {
 const {
   tone = "A cámara",
   business = "Tu equipo",
-  poster = "founder",
+  poster = "founder-interview",
   headline = "Una idea que se entiende.",
   lift = false,
   compact = false,
@@ -23,7 +23,7 @@ const {
   eager = false,
   source,
 }: Props = Astro.props;
-const resolvedPoster = referenceMedia[poster] ? poster : "founder";
+const resolvedPoster = referenceMedia[poster] ? poster : "founder-interview";
 const media = referenceMedia[resolvedPoster];
 // TODO: replace reference photography with authorized customer video and its real poster.
 const formHref = Astro.params.rubro
@@ -38,7 +38,7 @@ const formHref = Astro.params.rubro
   ]}
   data-theme={dark ? "dark" : undefined}
 >
-  <div class="media-window">
+  <div class="media-window" data-media-kind={media.kind}>
     {source ? (
       <video
         class="hs-video__media"
@@ -57,14 +57,14 @@ const formHref = Astro.params.rubro
         <source
           data-sample-source
           type="image/avif"
-          srcset={`/media/${resolvedPoster}-360.avif 360w, /media/${resolvedPoster}.avif 720w`}
+          srcset={`/media/${resolvedPoster}-360.avif 360w, /media/${resolvedPoster}.avif ${media.width}w`}
           sizes="(max-width: 650px) 224px, 280px"
         />
         <img
           class="hs-video__media"
           data-sample-photo
           src={`/media/${resolvedPoster}.webp`}
-          srcset={`/media/${resolvedPoster}-360.webp 360w, /media/${resolvedPoster}.webp 720w`}
+          srcset={`/media/${resolvedPoster}-360.webp 360w, /media/${resolvedPoster}.webp ${media.width}w`}
           sizes="(max-width: 650px) 224px, 280px"
           alt={media.alt}
           width={media.width}
@@ -84,7 +84,11 @@ const formHref = Astro.params.rubro
         15 s
       </span>
     </div>
-    {!source && <span class="media-reference">Foto de referencia</span>}
+    {!source && (
+      <span class="media-reference" data-sample-label>
+        {media.label}
+      </span>
+    )}
   </div>
   <figcaption class="media-caption">
     <div>

@@ -67,6 +67,10 @@ import { referenceMedia } from "../data/media";
               data-poster={tone.poster}
               data-alt={referenceMedia[tone.poster].alt}
               data-position={referenceMedia[tone.poster].position}
+              data-width={referenceMedia[tone.poster].width}
+              data-height={referenceMedia[tone.poster].height}
+              data-kind={referenceMedia[tone.poster].kind}
+              data-label={referenceMedia[tone.poster].label}
             >
               <Icon name={tone.icon} size={20} />
               {tone.name}
@@ -110,6 +114,11 @@ import { referenceMedia } from "../data/media";
       const description = document.getElementById("tone-sample-description");
       const badge = preview?.querySelector("[data-sample-badge]");
       const headline = preview?.querySelector("[data-sample-headline]");
+      const window = preview?.querySelector<HTMLElement>(".media-window");
+      const reference = preview?.querySelector("[data-sample-label]");
+      if (window) window.dataset.mediaKind = pill.dataset.kind || "photo";
+      if (reference)
+        reference.textContent = pill.dataset.label || "Foto de referencia";
       const image = preview?.querySelector<HTMLImageElement>(
         "[data-sample-photo]",
       );
@@ -122,12 +131,14 @@ import { referenceMedia } from "../data/media";
       if (headline) headline.textContent = pill.dataset.title || "";
       if (image) {
         image.src = `/media/${pill.dataset.poster}.webp`;
-        image.srcset = `/media/${pill.dataset.poster}-360.webp 360w, /media/${pill.dataset.poster}.webp 720w`;
+        image.srcset = `/media/${pill.dataset.poster}-360.webp 360w, /media/${pill.dataset.poster}.webp ${pill.dataset.width}w`;
         image.alt = pill.dataset.alt || "";
+        image.width = Number(pill.dataset.width);
+        image.height = Number(pill.dataset.height);
         image.style.objectPosition = pill.dataset.position || "center";
       }
       if (source)
-        source.srcset = `/media/${pill.dataset.poster}-360.avif 360w, /media/${pill.dataset.poster}.avif 720w`;
+        source.srcset = `/media/${pill.dataset.poster}-360.avif 360w, /media/${pill.dataset.poster}.avif ${pill.dataset.width}w`;
     }),
   );
 </script>

@@ -154,18 +154,47 @@ for (const pill of doc.querySelectorAll("[data-tone]")) {
     pill.dataset.description,
   );
 }
-ok("All five tone choices update preview, description and aria-pressed");
+const productPill = [...doc.querySelectorAll("[data-tone]")].find(
+  (pill) => pill.dataset.tone === "Demo de producto",
+);
+productPill.click();
+assert.equal(
+  doc.querySelector("[data-tone-preview] .media-window").dataset.mediaKind,
+  "product",
+);
+assert.equal(
+  doc.querySelector("[data-tone-preview] [data-sample-label]").textContent,
+  "Captura de Drivo",
+);
+assert.match(doc.querySelector("[data-tone-preview] img").alt, /Drivo/);
+doc.querySelector('[data-tone="Equipo"]').click();
+assert.equal(
+  doc.querySelector("[data-tone-preview] .media-window").dataset.mediaKind,
+  "photo",
+);
+assert.equal(
+  doc.querySelector("[data-tone-preview] [data-sample-label]").textContent,
+  "Foto de referencia",
+);
+ok(
+  "All five tone choices update preview, descriptions, media kind, labels and aria-pressed",
+);
 const previewPhoto = doc.querySelector(
   "[data-tone-preview] [data-sample-photo]",
 );
 const previewSource = doc.querySelector(
   "[data-tone-preview] [data-sample-source]",
 );
-assert.match(previewPhoto.srcset, /team-detail-360.webp/);
-assert.match(previewSource.srcset, /team-detail-360.avif/);
+assert.match(previewPhoto.srcset, /team-collaboration-360.webp/);
+assert.match(previewSource.srcset, /team-collaboration-360.avif/);
 assert.match(previewPhoto.alt, /referencia/);
 assert.equal(doc.querySelectorAll(".media-reference").length, 9);
-for (const name of ["founder", "demo", "creator", "team"]) {
+for (const name of [
+  "founder-interview",
+  "drivo-product",
+  "creator-podcast",
+  "product-campaign",
+]) {
   for (const extension of ["avif", "webp"]) {
     await fs.access(path.join(dist, `media/${name}.${extension}`));
     await fs.access(path.join(dist, `media/${name}-360.${extension}`));
@@ -191,11 +220,11 @@ assert.equal(new Set(lowerGalleryPhotos).size, 4);
 for (const photo of lowerGalleryPhotos)
   assert.ok(!originalGalleryPhotos.has(photo));
 for (const name of [
-  "startup-detail",
-  "pyme-detail",
-  "creator-detail",
-  "team-detail",
-  "workspace",
+  "startup-talk",
+  "business-story",
+  "personal-story",
+  "team-collaboration",
+  "team-workspace",
 ]) {
   for (const ext of ["avif", "webp"])
     for (const suffix of ["", "-360"])
@@ -211,7 +240,41 @@ ok(
   "Workflow has three editorial steps and the lower gallery uses four different photos",
 );
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
-assert.match(planText, /Plan Base/);
+assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 3);
+for (const [name, price, quota] of [
+  ["Founder", "14,97", 15],
+  ["Pyme", "29,99", 40],
+  ["Marca Personal", "49,99", 100],
+]) {
+  const card = [...doc.querySelectorAll(".pricing-grid .hs-price")].find(
+    (item) => item.querySelector("h3").textContent.trim() === name,
+  );
+  assert.ok(card);
+  assert.ok(
+    card.querySelector(".hs-price__amount").textContent.includes(price),
+  );
+  assert.equal(
+    Number(card.querySelector(".price-quota strong").textContent),
+    quota,
+  );
+  assert.match(card.textContent, /videos exportados por semana/);
+  assert.ok(
+    faq.mainEntity.some((item) =>
+      item.acceptedAnswer.text.includes(
+        `${name}: US$${price} al mes y ${quota} videos exportados por semana`,
+      ),
+    ),
+  );
+}
+assert.doesNotMatch(planText, /Plan Base|próximamente/);
+assert.match(
+  doc.querySelector(".reassurance").textContent,
+  /Primer video gratis al registrarse/,
+);
+assert.doesNotMatch(
+  doc.querySelector(".reassurance").textContent,
+  /Uruguay|Argentina/,
+);
 assert.match(planText, /15 videos exportados por semana/);
 assert.match(planText, /US\$\s*14,97\s*\/ mes/);
 assert.doesNotMatch(

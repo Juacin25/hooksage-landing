@@ -1,61 +1,85 @@
-// Reference photographs, not client endorsements or generated video results.
-// Sources and licenses: public/media/CREDITS.md.
+// Reference photography and a product screenshot supplied by Drivo. No customer endorsements.
 export const referenceMedia: Record<
   string,
-  { alt: string; width: number; height: number; position: string }
+  {
+    alt: string;
+    width: number;
+    height: number;
+    position: string;
+    label: string;
+    kind: "photo" | "product";
+  }
 > = {
-  founder: {
-    width: 720,
-    height: 480,
-    alt: "Una persona grabando contenido a cámara con un celular; foto de referencia.",
-    position: "38% center",
+  "founder-interview": {
+    width: 1080,
+    height: 1620,
+    alt: "Una persona participando de una entrevista con micrófono; foto de referencia.",
+    position: "58% center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  demo: {
-    width: 720,
-    height: 481,
-    alt: "Una persona explicando una presentación en pantalla; foto de referencia.",
-    position: "30% center",
+  "drivo-product": {
+    width: 739,
+    height: 1600,
+    alt: "Captura real de Drivo: ficha de una Ford EcoSport en la plataforma de subastas.",
+    position: "center",
+    label: "Captura de Drivo",
+    kind: "product",
   },
-  creator: {
-    width: 720,
-    height: 1080,
+  "product-campaign": {
+    width: 1080,
+    height: 1575,
+    alt: "Fotografía de producto de una zapatilla sobre fondo amarillo para una referencia de campaña.",
+    position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
+  },
+  "creator-podcast": {
+    width: 1080,
+    height: 1620,
     alt: "Una persona hablando frente a un micrófono; foto de referencia.",
     position: "45% center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  team: {
-    width: 720,
-    height: 480,
-    alt: "Un equipo en una sesión de trabajo y presentación; foto de referencia.",
-    position: "center",
-  },
-  "startup-detail": {
-    width: 720,
-    height: 1080,
+  "startup-talk": {
+    width: 1080,
+    height: 1620,
     alt: "Una cámara grabando una explicación a cámara; foto de referencia.",
     position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  "pyme-detail": {
-    width: 720,
-    height: 1080,
+  "business-story": {
+    width: 1080,
+    height: 1620,
     alt: "Una persona presentando ideas a sus colegas; foto de referencia.",
     position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  "creator-detail": {
-    width: 720,
-    height: 1080,
+  "personal-story": {
+    width: 1080,
+    height: 1620,
     alt: "Una presentación en un espacio de trabajo; foto de referencia.",
     position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  "team-detail": {
-    width: 720,
-    height: 480,
-    alt: "Un equipo compartiendo ideas durante una reunión; foto de referencia.",
+  "team-collaboration": {
+    width: 1080,
+    height: 720,
+    alt: "Un equipo trabajando con computadoras y notas alrededor de una mesa; foto de referencia.",
     position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
-  workspace: {
-    width: 720,
-    height: 480,
-    alt: "Un equipo de trabajo preparando y compartiendo ideas; foto de referencia.",
+  "team-workspace": {
+    width: 1080,
+    height: 720,
+    alt: "Un equipo pequeño trabajando en sus productos con laptops; foto de referencia.",
     position: "center",
+    label: "Foto de referencia",
+    kind: "photo",
   },
 };

@@ -1,4 +1,4 @@
-import { basePlan } from "./plan";
+import { plans } from "./plan";
 export const faqs = [
   {
     question: "¿Para quién está pensado Hooksage?",
@@ -23,7 +23,7 @@ export const faqs = [
   },
   {
     question: "¿Cuándo lo puedo probar y cuánto cuesta?",
-    answer: `Estamos preparando las primeras pruebas y todavía no hay una fecha confirmada. Sumarte a la lista no tiene costo ni requiere tarjeta. Tu primer video será gratis al abrir el acceso. El ${basePlan.name} es de US$${basePlan.monthlyPriceUSD} al mes e incluye ${basePlan.weeklyExports} videos exportados por semana. Vamos a sumar más planes para otros volúmenes.`,
+    answer: `Estamos preparando las primeras pruebas y todavía no hay una fecha confirmada. Sumarte a la lista no tiene costo ni requiere tarjeta. Al registrarte quedás en la lista para tu primer video gratis. ${plans.map((plan) => `${plan.name}: US$${plan.monthlyPriceUSD} al mes y ${plan.weeklyExports} videos exportados por semana`).join(". ")}. Las exportaciones se renuevan cada semana.`,
   },
   {
     question: "¿Qué pasa cuando completo el formulario?",
@@ -46,7 +46,7 @@ export const businesses = [
       "Una función nueva, mostrada en pantalla",
       "Una idea del founder a cámara",
     ],
-    poster: "startup-detail",
+    poster: "startup-talk",
     seo: "Videos para startups",
     sample: "Tu producto, en 15 segundos.",
     metaTitle: "Videos para startups | Hooksage",
@@ -67,7 +67,7 @@ export const businesses = [
       "Una respuesta a una duda frecuente",
       "El proceso detrás de tu trabajo",
     ],
-    poster: "pyme-detail",
+    poster: "business-story",
     seo: "Videos para pymes",
     sample: "Lo que hacés, bien contado.",
     metaTitle: "Videos para pymes | Hooksage",
@@ -88,7 +88,7 @@ export const businesses = [
       "Una pregunta que te hacen tus clientes",
       "Una idea de tu curso o taller",
     ],
-    poster: "creator-detail",
+    poster: "personal-story",
     seo: "Videos para marca personal",
     sample: "Una idea clara. Quince segundos.",
     metaTitle: "Videos para marca personal | Hooksage",
@@ -100,7 +100,7 @@ export const businesses = [
     name: "Equipos de marketing",
     singular: "Equipo de marketing",
     icon: "clock",
-    tone: "Campaña",
+    tone: "Equipo",
     headline: "La estrategia ya está. Falta resolver la edición.",
     description:
       "Para equipos de growth y marketing que publican seguido y no tienen un editor dedicado. Un flujo de edición para sostener el ritmo de contenido.",
@@ -109,7 +109,7 @@ export const businesses = [
       "Una pieza corta de tu campaña",
       "Una respuesta del equipo a cámara",
     ],
-    poster: "team-detail",
+    poster: "team-collaboration",
     seo: "Videos para equipos de marketing",
     sample: "Seguí el ritmo de tu equipo.",
     metaTitle: "Videos para equipos de marketing | Hooksage",
@@ -124,7 +124,7 @@ export const tones = [
     description:
       "Cortes sobre la voz, pausas limpias y subtítulos que acompañan lo que decís.",
     icon: "users",
-    poster: "founder",
+    poster: "founder-interview",
   },
   {
     name: "Demo de producto",
@@ -132,7 +132,7 @@ export const tones = [
     description:
       "El detalle importante en primer plano y zooms que guían la atención.",
     icon: "bulb",
-    poster: "demo",
+    poster: "drivo-product",
   },
   {
     name: "Educativo",
@@ -140,7 +140,7 @@ export const tones = [
     description:
       "Una idea por video, palabras clave destacadas y un cierre concreto.",
     icon: "bulb",
-    poster: "creator",
+    poster: "creator-podcast",
   },
   {
     name: "Campaña",
@@ -148,7 +148,7 @@ export const tones = [
     description:
       "La propuesta al frente, texto legible y una llamada a la acción.",
     icon: "tag",
-    poster: "team",
+    poster: "product-campaign",
   },
   {
     name: "Equipo",
@@ -156,6 +156,6 @@ export const tones = [
     description:
       "Voces reales y una edición que respeta la forma de comunicar de tu equipo.",
     icon: "users",
-    poster: "team-detail",
+    poster: "team-collaboration",
   },
 ];

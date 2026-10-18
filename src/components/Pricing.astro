@@ -1,60 +1,66 @@
 ---
 import Icon from "./Icon.astro";
-import { basePlan } from "../data/plan";
+import { plans } from "../data/plan";
 const features = [
-  `${basePlan.weeklyExports} videos exportados por semana`,
-  "Cortes, zooms y subtítulos para tus videos",
-  "Listos para TikTok, Reels y Shorts",
-  "Cancelá cuando quieras",
+  "Cortes, zooms y subtítulos",
+  "Videos verticales de 15 segundos",
+  "Listos para Reels, TikTok y Shorts",
 ];
 ---
 
 <section class="section pricing" id="precio" aria-labelledby="price-title">
   <div class="container">
     <div class="section-heading centered">
-      <p class="overline eyebrow">Un precio claro</p>
+      <p class="overline eyebrow">Tres formas de seguir el ritmo</p>
       <h2 class="heading-1" id="price-title">
-        Un plan para empezar.
+        Un plan para lo que viene.
       </h2>
-      <p class="body muted">Plan Base. Más planes para equipos próximamente.</p>
-    </div>
-    <div class="hs-card hs-price hs-price--featured">
-      <div class="price-header">
-        <h3 class="hs-price__name">{basePlan.name}</h3>
-        <span class="hs-badge hs-badge--brand">
-          {basePlan.weeklyExports} por semana
-        </span>
-      </div>
-      <div class="hs-price__amount">
-        <span class="price-currency">US$</span>
-        {basePlan.monthlyPriceUSD}
-        <span class="hs-price__period">/ mes</span>
-      </div>
-      <p class="small muted">
-        Precio en dólares. La suscripción es mensual y las exportaciones se
-        renuevan cada semana.
-      </p>
-      <div class="price-divider"></div>
-      <ul class="hs-price__list">
-        {features.map((feature) => (
-          <li>
-            <Icon name="check" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <a
-        class="hs-btn hs-btn--primary"
-        href="#empezar"
-        data-waitlist-cta
-        data-cta-location="pricing"
-      >
-        Quiero probar Hooksage
-        <Icon name="arrow" />
-      </a>
-      <p class="small price-footnote">
-        Sumarte a la lista no activa el plan. Sin pago ni tarjeta.
+      <p class="body muted">
+        La misma edición. Elegí cuántos videos necesitás por semana.
       </p>
     </div>
+    <div class="pricing-grid">
+      {plans.map((plan) => (
+        <article class="hs-card hs-price" aria-label={`Plan ${plan.name}`}>
+          <div class="price-header">
+            <h3 class="hs-price__name">{plan.name}</h3>
+          </div>
+          <p class="small muted price-description">{plan.description}</p>
+          <div class="hs-price__amount">
+            <span class="price-currency">US$</span>
+            {plan.monthlyPriceUSD}
+            <span class="hs-price__period">/ mes</span>
+          </div>
+          <p class="price-quota">
+            <strong>{plan.weeklyExports}</strong>{" "}
+            <span>videos exportados por semana</span>
+          </p>
+          <ul class="hs-price__list">
+            {features.map((feature) => (
+              <li>
+                <Icon name="check" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="small muted">Cancelá cuando quieras.</p>
+          <a
+            class="hs-btn hs-btn--primary"
+            href="#empezar"
+            data-waitlist-cta
+            data-cta-location="pricing"
+          >
+            Quiero probar Hooksage
+            <Icon name="arrow" />
+          </a>
+        </article>
+      ))}
+    </div>
+    <p class="small muted pricing-note">
+      Precios en dólares, con pago mensual. Las exportaciones se renuevan cada
+      semana.
+      <br />
+      Sumarte a la lista no activa un plan. Sin pago ni tarjeta.
+    </p>
   </div>
 </section>

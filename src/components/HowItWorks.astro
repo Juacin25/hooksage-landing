@@ -2,6 +2,8 @@
 import "../styles/workflow.css";
 import Icon from "./Icon.astro";
 import { basePlan } from "../data/plan";
+import { referenceMedia } from "../data/media";
+const workspace = referenceMedia["team-workspace"];
 const steps = [
   {
     title: "Pasá el material como lo grabaste.",
@@ -13,7 +15,7 @@ const steps = [
   },
   {
     title: "Revisá, exportá y publicá.",
-    text: `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan base incluye ${basePlan.weeklyExports} videos exportados por semana.`,
+    text: `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan ${basePlan.name} incluye ${basePlan.weeklyExports} videos exportados por semana.`,
   },
 ];
 ---
@@ -43,15 +45,15 @@ const steps = [
         <picture>
           <source
             type="image/avif"
-            srcset="/media/workspace-360.avif 360w, /media/workspace.avif 720w"
+            srcset={`/media/team-workspace-360.avif 360w, /media/team-workspace.avif ${workspace.width}w`}
             sizes="(max-width: 800px) calc(100vw - 32px), 520px"
           />
           <img
-            src="/media/workspace.webp"
-            srcset="/media/workspace-360.webp 360w, /media/workspace.webp 720w"
+            src="/media/team-workspace.webp"
+            srcset={`/media/team-workspace-360.webp 360w, /media/team-workspace.webp ${workspace.width}w`}
             sizes="(max-width: 800px) calc(100vw - 32px), 520px"
-            width="720"
-            height="480"
+            width={workspace.width}
+            height={workspace.height}
             alt="Un equipo de trabajo compartiendo ideas y preparando contenido."
             loading="lazy"
             decoding="async"

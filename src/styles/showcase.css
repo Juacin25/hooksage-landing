@@ -865,3 +865,15 @@
     max-width: none;
   }
 }
+
+/* Product UI stays fully visible instead of being cropped like a photograph. */
+.media-card .media-window[data-media-kind="product"] {
+  background: #e7edef;
+}
+.media-card .media-window[data-media-kind="product"] img.hs-video__media {
+  object-fit: contain;
+  padding: 36px 4px 28px;
+}
+.media-card:hover .media-window[data-media-kind="product"] img.hs-video__media {
+  transform: none;
+}
