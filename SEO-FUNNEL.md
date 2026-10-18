@@ -4,7 +4,7 @@
 
 ## Promesa
 
-“Más videos. Menos horas editando.” Pasá material sin editar y recibí piezas verticales de 15 segundos con cortes, zooms y subtítulos. El producto está en acceso anticipado: el CTA registra interés y avisa por email; no promete uso inmediato. Primer video gratis al registrarse. Planes con pago mensual: Founder US$14,97 (15 exportaciones por semana), Pyme US$29,99 (40) y Marca Personal US$49,99 (100).
+“Más videos. Menos horas editando.” Pasá material sin editar y recibí piezas verticales de 15 segundos con cortes, zooms y subtítulos. El producto está en acceso anticipado: el CTA registra interés y avisa por email; no promete uso inmediato. Primer video gratis al registrarse. Planes con pago mensual: Founder US$14,97 (15 exportaciones por semana), Pyme US$29,99 (40) y Marca Personal US$49,99 (80).
 
 Las conversaciones de validación informan el enfoque. No se publican nombres, logos ni citas de esas personas como testimonios. Las fotos están identificadas como referencias, sin presentarlas como resultados ni clientes.
 

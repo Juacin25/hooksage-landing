@@ -2,7 +2,7 @@
 
 Landing para startups, pymes, marcas personales y equipos de marketing de Uruguay y Argentina. Hooksage convierte material sin editar en videos cortos con cortes, zooms y subtítulos. Astro genera cinco páginas estáticas; un servidor Node guarda los formularios en SQLite. Se conservan las galerías, fotos de referencia, selector de tonos y diseño del kit de marca.
 
-Los planes tienen facturación mensual en dólares: **Founder US$14,97 / 15 videos por semana**, **Pyme US$29,99 / 40 videos por semana** y **Marca Personal US$49,99 / 100 videos por semana**. El contacto público es **hooksage.app@gmail.com**.
+Los planes tienen facturación mensual en dólares: **Founder US$14,97 / 15 videos por semana**, **Pyme US$29,99 / 40 videos por semana** y **Marca Personal US$49,99 / 80 videos por semana**. El contacto público es **hooksage.app@gmail.com**.
 
 ## Desarrollo local
 

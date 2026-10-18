@@ -246,7 +246,7 @@ assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 3);
 for (const [name, price, quota] of [
   ["Founder", "14,97", 15],
   ["Pyme", "29,99", 40],
-  ["Marca Personal", "49,99", 100],
+  ["Marca Personal", "49,99", 80],
 ]) {
   const card = [...doc.querySelectorAll(".pricing-grid .hs-price")].find(
     (item) => item.querySelector("h3").textContent.trim() === name,

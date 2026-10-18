@@ -17,7 +17,7 @@ export const plans = [
   {
     name: "Marca Personal",
     monthlyPriceUSD: "49,99",
-    weeklyExports: 100,
+    weeklyExports: 80,
     videoSeconds: 15,
     description: "Para compartir lo que sabés, al ritmo que necesitás.",
   },
