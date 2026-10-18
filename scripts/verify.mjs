@@ -67,7 +67,7 @@ function schemaOffer() {
 }
 for (const cta of doc.querySelectorAll("a[data-waitlist-cta]"))
   assert.ok(cta.getAttribute("href").includes("#empezar"));
-assert.equal(doc.querySelectorAll(".sample-player").length, 5);
+assert.equal(doc.querySelectorAll(".sample-player").length, 7);
 assert.ok(doc.querySelector('meta[name="description"]').content.length <= 155);
 assert.equal(
   doc.querySelector('link[rel="canonical"]').href,
@@ -218,11 +218,13 @@ assert.deepEqual(sampleSources, [
   "/videos/talking-head-edited.mp4",
   "/videos/drivo-original.mp4",
   "/videos/drivo-edited.mp4",
+  "/videos/founder-ad-original.mp4",
+  "/videos/founder-ad-edited.mp4",
   "/videos/promo.mp4",
 ]);
 assert.equal(
   new Set(players.map((player) => player.getAttribute("poster"))).size,
-  5,
+  7,
 );
 for (const player of players) {
   assert.equal(player.getAttribute("preload"), "none");
@@ -245,7 +247,7 @@ assert.match(players[1].getAttribute("aria-label"), /Después:/);
 await fs.access(path.join(dist, "videos/talking-head-edited.en.vtt"));
 await fs.access(path.join(dist, "videos/drivo-edited.en.vtt"));
 const cases = [...doc.querySelectorAll("[data-sample-case]")];
-assert.equal(cases.length, 2);
+assert.equal(cases.length, 3);
 assert.equal(cases[0].hidden, false);
 assert.equal(cases[1].hidden, true);
 assert.equal(doc.querySelector("[data-sample-nav]").hidden, false);
@@ -254,18 +256,29 @@ assert.equal(cases[0].hidden, true);
 assert.equal(cases[1].hidden, false);
 assert.match(
   doc.querySelector("[data-sample-status]").textContent,
-  /2 \/ 2.*Drivo/,
+  /2 \/ 3.*Drivo/,
+);
+doc.querySelector("[data-sample-next]").click();
+assert.equal(cases[2].hidden, false);
+assert.match(
+  doc.querySelector("[data-sample-status]").textContent,
+  /3 \/ 3.*Anuncio/,
+);
+assert.equal(
+  doc.querySelector(".sample-case:not([hidden]) source").getAttribute("src"),
+  "/videos/founder-ad-original.mp4",
 );
 doc.querySelector("[data-sample-next]").click();
 assert.equal(cases[0].hidden, false);
 doc.querySelector("[data-sample-prev]").click();
-assert.equal(cases[1].hidden, false);
+assert.equal(cases[2].hidden, false);
 doc
   .querySelector("[data-sample-prev]")
   .dispatchEvent(
     new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
   );
 assert.equal(cases[0].hidden, false);
+await fs.access(path.join(dist, "videos/founder-ad-edited.en.vtt"));
 // Without script execution both before/after pairs remain available, with no dead arrows.
 const basic = new Window({
   settings: {
@@ -279,7 +292,7 @@ assert.equal(
   [...basic.document.querySelectorAll("[data-sample-case]")].filter(
     (panel) => !panel.hidden,
   ).length,
-  2,
+  3,
 );
 assert.equal(basic.document.querySelector("[data-sample-nav]").hidden, true);
 await basic.happyDOM.close();
@@ -699,6 +712,13 @@ const englishWindow = await fixture(
   },
 );
 const en = englishWindow.document;
+assert.equal(en.querySelectorAll("[data-sample-case]").length, 3);
+en.querySelector("[data-sample-next]").click();
+en.querySelector("[data-sample-next]").click();
+assert.match(
+  en.querySelector("[data-sample-status]").textContent,
+  /3 \/ 3.*Talking-head ad/,
+);
 assert.match(
   en.querySelector("#samples-title").textContent,
   /From raw footage/,
