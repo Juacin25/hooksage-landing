@@ -29,7 +29,7 @@ try {
     else {
       const rows = db
         .prepare(
-          "SELECT created_at, business_name, business_type, contact_name, email, whatsapp, city, neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term, consent_version FROM waitlist_entries ORDER BY id",
+          "SELECT country, created_at, business_name, business_type, contact_name, email, whatsapp, city, neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term, consent_version FROM waitlist_entries ORDER BY id",
         )
         .all();
       const headers = db

@@ -1,8 +1,8 @@
 # Hooksage
 
-Landing en español para la lista de espera de Hooksage. Astro genera cinco páginas estáticas; un servidor Node guarda los formularios en SQLite. Se conservan las galerías, fotos de referencia, selector de tonos y diseño del kit de marca.
+Landing para startups, pymes, marcas personales y equipos de marketing de Uruguay y Argentina. Hooksage convierte material sin editar en videos cortos con cortes, zooms y subtítulos. Astro genera cinco páginas estáticas; un servidor Node guarda los formularios en SQLite. Se conservan las galerías, fotos de referencia, selector de tonos y diseño del kit de marca.
 
-El Plan Base incluye **15 videos exportados por semana**, con facturación de **$299 MXN al mes, IVA incluido**. El contacto público es **hooksage.app@gmail.com**.
+El Plan Base incluye **15 videos exportados por semana**, con facturación de **US$14,97 al mes**. El contacto público es **hooksage.app@gmail.com**.
 
 ## Desarrollo local
 
@@ -24,21 +24,21 @@ La landing abre en `http://127.0.0.1:4321/`. Astro redirige `/api` al servidor l
 
 ## Formularios y datos
 
-`POST /api/waitlist` recibe nombre y tipo de negocio, nombre del contacto, correo, WhatsApp, ciudad y barrio/colonia opcional. Guarda también la ruta de entrada, cinco UTMs permitidas, fecha UTC y versión del aviso de uso de datos.
+`POST /api/waitlist` recibe empresa o marca, tipo de equipo, nombre del contacto, correo, país (Uruguay o Argentina), ciudad y WhatsApp opcional con código internacional. Guarda también la ruta de entrada, cinco UTMs permitidas, fecha UTC y versión del aviso de uso de datos.
 
-El servidor vuelve a validar los campos, usa consultas parametrizadas y confirma `201 {ok:true,created:true}` después de escribir en SQLite. Una combinación ya registrada de correo, negocio y ciudad devuelve `200 {ok:true,created:false}` sin sobrescribir el registro. La interfaz no cuenta ese reintento como una nueva conversión. Los errores mantienen los datos escritos para reintentar.
+El servidor vuelve a validar los campos, usa consultas parametrizadas y confirma `201 {ok:true,created:true}` después de escribir en SQLite. Una combinación ya registrada de correo, empresa, ciudad y país devuelve `200 {ok:true,created:false}` sin sobrescribir el registro. La interfaz no cuenta ese reintento como una nueva conversión. Los errores mantienen los datos escritos para reintentar.
 
-Los datos no se pueden listar, descargar ni modificar desde una API pública. El receptor solo acepta JSON desde los orígenes configurados, limita intentos por dirección y rechaza un campo trampa. Esa protección básica no sustituye un servicio especializado contra bots si aparece abuso real.
+Los datos no se pueden listar, descargar ni modificar desde una API pública. El receptor acepta JSON y formularios HTML desde los orígenes configurados, limita intentos por dirección y rechaza un campo trampa. Esa protección básica no sustituye un servicio especializado contra bots si aparece abuso real.
 
 ## Configuración
 
-| Variable del servidor | Uso                                                                                  |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| `DATABASE_PATH`       | Archivo SQLite fuera de `dist/`; en Tenki debe estar dentro del volumen persistente. |
-| `ALLOWED_ORIGINS`     | Orígenes exactos, separados por coma. Obligatorio en producción.                     |
-| `HOST`, `PORT`        | Por defecto `127.0.0.1:8787`; en Tenki se escucha en `0.0.0.0`.                      |
-| `TRUST_PROXY`         | `true` únicamente detrás del proxy de Tenki, para limitar por IP reenviada.          |
-| `NODE_ENV`            | `production` en la instancia pública.                                                |
+| Variable del servidor | Uso                                                                                                        |
+| --------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `DATABASE_PATH`       | Archivo SQLite fuera de `dist/`; en Tenki debe estar dentro del volumen persistente.                       |
+| `ALLOWED_ORIGINS`     | Orígenes exactos, separados por coma. Obligatorio en producción.                                           |
+| `HOST`, `PORT`        | Por defecto `127.0.0.1:8787`; en producción se mantiene en loopback detrás de Cloudflare Tunnel.           |
+| `TRUST_PROXY`         | `true` únicamente detrás de Cloudflare Tunnel con el preview deshabilitado, para limitar por IP reenviada. |
+| `NODE_ENV`            | `production` en la instancia pública.                                                                      |
 
 Hay una plantilla sin credenciales en `.server.env.example`. En Tenki, `hooksage.service` ejecuta el servidor con el archivo privado `.service.env`. La unidad reinicia el proceso si se detiene y se activa al arrancar la VM.
 
@@ -71,7 +71,7 @@ La verificación de interfaz usa Happy DOM con solicitudes simuladas. La del bac
 
 ## Campañas
 
-[SEO-FUNNEL.md](SEO-FUNNEL.md) contiene las hipótesis de anuncios y palabras clave para Instagram, Facebook y TikTok. La atribución se conserva treinta minutos durante la navegación. Los eventos no incluyen valores personales del formulario; `generate_lead` se emite solo al confirmar un registro nuevo. Las cuentas publicitarias y sus píxeles aún no están conectados.
+[SEO-FUNNEL.md](SEO-FUNNEL.md) contiene las hipótesis de anuncios y palabras clave para Instagram, Facebook y TikTok. La atribución se conserva treinta minutos durante la navegación. Los eventos no incluyen valores personales del formulario; `generate_lead` se emite solo al confirmar un registro nuevo. Meta Pixel mide PageView y Lead confirmado; los demás eventos quedan disponibles para integraciones. No se publican anuncios desde este repositorio.
 
 ## Estructura
 

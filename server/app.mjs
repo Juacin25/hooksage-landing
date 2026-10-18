@@ -83,8 +83,6 @@ export function createApp({
           if (new Set(keys).size !== keys.length)
             throw new Error("duplicate_fields");
           const input = Object.fromEntries(params);
-          const digits = String(input.whatsapp || "").replace(/\D/g, "");
-          input.whatsapp = digits.length === 10 ? `+52${digits}` : "";
           input.attribution = { landing_path: input.landing_path || "/" };
           resolve(input);
         } catch {
@@ -105,6 +103,18 @@ export function createApp({
       );
     } catch {
       return json(response, 400, { ok: false });
+    }
+    // Retire the previous niche while preserving campaign attribution from old links.
+    if (
+      ["GET", "HEAD"].includes(request.method) &&
+      /^\/videos-para-(taquerias|hamburgueserias|heladerias|sushi)\/?$/.test(
+        pathname,
+      )
+    ) {
+      response.writeHead(301, {
+        Location: "/" + new URL(request.url, "http://localhost").search,
+      });
+      return response.end();
     }
     if (pathname === "/healthz" && request.method === "GET") {
       try {

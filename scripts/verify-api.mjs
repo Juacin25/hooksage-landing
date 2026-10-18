@@ -5,6 +5,10 @@ import path from "node:path";
 import os from "node:os";
 import { openDatabase, backupDatabase } from "../server/database.mjs";
 import { createApp } from "../server/app.mjs";
+import { DatabaseSync } from "node:sqlite";
+import { createHash } from "node:crypto";
+import { saveEntry } from "../server/database.mjs";
+import { validateEntry } from "../server/validation.mjs";
 import { createNotifier } from "../server/notify.mjs";
 
 const origin = "http://127.0.0.1:4321";
@@ -421,9 +425,222 @@ test("Native forms preserve validation, origin checks, limits and honest failure
       body: encode({}),
     });
     assert.equal(response.status, 429);
-    assert.match(await response.text(), /Espera unos minutos/);
+    assert.match(await response.text(), /Esperá unos minutos/);
     assert.ok(response.headers.get("retry-after"));
   } finally {
     await limited.close();
+  }
+});
+
+test("Schema v1 migrates losslessly with a private snapshot and supports both countries and old tabs", async () => {
+  const folder = await fs.mkdtemp(
+    path.join(os.tmpdir(), "hooksage-migration-"),
+  );
+  const filename = path.join(folder, "waitlist.sqlite");
+  let db;
+  try {
+    db = new DatabaseSync(filename);
+    db.exec(
+      await fs.readFile(
+        new URL("./fixtures/waitlist-v1.sql", import.meta.url),
+        "utf8",
+      ),
+    );
+    const legacy = validateEntry(entry);
+    // The historic fingerprint must keep deduplicating already submitted browser tabs.
+    const fingerprint = createHash("sha256")
+      .update(
+        [
+          legacy.email,
+          legacy.businessName.toLocaleLowerCase("es"),
+          legacy.city.toLocaleLowerCase("es"),
+        ].join("\0"),
+      )
+      .digest("hex");
+    db.prepare(
+      "INSERT INTO waitlist_entries (fingerprint, business_name, business_type, contact_name, email, whatsapp, city, neighborhood, landing_path, utm_source) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    ).run(
+      fingerprint,
+      legacy.businessName,
+      legacy.businessType,
+      legacy.contactName,
+      legacy.email,
+      legacy.whatsapp,
+      legacy.city,
+      legacy.neighborhood,
+      legacy.attribution.landing_path,
+      legacy.attribution.utm_source,
+    );
+    const original = db.prepare("SELECT * FROM waitlist_entries").get();
+    db.close();
+    db = openDatabase(filename);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 2);
+    const migrated = db.prepare("SELECT * FROM waitlist_entries").get();
+    const { country, ...preserved } = migrated;
+    assert.equal(country, "MX");
+    assert.deepEqual(preserved, { ...original });
+    assert.equal(saveEntry(db, legacy).created, false);
+    const snapshots = (await fs.readdir(folder)).filter((name) =>
+      name.includes("before-v2"),
+    );
+    assert.equal(snapshots.length, 1);
+    const snapshot = path.join(folder, snapshots[0]);
+    assert.equal((await fs.stat(snapshot)).mode & 0o777, 0o600);
+    const copy = new DatabaseSync(snapshot, { readOnly: true });
+    assert.deepEqual(
+      copy.prepare("SELECT * FROM waitlist_entries").get(),
+      original,
+    );
+    assert.equal(copy.prepare("PRAGMA user_version").get().user_version, 1);
+    copy.close();
+    for (const [country, whatsapp, businessType] of [
+      ["UY", "", "Startup"],
+      ["AR", "+54 9 11 1234 5678", "Marca personal"],
+    ]) {
+      assert.equal(
+        saveEntry(
+          db,
+          validateEntry({ ...entry, country, whatsapp, businessType }),
+        ).created,
+        true,
+      );
+    }
+    db.close();
+    db = openDatabase(filename);
+    assert.equal(
+      db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      3,
+    );
+    assert.equal(
+      (await fs.readdir(folder)).filter((name) => name.includes("before-v2"))
+        .length,
+      1,
+    );
+    assert.equal(
+      db.prepare("PRAGMA integrity_check").get().integrity_check,
+      "ok",
+    );
+  } finally {
+    db?.close();
+    await fs.rm(folder, { recursive: true, force: true });
+  }
+});
+
+test("Uruguay and Argentina accept optional phones in JSON and native forms; invalid country and phone combinations are rejected", async () => {
+  const f = await fixture();
+  try {
+    for (const country of ["UY", "AR"]) {
+      for (const native of [false, true]) {
+        const input = {
+          ...entry,
+          country,
+          businessName: `QA ${country} ${native}`,
+          businessType: "Startup",
+          whatsapp: "",
+        };
+        const response = native
+          ? await f.post(undefined, {
+              headers: {
+                Origin: origin,
+                "Content-Type": "application/x-www-form-urlencoded",
+                Accept: "text/html",
+              },
+              body: new URLSearchParams({
+                ...input,
+                attribution: "",
+                landing_path: "/",
+              }).toString(),
+            })
+          : await f.post(input);
+        assert.equal(response.status, 201);
+        const row = f.db
+          .prepare(
+            "SELECT country, whatsapp, consent_version FROM waitlist_entries WHERE business_name = ?",
+          )
+          .get(input.businessName);
+        assert.deepEqual(
+          { ...row },
+          { country, whatsapp: "", consent_version: "waitlist-v2" },
+        );
+      }
+    }
+    for (const [country, phone, normalized] of [
+      ["UY", "+598 99 123 456", "+59899123456"],
+      ["AR", "+54 9 11 1234 5678", "+5491112345678"],
+    ]) {
+      assert.equal(
+        (
+          await f.post({
+            ...entry,
+            country,
+            businessName: `QA phone ${country}`,
+            businessType: "Pyme",
+            whatsapp: phone,
+          })
+        ).status,
+        201,
+      );
+      assert.equal(
+        f.db
+          .prepare(
+            "SELECT whatsapp FROM waitlist_entries WHERE business_name = ?",
+          )
+          .get(`QA phone ${country}`).whatsapp,
+        normalized,
+      );
+    }
+    for (const patch of [
+      { country: "" },
+      { country: "US" },
+      { country: "UY", whatsapp: "+5491112345678" },
+      { country: "AR", whatsapp: "+59899123456" },
+      { country: "UY", whatsapp: "99123456" },
+    ]) {
+      const invalid = { ...entry, businessType: "Startup", ...patch };
+      assert.equal((await f.post(invalid)).status, 400);
+      assert.equal(
+        (
+          await f.post(undefined, {
+            headers: {
+              Origin: origin,
+              "Content-Type": "application/x-www-form-urlencoded",
+              Accept: "text/html",
+            },
+            body: new URLSearchParams({
+              ...invalid,
+              attribution: "",
+            }).toString(),
+          })
+        ).status,
+        400,
+      );
+    }
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      6,
+    );
+  } finally {
+    await f.close();
+  }
+});
+
+test("Old niche URLs redirect to the new landing and retain campaign parameters", async () => {
+  const f = await fixture();
+  try {
+    for (const slug of [
+      "taquerias",
+      "hamburgueserias",
+      "heladerias",
+      "sushi",
+    ]) {
+      const response = await fetch(
+        `${f.url}/videos-para-${slug}/?utm_source=instagram`,
+        { redirect: "manual" },
+      );
+      assert.equal(response.status, 301);
+      assert.equal(response.headers.get("location"), "/?utm_source=instagram");
+    }
+  } finally {
+    await f.close();
   }
 });

@@ -12,19 +12,19 @@ import { businesses } from "../data/content";
   <div class="container">
     <div class="section-heading section-heading--row">
       <div>
-        <p class="overline eyebrow">Explora por negocio</p>
+        <p class="overline eyebrow">Para quién es</p>
         <h2 class="heading-1" id="examples-title">
-          Tu mejor contenido
+          Un equipo chico.
           <br />
-          ya está en tu cocina.
+          Mucho para contar.
         </h2>
       </div>
       <p class="body muted">
-        Videos para restaurantes que empiezan con lo que haces todos los días.
-        Mira qué puedes grabar.
+        Si ya tenés qué decir, la edición no debería frenar lo que publicás.
+        Estos son algunos contenidos con los que podés empezar.
       </p>
     </div>
-    <nav class="business-rail" aria-label="Explorar ideas por tipo de negocio">
+    <nav class="business-rail" aria-label="Explorar ideas por tipo de equipo">
       {businesses.map((business) => (
         <a href={`#ejemplo-${business.slug}`} class="hs-btn hs-btn--secondary">
           <Icon name={business.icon} size={20} />
@@ -49,7 +49,7 @@ import { businesses } from "../data/content";
                 <Icon name="arrow" size={20} />
               </a>
             </h3>
-            <p class="small muted">Tres ideas para empezar:</p>
+            <p class="small muted">Material con el que podés empezar:</p>
             <ul class="small">
               {business.ideas.map((idea) => (
                 <li>
@@ -62,7 +62,7 @@ import { businesses } from "../data/content";
               class="text-link small example-more"
               href={`/videos-para-${business.slug}/`}
             >
-              Ver ideas para mi negocio
+              Ver ideas para mi equipo
               <Icon name="arrow" size={16} />
             </a>
           </div>
@@ -70,7 +70,8 @@ import { businesses } from "../data/content";
       ))}
     </div>
     <p class="small muted examples-note">
-      Fotografías de referencia. Los videos de restaurantes se sumarán aquí.
+      Fotografías de referencia. No son videos editados por Hooksage ni
+      testimonios de clientes.
     </p>
   </div>
 </section>

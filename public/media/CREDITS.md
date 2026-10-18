@@ -24,3 +24,19 @@ The user requested distinct photos for the lower business gallery and a new visu
 | icecream-detail | Adriel Macedo | https://www.pexels.com/photo/three-scoops-of-yellow-ice-cream-in-a-glass-cup-15766466/ |
 | sushi-detail | Airam Dato-on | https://www.pexels.com/photo/delicious-sushi-nigiri-platter-close-up-33712134/ |
 | kitchen | Emil Lazarian | https://www.pexels.com/photo/chef-cooking-in-a-kitchen-5251019/ |
+
+
+## Startups y pymes · fotografías de referencia
+
+Fotografías ilustrativas. No representan clientes, testimonios ni videos editados por Hooksage.
+Licencia: https://www.pexels.com/license/
+
+- `founder`: https://www.pexels.com/photo/8360444/
+- `demo`: https://www.pexels.com/photo/6340644/
+- `creator`: https://www.pexels.com/photo/7598561/
+- `team`: https://www.pexels.com/photo/9301152/
+- `startup-detail`: https://www.pexels.com/photo/7230911/
+- `pyme-detail`: https://www.pexels.com/photo/9034869/
+- `creator-detail`: https://www.pexels.com/photo/18999177/
+- `team-detail`: https://www.pexels.com/photo/8171209/
+- `workspace`: https://www.pexels.com/photo/2977547/

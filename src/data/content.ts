@@ -1,160 +1,161 @@
 import { basePlan } from "./plan";
 export const faqs = [
   {
-    question: "¿Qué es Hooksage y para qué restaurantes sirve?",
+    question: "¿Para quién está pensado Hooksage?",
     answer:
-      "Hooksage es una plataforma de videos para restaurantes. Está pensada para taquerías, hamburgueserías, heladerías y negocios de sushi de la Ciudad de México que quieren crear contenido para redes sociales con lo que graban en su celular.",
+      "Para startups y empresas chicas de Uruguay y Argentina que ya graban contenido, pero no tienen un editor full time. También para founders, equipos de marketing y personas con marca personal que venden servicios, cursos o infoproductos.",
   },
   {
-    question: "¿Necesito saber editar o comprar equipo?",
+    question: "¿Qué hace con el material que le paso?",
     answer:
-      "No. Graba tu comida, la preparación o lo que pasa en tu local con tu celular. El editor de video con IA de Hooksage convertirá esos clips en un video vertical de 15 segundos; tú elegirás el tono.",
+      "Estamos desarrollando un flujo que toma tu video sin editar y lo convierte en una pieza vertical de 15 segundos. El foco está en elegir los cortes, ajustar el ritmo, hacer zooms con criterio y colocar subtítulos legibles y bien sincronizados.",
   },
   {
-    question: "¿Puedo usar los videos en Instagram Reels y TikTok?",
+    question:
+      "¿En qué se diferencia de editar con una herramienta de IA genérica?",
     answer:
-      "Sí. Los videos para restaurantes tendrán formato vertical 9:16, pensado para Instagram Reels, TikTok y YouTube Shorts. El material será el de tu negocio; las fotos de esta landing son referencias visuales.",
+      "El objetivo es resolver la edición de principio a fin, con decisiones pensadas para video corto. Queremos que puedas dedicarte al mensaje y recibir una pieza coherente, sin tener que armar instrucciones y corregir cada corte por separado. Esa calidad es lo que vamos a validar en las primeras pruebas.",
+  },
+  {
+    question: "¿Para qué canales van a servir los videos?",
+    answer:
+      "El formato de salida será vertical 9:16 y de 15 segundos, pensado para Instagram Reels, TikTok y YouTube Shorts. Podés usarlo también en otros canales que admitan ese formato. Publicar sigue estando en tus manos; no estamos prometiendo publicación automática.",
+  },
+  {
+    question: "¿Cuándo lo puedo probar y cuánto cuesta?",
+    answer: `Estamos preparando las primeras pruebas y todavía no hay una fecha confirmada. Sumarte a la lista no tiene costo ni requiere tarjeta. Tu primer video será gratis al abrir el acceso. El ${basePlan.name} es de US$${basePlan.monthlyPriceUSD} al mes e incluye ${basePlan.weeklyExports} videos exportados por semana. Vamos a sumar más planes para otros volúmenes.`,
   },
   {
     question: "¿Qué pasa cuando completo el formulario?",
     answer:
-      "Te apuntas a la lista de espera. Guardaremos los datos de tu negocio y te avisaremos por correo cuando puedas probar Hooksage. No necesitas enviar clips todavía y no se crea una suscripción de pago.",
-  },
-  {
-    question: "¿Cuándo podré probarlo y cuánto costará?",
-    answer: `Estamos preparando el lanzamiento y todavía no hay una fecha confirmada. Apuntarte es gratis y tu primer video también será gratis al abrir el acceso. El ${basePlan.name} está previsto en $${basePlan.monthlyPriceMXN} MXN al mes, IVA incluido, e incluye ${basePlan.weeklyExports} videos exportados por semana; no necesitas tarjeta para estar en la lista.`,
-  },
-  {
-    question: "¿Qué datos tengo que dejar para entrar en la lista?",
-    answer:
-      "Nombre y tipo de negocio, nombre del contacto, correo, WhatsApp mexicano y ciudad. El barrio o colonia es opcional. Usaremos esos datos para avisarte del acceso a Hooksage.",
+      "Guardamos tus datos y te avisamos por email cuando puedas probar Hooksage. No hace falta que subas videos ahora y no se activa ninguna suscripción. WhatsApp es opcional; podés dejarnos tu número con código de país si preferís que también te contactemos por ahí.",
   },
 ];
 export const businesses = [
   {
-    slug: "taquerias",
-    metaTitle: "Videos para taquerías en CDMX | Hooksage",
-    metaDescription:
-      "Del trompo a tus redes: convierte los clips de tu taquería en Reels y TikToks. Entra en la lista de Hooksage y te avisamos cuando puedas probarlo.",
-    name: "Taquerías",
-    singular: "Taquería",
-    icon: "flame",
-    tone: "Antojo",
-    headline: "Ese taco merece un video.",
+    slug: "startups",
+    name: "Startups",
+    singular: "Startup",
+    icon: "bulb",
+    tone: "A cámara",
+    headline: "Explicá lo que estás construyendo.",
     description:
-      "El marketing para taquerías empieza con lo que ya tienes frente a ti: el trompo, la salsa y la fila de la noche.",
+      "Una demo, una novedad o la historia detrás del producto. Transformá el material de tu equipo en videos cortos sin sumar un editor full time.",
     ideas: [
-      "El trompo girando de cerca",
-      "La salsa cayendo sobre el taco",
-      "La fila de la noche",
+      "El problema que resuelve tu producto",
+      "Una función nueva, mostrada en pantalla",
+      "Una idea del founder a cámara",
     ],
-    poster: "tacos-detail",
-    seo: "Videos para taquerías",
-    sample: "Del trompo a tu feed.",
+    poster: "startup-detail",
+    seo: "Videos para startups",
+    sample: "Tu producto, en 15 segundos.",
+    metaTitle: "Videos para startups | Hooksage",
+    metaDescription:
+      "Edición de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
   },
   {
-    slug: "hamburgueserias",
-    metaTitle: "Reels y videos para hamburgueserías | Hooksage",
-    metaDescription:
-      "Muestra la plancha, el queso y tu hamburguesa especial en videos cortos. Registra tu negocio en la lista de Hooksage para probarlo cuando abra el acceso.",
-    name: "Hamburgueserías",
-    singular: "Hamburguesería",
-    icon: "burger",
-    tone: "Detrás de la barra",
-    headline: "Que el queso haga el trabajo.",
+    slug: "pymes",
+    name: "Pymes",
+    singular: "Pyme",
+    icon: "users",
+    tone: "Producto",
+    headline: "Mostrá lo que hacés, sin pasar horas editando.",
     description:
-      "Los videos para hamburgueserías muestran el queso derritiéndose, la plancha y el primer corte para despertar el antojo.",
+      "Para empresas chicas que ya graban su trabajo y necesitan publicar con más constancia. Tu producto, tu servicio y tu equipo tienen algo para contar.",
     ideas: [
-      "El queso derritiéndose en la plancha",
-      "El primer corte de la hamburguesa",
-      "Cómo armas la especial de la casa",
+      "Cómo funciona tu producto o servicio",
+      "Una respuesta a una duda frecuente",
+      "El proceso detrás de tu trabajo",
     ],
-    poster: "burger-detail",
-    seo: "Videos para hamburgueserías",
-    sample: "Recién salida de la plancha.",
+    poster: "pyme-detail",
+    seo: "Videos para pymes",
+    sample: "Lo que hacés, bien contado.",
+    metaTitle: "Videos para pymes | Hooksage",
+    metaDescription:
+      "Edición de videos cortos para pymes. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
   },
   {
-    slug: "heladerias",
-    metaTitle: "Videos para heladerías e Instagram Reels | Hooksage",
-    metaDescription:
-      "Comparte los sabores y la preparación de tus helados con videos de tu celular. Súmate a la lista y recibe el aviso para probar Hooksage en la CDMX.",
-    name: "Heladerías",
-    singular: "Heladería",
-    icon: "icecream",
-    tone: "Promo",
-    headline: "Un antojo bien servido.",
+    slug: "marca-personal",
+    name: "Marca personal",
+    singular: "Marca personal",
+    icon: "users",
+    tone: "Educativo",
+    headline: "Tu experiencia merece salir del borrador.",
     description:
-      "Los videos para heladerías enseñan los sabores, los toppings y cómo sirves cada cono. Tú grabas y Hooksage lo deja listo para publicar.",
+      "Si vendés cursos, servicios o infoproductos, la edición no debería frenar tus ideas. Convertí explicaciones y contenido educativo en piezas cortas para tus redes.",
     ideas: [
-      "Una bola de helado recién servida",
-      "Los toppings cayendo sobre el cono",
-      "Los sabores de la semana",
+      "Un consejo concreto de tu especialidad",
+      "Una pregunta que te hacen tus clientes",
+      "Una idea de tu curso o taller",
     ],
-    poster: "icecream-detail",
-    seo: "Videos para heladerías",
-    sample: "Una cucharada de felicidad.",
+    poster: "creator-detail",
+    seo: "Videos para marca personal",
+    sample: "Una idea clara. Quince segundos.",
+    metaTitle: "Videos para marca personal | Hooksage",
+    metaDescription:
+      "Edición de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
   },
   {
-    slug: "sushi",
-    metaTitle: "Videos para restaurantes de sushi en CDMX | Hooksage",
-    metaDescription:
-      "Del corte del rollo al pedido terminado: contenido de tu sushi para TikTok y Reels. Deja tus datos y te avisamos cuando puedas probar Hooksage.",
-    name: "Sushi",
-    singular: "Sushi",
-    icon: "fish",
-    tone: "Nocturno",
-    headline: "Del primer corte al primer pedido.",
+    slug: "equipos-de-marketing",
+    name: "Equipos de marketing",
+    singular: "Equipo de marketing",
+    icon: "clock",
+    tone: "Campaña",
+    headline: "La estrategia ya está. Falta resolver la edición.",
     description:
-      "Los videos para negocios de sushi acercan a tus clientes al corte del rollo, la preparación y la presentación de cada pedido.",
+      "Para equipos de growth y marketing que publican seguido y no tienen un editor dedicado. Un flujo de edición para sostener el ritmo de contenido.",
     ideas: [
-      "El corte de un rollo de cerca",
-      "La salsa sobre el sushi recién hecho",
-      "El pedido completo antes de salir",
+      "Una novedad para tus distintos canales",
+      "Una pieza corta de tu campaña",
+      "Una respuesta del equipo a cámara",
     ],
-    poster: "sushi-detail",
-    seo: "Videos para negocios de sushi",
-    sample: "Tu próximo rollo favorito.",
+    poster: "team-detail",
+    seo: "Videos para equipos de marketing",
+    sample: "Seguí el ritmo de tu equipo.",
+    metaTitle: "Videos para equipos de marketing | Hooksage",
+    metaDescription:
+      "Edición de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
   },
 ];
 export const tones = [
   {
-    name: "Antojo",
-    title: "Que se les haga agua la boca.",
+    name: "A cámara",
+    title: "Una idea que se entiende.",
     description:
-      "Planos cerrados, detalles de tu comida y un ritmo que despierta el antojo.",
-    icon: "flame",
-    poster: "tacos",
-  },
-  {
-    name: "Promo",
-    title: "Tu especial de hoy, en su feed.",
-    description:
-      "Tu oferta al frente, texto claro y un cierre que invita a pedir.",
-    icon: "tag",
-    poster: "icecream",
-  },
-  {
-    name: "Detrás de la barra",
-    title: "Así se hace en tu cocina.",
-    description:
-      "El proceso, las manos y el cuidado que hay detrás de cada plato.",
-    icon: "chef",
-    poster: "burger",
-  },
-  {
-    name: "Familiar",
-    title: "Aquí hay lugar para todos.",
-    description:
-      "Tu mesa, tus platillos para compartir y el ambiente de tu local.",
+      "Cortes sobre la voz, pausas limpias y subtítulos que acompañan lo que decís.",
     icon: "users",
-    poster: "tacos",
+    poster: "founder",
   },
   {
-    name: "Nocturno",
-    title: "La noche también se antoja.",
+    name: "Demo de producto",
+    title: "Mostrá lo que hace tu producto.",
     description:
-      "El ambiente de la noche, tus especiales y un ritmo con más energía.",
-    icon: "moon",
-    poster: "sushi",
+      "El detalle importante en primer plano y zooms que guían la atención.",
+    icon: "bulb",
+    poster: "demo",
+  },
+  {
+    name: "Educativo",
+    title: "De una explicación a una pieza corta.",
+    description:
+      "Una idea por video, palabras clave destacadas y un cierre concreto.",
+    icon: "bulb",
+    poster: "creator",
+  },
+  {
+    name: "Campaña",
+    title: "Tu mensaje, con un ritmo claro.",
+    description:
+      "La propuesta al frente, texto legible y una llamada a la acción.",
+    icon: "tag",
+    poster: "team",
+  },
+  {
+    name: "Equipo",
+    title: "Las personas detrás de tu empresa.",
+    description:
+      "Voces reales y una edición que respeta la forma de comunicar de tu equipo.",
+    icon: "users",
+    poster: "team-detail",
   },
 ];

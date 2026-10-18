@@ -4,16 +4,16 @@ import Icon from "./Icon.astro";
 import { basePlan } from "../data/plan";
 const steps = [
   {
-    title: "Graba lo que ya haces.",
-    text: "La plancha, la salsa cayendo, un pedido que sale. Te damos ideas de qué grabar; tú haces las tomas con tu celular.",
+    title: "Pasá el material como lo grabaste.",
+    text: "Una explicación a cámara, una demo o clips de tu equipo. Partí de tus videos sin cortar ni preparar una línea de tiempo.",
   },
   {
-    title: "Elige cómo contarlo.",
-    text: "Sube tus clips y elige un tono: antojo, promo o detrás de la barra. Hooksage se encarga del montaje y el ritmo.",
+    title: "Definí qué querés contar.",
+    text: "Indicá el mensaje y el estilo. Hooksage se ocupará de los cortes, los zooms y los subtítulos, con foco en que la pieza se entienda.",
   },
   {
-    title: "Exporta y publícalo.",
-    text: `Recibe tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan base incluye ${basePlan.weeklyExports} videos exportados por semana.`,
+    title: "Revisá, exportá y publicá.",
+    text: `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan base incluye ${basePlan.weeklyExports} videos exportados por semana.`,
   },
 ];
 ---
@@ -29,13 +29,13 @@ const steps = [
       <div>
         <p class="overline eyebrow">Cómo funcionará</p>
         <h2 id="how-title">
-          De lo que grabas
-          <br />a lo que publicas.
+          De lo que grabás
+          <br />a lo que publicás.
         </h2>
       </div>
       <p class="body muted">
-        El contenido ya está en tu cocina. Estamos creando una forma más
-        sencilla de llevarlo a tus redes.
+        Un flujo para founders y equipos chicos: del material en crudo a una
+        pieza corta para tus canales.
       </p>
     </div>
     <div class="workflow-body">
@@ -43,22 +43,24 @@ const steps = [
         <picture>
           <source
             type="image/avif"
-            srcset="/media/kitchen-360.avif 360w, /media/kitchen.avif 720w"
+            srcset="/media/workspace-360.avif 360w, /media/workspace.avif 720w"
             sizes="(max-width: 800px) calc(100vw - 32px), 520px"
           />
           <img
-            src="/media/kitchen.webp"
-            srcset="/media/kitchen-360.webp 360w, /media/kitchen.webp 720w"
+            src="/media/workspace.webp"
+            srcset="/media/workspace-360.webp 360w, /media/workspace.webp 720w"
             sizes="(max-width: 800px) calc(100vw - 32px), 520px"
             width="720"
             height="480"
-            alt="Hamburguesas en una parrilla y cocineros preparando pedidos al fondo."
+            alt="Un equipo de trabajo compartiendo ideas y preparando contenido."
             loading="lazy"
             decoding="async"
           />
         </picture>
         <figcaption>
-          <span>La preparación también se cuenta.</span>
+          <span>
+            Tu equipo pone las ideas. La herramienta resuelve la edición.
+          </span>
           <span>Foto de referencia</span>
         </figcaption>
       </figure>
@@ -85,7 +87,7 @@ const steps = [
         data-waitlist-cta
         data-cta-location="workflow"
       >
-        Unirme a la lista <Icon name="arrow" />
+        Quiero probar Hooksage <Icon name="arrow" />
       </a>
       <p>Te avisamos cuando puedas probarlo.</p>
     </div>

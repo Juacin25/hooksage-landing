@@ -13,16 +13,16 @@ import { referenceMedia } from "../data/media";
   <div class="container">
     <div class="section-heading section-heading--row">
       <div>
-        <p class="overline eyebrow">Un negocio. Muchas formas de contarlo.</p>
+        <p class="overline eyebrow">La edición también comunica.</p>
         <h2 class="heading-1" id="tone-title">
-          Tú eliges el tono.
+          Que se entienda.
           <br />
-          Nosotros hacemos el resto.
+          Que tenga ritmo.
         </h2>
       </div>
       <p class="body muted">
-        Para ese taco que se antoja, la promo del día o lo que pasa detrás de la
-        barra.
+        Subtítulos donde se leen bien. Zooms cuando suman. Cortes que acompañan
+        tu mensaje.
       </p>
     </div>
     <div class="tone-studio">
@@ -34,8 +34,8 @@ import { referenceMedia } from "../data/media";
           <span class="small muted">9:16 / 15 s</span>
         </div>
         <VideoCard
-          tone="Antojo"
-          business="Tu restaurante"
+          tone="A cámara"
+          business="Tu equipo"
           headline={tones[0].title}
         />
         <div class="studio-export small">
@@ -45,15 +45,16 @@ import { referenceMedia } from "../data/media";
         </div>
       </div>
       <div class="tone-controls">
-        <span class="overline eyebrow">Dale tu estilo</span>
-        <h3 class="heading-2">¿Qué quieres contar hoy?</h3>
+        <span class="overline eyebrow">Una pieza para cada mensaje</span>
+        <h3 class="heading-2">¿Qué querés contar?</h3>
         <p class="body muted">
-          Elige un tono y explora cómo se vería tu próxima publicación.
+          Explorá la intención de cada formato. La edición se adaptará al
+          contenido que nos pases.
         </p>
         <div
           class="tone-pills"
           role="group"
-          aria-label="Elige el tono del video"
+          aria-label="Elegí el formato del video"
         >
           {tones.map((tone, index) => (
             <button
@@ -86,12 +87,12 @@ import { referenceMedia } from "../data/media";
           data-waitlist-cta
           data-cta-location="tones"
         >
-          Unirme a la lista
+          Quiero probar Hooksage
           <Icon name="arrow" />
         </a>
         <p class="small muted tone-reference-note">
-          La foto muestra una referencia visual. El video final lleva el
-          material de tu negocio.
+          Esta es una referencia visual del formato. Vamos a validar la calidad
+          de edición con material real en las primeras pruebas.
         </p>
       </div>
     </div>

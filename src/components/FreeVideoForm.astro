@@ -8,13 +8,13 @@ import { formEndpoint, contactUrl } from "../lib/config";
     <div class="form-intro">
       <span class="hs-badge hs-badge--accent">Primer video gratis</span>
       <h2 class="heading-1" id="form-title">
-        Tu comida ya está buena.
+        El próximo video de tu equipo
         <br />
-        <span>Ahora que la vean.</span>
+        <span>puede salir de acá.</span>
       </h2>
       <p class="body-l muted">
-        Cuéntanos de tu negocio. Te avisamos por correo cuando puedas probar
-        Hooksage.
+        Contanos qué estás construyendo. Te avisamos por email cuando puedas
+        probar Hooksage.
       </p>
       <ul class="form-benefits body">
         <li>
@@ -23,7 +23,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         </li>
         <li>
           <Icon name="check" />
-          Con lo que grabas en tu celular
+          Con el material que ya tenés
         </li>
         <li>
           <Icon name="check" />
@@ -39,9 +39,9 @@ import { formEndpoint, contactUrl } from "../lib/config";
           loading="lazy"
         />
         <p class="small muted">
-          Tú pones la comida.
+          Vos ponés el contenido.
           <br />
-          <strong>Nosotros, el video.</strong>
+          <strong>Nosotros resolvemos la edición.</strong>
         </p>
       </div>
     </div>
@@ -66,11 +66,11 @@ import { formEndpoint, contactUrl } from "../lib/config";
         </div>
         <h3 class="heading-3">Sé de los primeros en probarlo.</h3>
         <p class="small muted form-subtitle">
-          Te avisamos del acceso por correo. Los campos con * son obligatorios.
+          Te avisamos del acceso por email. Los campos con * son obligatorios.
         </p>
         <div class="field">
           <label class="label" for="business-name">
-            Nombre del negocio <span aria-hidden="true">*</span>
+            Empresa o marca <span aria-hidden="true">*</span>
           </label>
           <input
             id="business-name"
@@ -80,14 +80,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="¿Cómo se llama tu negocio?"
+            placeholder="¿Cómo se llama tu empresa o marca?"
             aria-describedby="business-name-error"
           />
           <span class="field-error small" id="business-name-error"></span>
         </div>
         <div class="field">
           <label class="label" for="business-type">
-            Tipo de negocio <span aria-hidden="true">*</span>
+            Tipo de equipo <span aria-hidden="true">*</span>
           </label>
           <select
             id="business-type"
@@ -95,18 +95,19 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             aria-describedby="business-type-error"
           >
-            <option value="">Elige tu tipo de negocio</option>
-            <option>Taquería</option>
-            <option>Hamburguesería</option>
-            <option>Heladería</option>
-            <option>Sushi</option>
+            <option value="">Elegí una opción</option>
+            <option>Startup</option>
+            <option>Pyme</option>
+            <option>Marca personal</option>
+            <option>Equipo de marketing</option>
+            <option>Agencia</option>
             <option>Otro</option>
           </select>
           <span class="field-error small" id="business-type-error"></span>
         </div>
         <div class="field">
           <label class="label" for="contact-name">
-            Nombre del contacto <span aria-hidden="true">*</span>
+            Tu nombre <span aria-hidden="true">*</span>
           </label>
           <input
             id="contact-name"
@@ -116,14 +117,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="¿Cómo te llamas?"
+            placeholder="¿Cómo te llamás?"
             aria-describedby="contact-name-error"
           />
           <span class="field-error small" id="contact-name-error"></span>
         </div>
         <div class="field">
           <label class="label" for="email">
-            Correo electrónico <span aria-hidden="true">*</span>
+            Email <span aria-hidden="true">*</span>
           </label>
           <input
             id="email"
@@ -139,27 +140,39 @@ import { formEndpoint, contactUrl } from "../lib/config";
           <span class="field-error small" id="email-error"></span>
         </div>
         <div class="field">
-          <label class="label" for="whatsapp">
-            Tu WhatsApp <span aria-hidden="true">*</span>
+          <label class="label" for="country">
+            País <span aria-hidden="true">*</span>
           </label>
-          <div class="phone-input">
-            <span aria-hidden="true">+52</span>
-            <input
-              id="whatsapp"
-              name="whatsapp"
-              type="tel"
-              autocomplete="tel-national"
-              inputmode="tel"
-              required
-              maxlength="24"
-              pattern="(?:[^0-9]*[0-9]){10}[^0-9]*"
-              title="Escribe los 10 dígitos de tu WhatsApp, sin +52."
-              placeholder="55 1234 5678"
-              aria-describedby="whatsapp-help whatsapp-error"
-            />
-          </div>
+          <select
+            id="country"
+            name="country"
+            required
+            aria-describedby="country-error"
+          >
+            <option value="">Elegí tu país</option>
+            <option value="UY">Uruguay</option>
+            <option value="AR">Argentina</option>
+          </select>
+          <span class="field-error small" id="country-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="whatsapp">
+            WhatsApp <span class="optional">(opcional)</span>
+          </label>
+          <input
+            id="whatsapp"
+            name="whatsapp"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            maxlength="24"
+            pattern="\+[0-9\s\(\)\.\-]{8,23}"
+            title="Incluí el código de país: +598 para Uruguay o +54 para Argentina."
+            placeholder="+598 99 123 456"
+            aria-describedby="whatsapp-help whatsapp-error"
+          />
           <span class="small muted field-help" id="whatsapp-help">
-            México (+52). Escribe los 10 dígitos de tu número.
+            Incluí el código de país: +598 para Uruguay o +54 para Argentina.
           </span>
           <span class="field-error small" id="whatsapp-error"></span>
         </div>
@@ -175,28 +188,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="Ciudad de México"
+            placeholder="Montevideo, Buenos Aires, Rosario…"
             aria-describedby="city-error"
           />
           <span class="field-error small" id="city-error"></span>
         </div>
-        <div class="field">
-          <label class="label" for="neighborhood">
-            Barrio o colonia <span class="optional">(opcional)</span>
-          </label>
-          <input
-            id="neighborhood"
-            name="neighborhood"
-            type="text"
-            autocomplete="address-level3"
-            maxlength="100"
-            placeholder="Por ejemplo, Coyoacán"
-            aria-describedby="neighborhood-error"
-          />
-          <span class="field-error small" id="neighborhood-error"></span>
-        </div>
         <p class="small muted form-consent">
-          Usaremos estos datos para avisarte cuando puedas probar Hooksage.
+          Usaremos estos datos para coordinar las primeras pruebas y avisarte
+          del acceso.
         </p>
         <button class="hs-btn hs-btn--primary" type="submit">
           <span data-submit-label>Quiero estar en la lista</span>
@@ -211,8 +210,8 @@ import { formEndpoint, contactUrl } from "../lib/config";
         ></p>
         <noscript>
           <p class="small">
-            Puedes enviar este formulario sin activar JavaScript.
-            <a href={contactUrl}>También puedes escribirnos por correo.</a>
+            Podés enviar este formulario sin activar JavaScript.
+            <a href={contactUrl}>También podés escribirnos por email.</a>
           </p>
         </noscript>
       </form>
@@ -222,20 +221,21 @@ import { formEndpoint, contactUrl } from "../lib/config";
         </div>
         <h3 class="heading-2">¡Listo! Ya estás en la lista.</h3>
         <p class="body muted">
-          Te avisaremos por correo cuando puedas probar Hooksage.
+          Te avisaremos por email cuando puedas probar Hooksage.
         </p>
         <a
           class="hs-btn hs-btn--primary"
           id="success-contact"
           href={contactUrl}
         >
-          Escribirnos por correo
+          Escribirnos por email
         </a>
       </div>
     </div>
   </div>
 </section>
 <script>
+  import { normalizePhone } from "../../server/phone.mjs";
   const form = document.querySelector<HTMLFormElement>("#free-video-form");
   if (
     form &&
@@ -254,7 +254,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
       email: form.querySelector<HTMLInputElement>("#email")!,
       phone: form.querySelector<HTMLInputElement>("#whatsapp")!,
       city: form.querySelector<HTMLInputElement>("#city")!,
-      neighborhood: form.querySelector<HTMLInputElement>("#neighborhood")!,
+      country: form.querySelector<HTMLSelectElement>("#country")!,
     };
     let sending = false;
     form.addEventListener(
@@ -266,10 +266,10 @@ import { formEndpoint, contactUrl } from "../lib/config";
       "rubro",
     );
     const businessTypes: Record<string, string> = {
-      taquerias: "Taquería",
-      hamburgueserias: "Hamburguesería",
-      heladerias: "Heladería",
-      sushi: "Sushi",
+      startups: "Startup",
+      pymes: "Pyme",
+      "marca-personal": "Marca personal",
+      "equipos-de-marketing": "Equipo de marketing",
     };
     if (
       selectedBusiness &&
@@ -277,36 +277,41 @@ import { formEndpoint, contactUrl } from "../lib/config";
       !fields.type.value
     )
       fields.type.value = businessTypes[selectedBusiness];
-    const phoneDigits = () => fields.phone.value.replace(/\D/g, "");
+    const phoneNumber = () =>
+      normalizePhone(fields.phone.value, fields.country.value);
     function validate(field: HTMLInputElement | HTMLSelectElement) {
       let message = "";
       if (field === fields.name && field.value.trim().length < 2)
-        message = "Escribe el nombre de tu negocio (al menos 2 caracteres).";
+        message =
+          "Escribí el nombre de tu empresa o marca (al menos 2 caracteres).";
       if (field === fields.type && !field.value)
-        message = "Elige el tipo de negocio.";
+        message = "Elegí el tipo de equipo.";
       if (field === fields.contact && field.value.trim().length < 2)
-        message = "Escribe el nombre de la persona de contacto.";
+        message = "Escribí tu nombre.";
       if (
         field === fields.email &&
         (!field.value.trim() ||
           fields.email.validity.typeMismatch ||
           field.value.trim().length > 254)
       )
-        message = "Escribe un correo electrónico válido.";
-      if (field === fields.phone && !/^\d{10}$/.test(phoneDigits()))
-        message = "Escribe los 10 dígitos de tu WhatsApp, sin +52.";
-      if (field === fields.city && field.value.trim().length < 2)
-        message = "Escribe la ciudad de tu negocio.";
+        message = "Escribí un email válido.";
+      if (field === fields.country && !["UY", "AR"].includes(field.value))
+        message = "Elegí tu país.";
       if (
-        [
-          fields.name,
-          fields.contact,
-          fields.city,
-          fields.neighborhood,
-        ].includes(field as HTMLInputElement) &&
+        field === fields.phone &&
+        fields.phone.value.trim() &&
+        phoneNumber() === null
+      )
+        message = "Revisá el número y el código de tu país (+598 o +54).";
+      if (field === fields.city && field.value.trim().length < 2)
+        message = "Escribí tu ciudad.";
+      if (
+        [fields.name, fields.contact, fields.city].includes(
+          field as HTMLInputElement,
+        ) &&
         field.value.trim().length > 100
       )
-        message = "Usa un máximo de 100 caracteres.";
+        message = "Usá un máximo de 100 caracteres.";
       field.setAttribute("aria-invalid", String(Boolean(message)));
       document.getElementById(`${field.id}-error`)!.textContent = message;
       return !message;
@@ -335,7 +340,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
           error_type: "not_configured",
         });
         status.textContent =
-          "El formulario aún no está disponible. Intenta de nuevo más tarde.";
+          "El formulario aún no está disponible. Intentá de nuevo más tarde.";
         status.dataset.error = "true";
         status.focus();
         return;
@@ -352,9 +357,10 @@ import { formEndpoint, contactUrl } from "../lib/config";
           businessType: fields.type.value,
           contactName: fields.contact.value.trim(),
           email: fields.email.value.trim(),
-          whatsapp: `+52${phoneDigits()}`,
+          whatsapp: phoneNumber() || "",
+          country: fields.country.value,
           city: fields.city.value.trim(),
-          neighborhood: fields.neighborhood.value.trim(),
+          neighborhood: "",
           intent: "waitlist",
           website: form.querySelector<HTMLInputElement>("#website")!.value,
           attribution: window.HooksageFunnel?.getAttribution() || {
@@ -384,7 +390,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
           error_type: "request_failed",
         });
         status.textContent =
-          "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.";
+          "No pudimos enviar tus datos. Revisá tu conexión e intentá de nuevo.";
         status.dataset.error = "true";
         status.focus();
       } finally {

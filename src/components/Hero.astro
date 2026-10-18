@@ -3,28 +3,28 @@ import Icon from "./Icon.astro";
 import VideoCard from "./VideoCard.astro";
 const showcase = [
   {
-    tone: "Antojo",
-    business: "Taquería",
-    poster: "tacos",
-    headline: "Del trompo a tu feed.",
+    tone: "A cámara",
+    business: "Startups",
+    poster: "founder",
+    headline: "Tu producto, bien contado.",
   },
   {
-    tone: "Detrás de la barra",
-    business: "Hamburguesería",
-    poster: "burger",
-    headline: "De la plancha a tus clientes.",
+    tone: "Demo",
+    business: "Pymes",
+    poster: "demo",
+    headline: "Mostrá cómo funciona.",
   },
   {
-    tone: "Promo",
-    business: "Heladería",
-    poster: "icecream",
-    headline: "Un antojo bien servido.",
+    tone: "Educativo",
+    business: "Marca personal",
+    poster: "creator",
+    headline: "Tu experiencia, en un Reel.",
   },
   {
-    tone: "Nocturno",
-    business: "Sushi",
-    poster: "sushi",
-    headline: "Tu próximo rollo favorito.",
+    tone: "Campaña",
+    business: "Equipos de marketing",
+    poster: "team",
+    headline: "Contenido para seguir el ritmo.",
   },
 ];
 ---
@@ -38,15 +38,15 @@ const showcase = [
           anticipado
         </span>
         <h1 class="display-xl" id="hero-title">
-          <span class="hero-title-line">Videos para</span>{" "}
-          <span>tu restaurante</span>
+          <span class="hero-title-line">Más videos.</span>{" "}
+          <span>Menos horas editando.</span>
         </h1>
       </div>
       <div class="hero-pitch">
         <p class="body-l muted">
-          Convierte los clips de tu celular en videos de 15 segundos para TikTok
-          e Instagram Reels. Contenido para tu restaurante, sin pasar horas
-          editando.
+          Pasá tu material sin editar y recibí videos de 15 segundos con cortes,
+          zooms y subtítulos. Para startups y empresas chicas que necesitan
+          publicar, sin dedicarle horas a la edición.
         </p>
         <div class="hero-actions">
           <a
@@ -55,31 +55,31 @@ const showcase = [
             data-waitlist-cta
             data-cta-location="hero"
           >
-            Unirme a la lista
+            Quiero probar Hooksage
             <Icon name="arrow" />
           </a>
           <a class="text-link" href="#ejemplos">
-            Ver ejemplos
+            Ver para quién es
             <Icon name="arrow" size={18} />
           </a>
         </div>
         <p class="small reassurance">
           <Icon name="check" size={16} />
-          Lista de espera para la CDMX. Primer video gratis al abrir el acceso.
+          Uruguay y Argentina. Primer video gratis al abrir el acceso.
         </p>
       </div>
     </div>
     <div class="showcase-window">
       <div class="showcase-toolbar">
         <span class="label">
-          <span class="studio-dot" aria-hidden="true"></span>Tu comida. Su
-          próximo antojo.
+          <span class="studio-dot" aria-hidden="true"></span>Tu material. Una
+          edición con criterio.
         </span>
         <span class="small muted showcase-format">9:16 / 15 s</span>
       </div>
       <div
         class="showcase-grid"
-        aria-label="Estilos de video para tu restaurante"
+        aria-label="Formatos de contenido para tu equipo"
       >
         {showcase.map((sample, index) => (
           <div class="showcase-card">
@@ -89,17 +89,17 @@ const showcase = [
       </div>
       <div class="showcase-footer">
         <p class="small muted">
-          Muestras visuales con fotos de referencia. Tu video se crea con lo que
-          tú grabas.
+          Referencias de formatos, ilustradas con fotografías. Los videos se
+          crearán con tu propio material.
         </p>
         <span class="small muted swipe-hint">
-          Desliza para explorar
+          Deslizá para explorar
           <Icon name="arrow" size={16} />
         </span>
       </div>
     </div>
     <div class="hero-footnote">
-      <span class="overline">De tu cocina al feed</span>
+      <span class="overline">Del material al contenido</span>
       <span>
         TikTok
         <span class="dot-separator" aria-hidden="true">
@@ -113,7 +113,7 @@ const showcase = [
       </span>
       <span class="small">
         <Icon name="location" size={18} />
-        Hecho para la CDMX
+        Hecho en el Río de la Plata
       </span>
     </div>
   </div>

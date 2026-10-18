@@ -13,18 +13,19 @@ interface Props {
   source?: string;
 }
 const {
-  tone = "Antojo",
-  business = "Taquería",
-  poster = "tacos",
-  headline = "Del trompo a tu feed.",
+  tone = "A cámara",
+  business = "Tu equipo",
+  poster = "founder",
+  headline = "Una idea que se entiende.",
   lift = false,
   compact = false,
   dark = false,
   eager = false,
   source,
 }: Props = Astro.props;
-const media = referenceMedia[poster] || referenceMedia.tacos;
-// TODO: replace reference photography with authorized restaurant video and its real poster.
+const resolvedPoster = referenceMedia[poster] ? poster : "founder";
+const media = referenceMedia[resolvedPoster];
+// TODO: replace reference photography with authorized customer video and its real poster.
 const formHref = Astro.params.rubro
   ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
   : "/#empezar";
@@ -42,7 +43,7 @@ const formHref = Astro.params.rubro
       <video
         class="hs-video__media"
         src={source}
-        poster={`/media/${poster}.webp`}
+        poster={`/media/${resolvedPoster}.webp`}
         preload="none"
         muted
         playsinline
@@ -56,14 +57,14 @@ const formHref = Astro.params.rubro
         <source
           data-sample-source
           type="image/avif"
-          srcset={`/media/${poster}-360.avif 360w, /media/${poster}.avif 720w`}
+          srcset={`/media/${resolvedPoster}-360.avif 360w, /media/${resolvedPoster}.avif 720w`}
           sizes="(max-width: 650px) 224px, 280px"
         />
         <img
           class="hs-video__media"
           data-sample-photo
-          src={`/media/${poster}.webp`}
-          srcset={`/media/${poster}-360.webp 360w, /media/${poster}.webp 720w`}
+          src={`/media/${resolvedPoster}.webp`}
+          srcset={`/media/${resolvedPoster}-360.webp 360w, /media/${resolvedPoster}.webp 720w`}
           sizes="(max-width: 650px) 224px, 280px"
           alt={media.alt}
           width={media.width}
@@ -98,7 +99,7 @@ const formHref = Astro.params.rubro
         href={formHref}
         data-waitlist-cta
         data-cta-location="gallery"
-        aria-label={`Unirme a la lista para crear videos de ${business.toLowerCase()}`}
+        aria-label={`Quiero probar Hooksage para ${business.toLowerCase()}`}
       >
         <Icon name="arrow" size={20} />
       </a>

@@ -1,4 +1,10 @@
+import { normalizePhone } from "./phone.mjs";
 const types = new Set([
+  "Startup",
+  "Pyme",
+  "Marca personal",
+  "Agencia",
+  "Equipo de marketing",
   "Taquería",
   "Hamburguesería",
   "Heladería",
@@ -31,15 +37,15 @@ export function validateEntry(input) {
   )
     return null;
   if (input.website !== undefined && input.website !== "") return null;
+  const country = input.country === undefined ? "MX" : input.country;
+  if (!["UY", "AR", "MX"].includes(country)) return null;
   const entry = {
+    country,
     businessName: text(input.businessName, 2, 100),
     businessType: types.has(input.businessType) ? input.businessType : null,
     contactName: text(input.contactName, 2, 100),
     email: text(input.email, 3, 254)?.toLowerCase() || null,
-    whatsapp:
-      typeof input.whatsapp === "string" && /^\+52\d{10}$/.test(input.whatsapp)
-        ? input.whatsapp
-        : null,
+    whatsapp: normalizePhone(input.whatsapp ?? "", country),
     city: text(input.city, 2, 100),
     neighborhood: text(input.neighborhood ?? "", 0, 100),
   };

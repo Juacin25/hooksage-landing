@@ -50,14 +50,14 @@ async function fixture(fetcher, options = {}) {
 }
 const w = await fixture();
 const doc = w.document;
-assert.equal(doc.documentElement.lang, "es-MX");
+assert.equal(doc.documentElement.lang, "es-UY");
 assert.equal(doc.querySelectorAll("h1").length, 1);
 assert.equal(doc.querySelectorAll(".display-xl").length, 1);
 assert.ok(doc.title.length <= 60);
-assert.match(doc.title, /Videos para restaurantes/);
+assert.match(doc.title, /Edición de videos para startups y pymes/);
 assert.equal(
   doc.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
-  "Videos para tu restaurante",
+  "Más videos. Menos horas editando.",
 );
 assert.equal(schemaOffer(), undefined);
 function schemaOffer() {
@@ -89,7 +89,12 @@ assert.deepEqual(
 ok("Homepage language, headings, metadata, preloads and FAQ schema match");
 const pageTitles = new Set();
 const pageDescriptions = new Set();
-for (const slug of ["taquerias", "hamburgueserias", "heladerias", "sushi"]) {
+for (const slug of [
+  "startups",
+  "pymes",
+  "marca-personal",
+  "equipos-de-marketing",
+]) {
   const page = new Window();
   page.document.write(
     await fs.readFile(
@@ -156,11 +161,11 @@ const previewPhoto = doc.querySelector(
 const previewSource = doc.querySelector(
   "[data-tone-preview] [data-sample-source]",
 );
-assert.match(previewPhoto.srcset, /sushi-360.webp/);
-assert.match(previewSource.srcset, /sushi-360.avif/);
+assert.match(previewPhoto.srcset, /team-detail-360.webp/);
+assert.match(previewSource.srcset, /team-detail-360.avif/);
 assert.match(previewPhoto.alt, /referencia/);
 assert.equal(doc.querySelectorAll(".media-reference").length, 9);
-for (const name of ["tacos", "burger", "icecream", "sushi"]) {
+for (const name of ["founder", "demo", "creator", "team"]) {
   for (const extension of ["avif", "webp"]) {
     await fs.access(path.join(dist, `media/${name}.${extension}`));
     await fs.access(path.join(dist, `media/${name}-360.${extension}`));
@@ -186,11 +191,11 @@ assert.equal(new Set(lowerGalleryPhotos).size, 4);
 for (const photo of lowerGalleryPhotos)
   assert.ok(!originalGalleryPhotos.has(photo));
 for (const name of [
-  "tacos-detail",
-  "burger-detail",
-  "icecream-detail",
-  "sushi-detail",
-  "kitchen",
+  "startup-detail",
+  "pyme-detail",
+  "creator-detail",
+  "team-detail",
+  "workspace",
 ]) {
   for (const ext of ["avif", "webp"])
     for (const suffix of ["", "-360"])
@@ -208,9 +213,11 @@ ok(
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
 assert.match(planText, /Plan Base/);
 assert.match(planText, /15 videos exportados por semana/);
-assert.match(planText, /\$ ?299 ?MXN \/ mes/);
-assert.match(planText, /IVA incluido/);
-assert.doesNotMatch(doc.body.textContent, /US\$|14[.,]97|USD/);
+assert.match(planText, /US\$\s*14,97\s*\/ mes/);
+assert.doesNotMatch(
+  doc.body.textContent,
+  /MXN|CDMX|IVA incluido|restaurantes|taquerías/i,
+);
 assert.doesNotMatch(
   doc.body.textContent,
   /20 videos exportados|\b20 por semana|(?:15|20) videos (?:de 15 segundos )?al mes|0[.,]75 por video/,
@@ -219,7 +226,7 @@ assert.ok(
   faq.mainEntity.some(
     (item) =>
       /15 videos exportados por semana/.test(item.acceptedAnswer.text) &&
-      /\$299 MXN al mes, IVA incluido/.test(item.acceptedAnswer.text),
+      /US\$14,97 al mes/.test(item.acceptedAnswer.text),
   ),
 );
 ok(
@@ -248,21 +255,21 @@ const submit = (win) =>
       new win.Event("submit", { bubbles: true, cancelable: true }),
     );
 const fill = (win) => {
-  win.document.querySelector("#business-name").value = "  Tacos de prueba  ";
-  win.document.querySelector("#business-type").value = "Taquería";
+  win.document.querySelector("#business-name").value = "  Startup de prueba  ";
+  win.document.querySelector("#business-type").value = "Startup";
   win.document.querySelector("#contact-name").value = "  Persona de prueba  ";
   win.document.querySelector("#email").value = "ejemplo@example.test";
-  win.document.querySelector("#city").value = "  Ciudad de México  ";
-  win.document.querySelector("#whatsapp").value = "55 1234 5678";
-  win.document.querySelector("#neighborhood").value = "  Coyoacán  ";
+  win.document.querySelector("#city").value = "  Montevideo  ";
+  win.document.querySelector("#whatsapp").value = "+598 99 123 456";
+  win.document.querySelector("#country").value = "UY";
 };
 submit(w);
 assert.equal(doc.querySelectorAll('[aria-invalid="true"]').length, 6);
 assert.equal(
   doc.querySelectorAll("form input:not(#website):not([type=hidden])").length,
-  6,
+  5,
 );
-assert.equal(doc.querySelectorAll("form select").length, 1);
+assert.equal(doc.querySelectorAll("form select").length, 2);
 fill(w);
 doc.querySelector("#email").value = "correo-incompleto";
 submit(w);
@@ -292,7 +299,7 @@ const success = await fixture(
     });
   },
   {
-    url: "http://localhost:4321/?utm_source=instagram&utm_medium=paid_social&utm_campaign=cdmx_waitlist&utm_content=tacos_reel",
+    url: "http://localhost:4321/?utm_source=instagram&utm_medium=paid_social&utm_campaign=rioplatense_waitlist&utm_content=founder_reel",
   },
 );
 const successForm = success.document.querySelector("form");
@@ -312,22 +319,23 @@ assert.equal(
 release({ ok: true, json: async () => ({ ok: true, created: true }) });
 await new Promise((resolve) => setTimeout(resolve, 5));
 assert.deepEqual(payload, {
-  businessName: "Tacos de prueba",
-  businessType: "Taquería",
+  businessName: "Startup de prueba",
+  businessType: "Startup",
   contactName: "Persona de prueba",
   email: "ejemplo@example.test",
-  city: "Ciudad de México",
+  city: "Montevideo",
   intent: "waitlist",
   website: "",
   attribution: {
     landing_path: "/",
     utm_source: "instagram",
     utm_medium: "paid_social",
-    utm_campaign: "cdmx_waitlist",
-    utm_content: "tacos_reel",
+    utm_campaign: "rioplatense_waitlist",
+    utm_content: "founder_reel",
   },
-  whatsapp: "+525512345678",
-  neighborhood: "Coyoacán",
+  whatsapp: "+59899123456",
+  neighborhood: "",
+  country: "UY",
 });
 assert.equal(successForm.hidden, true);
 assert.equal(success.document.querySelector("#form-success").hidden, false);
@@ -338,9 +346,9 @@ assert.equal(
   1,
 );
 assert.ok(!JSON.stringify(success.dataLayer).includes("ejemplo@example.test"));
-assert.ok(!JSON.stringify(success.dataLayer).includes("Tacos de prueba"));
+assert.ok(!JSON.stringify(success.dataLayer).includes("Startup de prueba"));
 assert.ok(!JSON.stringify(success.dataLayer).includes("Persona de prueba"));
-assert.ok(!JSON.stringify(success.dataLayer).includes("5512345678"));
+assert.ok(!JSON.stringify(success.dataLayer).includes("59899123456"));
 assert.equal(
   success.document.querySelector("#success-contact").href,
   "mailto:hooksage.app@gmail.com",
@@ -368,6 +376,28 @@ for (const result of [{ ok: true, created: false }, { ok: false }]) {
   await confirmation.happyDOM.close();
 }
 ok("Duplicate or invalid confirmations never count a new lead");
+for (const [country, phone, expected] of [
+  ["UY", "", ""],
+  ["AR", "+54 9 11 1234 5678", "+5491112345678"],
+]) {
+  let submitted;
+  const regional = await fixture(async (_, options) => {
+    submitted = JSON.parse(options.body);
+    return { ok: true, json: async () => ({ ok: true, created: true }) };
+  });
+  fill(regional);
+  regional.document.querySelector("#country").value = country;
+  regional.document.querySelector("#whatsapp").value = phone;
+  submit(regional);
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  assert.equal(submitted.country, country);
+  assert.equal(submitted.whatsapp, expected);
+  assert.equal(regional.document.querySelector("#form-success").hidden, false);
+  await regional.happyDOM.close();
+}
+ok(
+  "Country selection supports an optional phone and normalizes Argentine mobiles",
+);
 const failed = await fixture(async () => ({ ok: false }));
 failed.document.querySelector("form").dataset.endpoint =
   "https://forms.example.test/submit";
@@ -385,7 +415,7 @@ assert.equal(
 );
 assert.match(
   failed.document.querySelector("#business-name").value,
-  /Tacos de prueba/,
+  /Startup de prueba/,
 );
 assert.equal(
   failed.dataLayer.filter((item) => item.event === "generate_lead").length,
@@ -428,30 +458,30 @@ ok(
   "CTA placement and one form-start per page are measurable without user values",
 );
 const campaignWindow = await fixture(undefined, {
-  url: "http://localhost:4321/videos-para-sushi/?utm_source=tiktok&utm_medium=paid_social&utm_campaign=cdmx_waitlist&utm_content=sushi_proceso",
+  url: "http://localhost:4321/videos-para-equipos-de-marketing/?utm_source=tiktok&utm_medium=paid_social&utm_campaign=rioplatense_waitlist&utm_content=equipo_proceso",
 });
 const saved = campaignWindow.sessionStorage.getItem("hooksage:campaign");
 const destination = await fixture(undefined, {
-  url: "http://localhost:4321/?rubro=sushi#empezar",
+  url: "http://localhost:4321/?rubro=equipos-de-marketing#empezar",
   saved,
 });
 assert.deepEqual(
   JSON.parse(JSON.stringify(destination.HooksageFunnel.getAttribution())),
   {
-    landing_path: "/videos-para-sushi/",
+    landing_path: "/videos-para-equipos-de-marketing/",
     utm_source: "tiktok",
     utm_medium: "paid_social",
-    utm_campaign: "cdmx_waitlist",
-    utm_content: "sushi_proceso",
+    utm_campaign: "rioplatense_waitlist",
+    utm_content: "equipo_proceso",
   },
 );
 assert.equal(
   destination.document.querySelector("#business-type").value,
-  "Sushi",
+  "Equipo de marketing",
 );
 const expired = await fixture(undefined, {
   saved: JSON.stringify({
-    landing_path: "/videos-para-sushi/",
+    landing_path: "/videos-para-equipos-de-marketing/",
     utm_source: "tiktok",
     captured_at: Date.now() - 31 * 60 * 1000,
   }),

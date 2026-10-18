@@ -16,18 +16,18 @@ interface Props {
 const { business }: Props = Astro.props;
 const faqItems = [
   {
-    question: `¿Qué puedo grabar para mi negocio de ${business.name.toLowerCase()}?`,
-    answer: `Puedes grabar: ${business.ideas.map((idea) => idea.toLowerCase()).join(", ")}. Usa tu celular en vertical y busca buena luz.`,
+    question: `¿Qué material puedo usar para ${business.name.toLowerCase()}?`,
+    answer: `Podés grabar: ${business.ideas.map((idea) => idea.toLowerCase()).join(", ")}. Grabá con el equipo que tengas y priorizá que la voz se escuche bien.`,
   },
   {
     question: "¿Necesito saber editar?",
     answer:
-      "No necesitas saber editar. Hooksage convierte lo que grabas con tu celular en un video de 15 segundos para TikTok, Reels y Shorts.",
+      "No necesitás saber editar. Estamos creando Hooksage para convertir tu material en crudo en videos verticales de 15 segundos, con cortes, zooms y subtítulos.",
   },
   {
     question: "¿Puedo probar gratis?",
     answer:
-      "Apúntate a la lista y te avisaremos cuando puedas probar Hooksage. El primer video será gratis, sin tarjeta. No se cobra nada por registrarte.",
+      "Sumate a la lista y te avisaremos cuando puedas probar Hooksage. El primer video será gratis, sin tarjeta. No se cobra nada por registrarte.",
   },
 ];
 ---
@@ -41,10 +41,10 @@ const faqItems = [
     <div class="container business-hero-grid">
       <div>
         <a href="/#ejemplos" class="text-link small">
-          Todos los negocios
+          Todos los equipos
           <Icon name="arrow" size={18} />
         </a>
-        <p class="overline eyebrow">Videos para negocios CDMX</p>
+        <p class="overline eyebrow">Uruguay y Argentina</p>
         <h1 class="display-l">{business.seo}</h1>
         <p class="heading-2 business-tagline">{business.headline}</p>
         <p class="body-l muted">{business.description}</p>
@@ -54,7 +54,7 @@ const faqItems = [
           data-cta-location="business"
           class="hs-btn hs-btn--primary"
         >
-          Unirme a la lista
+          Quiero probar Hooksage
           <Icon name="arrow" />
         </a>
         <p class="small muted">
@@ -73,7 +73,7 @@ const faqItems = [
   </section>
   <section class="section business-ideas">
     <div class="container">
-      <p class="overline eyebrow">Empieza con lo que ya haces</p>
+      <p class="overline eyebrow">Empezá con lo que ya tenés</p>
       <h2 class="heading-1">Tres ideas de qué grabar.</h2>
       <div class="steps-grid">
         {business.ideas.map((idea, i) => (
@@ -81,16 +81,16 @@ const faqItems = [
             <span class="hs-feature__step">Idea 0{i + 1}</span>
             <h3 class="heading-3">{idea}</h3>
             <p class="body muted">
-              Graba en vertical, acerca el celular y deja que se vea el detalle.
-              Nosotros hacemos el resto.
+              Partí de material real. Elegí una idea por pieza y dejá que la
+              edición acompañe lo que querés comunicar.
             </p>
           </article>
         ))}
       </div>
       <p class="body muted business-seo">
-        Hooksage convierte tus clips en videos para TikTok e Instagram Reels.
-        Graba lo que hace especial a tu negocio y deja la edición a la
-        plataforma. Puedes apuntarte a la lista sin enviar material todavía.
+        Hooksage te ayudará a convertir tu material en videos para TikTok,
+        Instagram Reels y Shorts. Podés sumarte a la lista sin enviar material
+        todavía.
       </p>
     </div>
   </section>

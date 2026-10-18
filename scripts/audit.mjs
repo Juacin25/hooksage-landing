@@ -39,8 +39,8 @@ const server = http.createServer(async (req, res) => {
         body
           .toString()
           .replace(
-            '<html lang="es-MX">',
-            '<html lang="es-MX" data-theme="light">',
+            '<html lang="es-UY">',
+            '<html lang="es-UY" data-theme="light">',
           ),
       );
     res.writeHead(200, {

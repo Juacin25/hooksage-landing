@@ -13,8 +13,8 @@ interface Props {
   faqItems?: typeof faqs;
 }
 const {
-  title = "Videos para restaurantes: Reels y TikTok | Hooksage",
-  description = "Crea contenido para las redes de tu restaurante con los clips de tu celular. Únete a la lista de Hooksage en CDMX y recibe el aviso para probarlo.",
+  title = "Edición de videos para startups y pymes | Hooksage",
+  description = "Convertí tus videos sin editar en piezas de 15 segundos con cortes, zooms y subtítulos. Acceso anticipado para startups y pymes de Uruguay y Argentina.",
   faqItems = faqs,
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
@@ -35,8 +35,11 @@ const structuredData = {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Web",
       description:
-        "Editor de video con IA para restaurantes. Convierte material grabado con el celular en videos verticales de 15 segundos.",
-      areaServed: { "@type": "City", name: "Ciudad de México" },
+        "Edición de videos con IA para startups, pymes y marcas personales. Cortes, zooms y subtítulos para videos verticales de 15 segundos.",
+      areaServed: [
+        { "@type": "Country", name: "Uruguay" },
+        { "@type": "Country", name: "Argentina" },
+      ],
     },
     {
       "@type": "FAQPage",
@@ -51,7 +54,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="es-MX">
+<html lang="es-UY">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -59,11 +62,11 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="es-MX" href={canonical} />
+    <link rel="alternate" hreflang="es-UY" href={canonical} />
     <link rel="icon" href="/logos/hooksage-app-icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale" content="es_UY" />
     <meta property="og:site_name" content="Hooksage" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -73,7 +76,7 @@ const structuredData = {
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Hooksage. Videos para tu restaurante. Únete a la lista de espera."
+      content="Hooksage. Más videos. Menos horas editando. Startups y pymes de Uruguay y Argentina."
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />

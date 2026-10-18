@@ -3,9 +3,9 @@ import Icon from "./Icon.astro";
 import { basePlan } from "../data/plan";
 const features = [
   `${basePlan.weeklyExports} videos exportados por semana`,
-  "Ideas de qué grabar para tu tipo de negocio",
+  "Cortes, zooms y subtítulos para tus videos",
   "Listos para TikTok, Reels y Shorts",
-  "Cancela cuando quieras",
+  "Cancelá cuando quieras",
 ];
 ---
 
@@ -14,9 +14,9 @@ const features = [
     <div class="section-heading centered">
       <p class="overline eyebrow">Un precio claro</p>
       <h2 class="heading-1" id="price-title">
-        Más videos. Menos pendientes.
+        Un plan para empezar.
       </h2>
-      <p class="body muted">Plan Base. Más tiers próximamente.</p>
+      <p class="body muted">Plan Base. Más planes para equipos próximamente.</p>
     </div>
     <div class="hs-card hs-price hs-price--featured">
       <div class="price-header">
@@ -26,13 +26,13 @@ const features = [
         </span>
       </div>
       <div class="hs-price__amount">
-        <span class="price-currency">$</span>
-        {basePlan.monthlyPriceMXN}
-        <span class="hs-price__period">MXN / mes</span>
+        <span class="price-currency">US$</span>
+        {basePlan.monthlyPriceUSD}
+        <span class="hs-price__period">/ mes</span>
       </div>
       <p class="small muted">
-        IVA incluido. Tu cuota de exportación es semanal. La suscripción se paga
-        al mes.
+        Precio en dólares. La suscripción es mensual y las exportaciones se
+        renuevan cada semana.
       </p>
       <div class="price-divider"></div>
       <ul class="hs-price__list">
@@ -49,11 +49,11 @@ const features = [
         data-waitlist-cta
         data-cta-location="pricing"
       >
-        Unirme a la lista
+        Quiero probar Hooksage
         <Icon name="arrow" />
       </a>
       <p class="small price-footnote">
-        Apuntarte no te suscribe al plan. Sin pago ni tarjeta.
+        Sumarte a la lista no activa el plan. Sin pago ni tarjeta.
       </p>
     </div>
   </div>

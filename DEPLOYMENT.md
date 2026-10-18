@@ -141,3 +141,13 @@ Guarda las copias fuera de Tenki para poder recuperar los datos aunque se pierda
 La sesión permanece activa para recibir formularios. Pausarla ahorra cómputo y detiene temporalmente la recepción. No basta con preservar el volumen para mantener disponible el endpoint. El saldo debe vigilarse desde Billing antes de lanzar o ampliar campañas. Los créditos promocionales son temporales; no convierten el servicio en gratuito para siempre.
 
 Tenki Sandbox proporciona VMs y URLs de preview, no una base de datos gestionada con alta disponibilidad. Esta instalación sirve para la lista de espera inicial; la recuperación y las copias son responsabilidad del proyecto.
+
+## Formulario Uruguay / Argentina y esquema v2
+
+El formulario pide empresa o marca, tipo de equipo, contacto, email, país y ciudad. WhatsApp es opcional; si se informa, usa +598 (Uruguay) o +54 (Argentina). JSON y POST HTML comparten la misma validación. La exportación CSV incluye `country`.
+
+Al abrir una base v1, el servidor crea primero una copia consistente y privada `waitlist.sqlite.before-v2-<timestamp>.sqlite` en el mismo volumen, con permisos 0600. Después migra en una transacción a v2: conserva íntegros IDs, contactos, fechas, atribución, consentimiento y huellas de duplicados; los registros históricos se identifican como MX. Admite nuevas categorías y WhatsApp vacío. Las pestañas antiguas sin país siguen usando el contrato anterior y no duplican registros. Reiniciar v2 no repite la migración.
+
+Antes de desplegar, ejecuta las pruebas de migración y crea además un backup consistente con el comando privado. Compara el conteo y una huella de las filas preexistentes antes y después, sin imprimir datos de contacto. No reemplaces el archivo de base con el paquete. Después de migrar, conserva `server/database.mjs` v2 si necesitas revertir solo la interfaz: el servidor v1 no es compatible con el esquema nuevo. No restaures un snapshot sobre una base que ya recibió altas nuevas; preserva ambas y prepara una recuperación que no pierda registros.
+
+Los enlaces de los cuatro rubros gastronómicos anteriores devuelven 301 a la portada y conservan la query de campaña. Las páginas activas son `/videos-para-startups/`, `/videos-para-pymes/`, `/videos-para-marca-personal/` y `/videos-para-equipos-de-marketing/`.
