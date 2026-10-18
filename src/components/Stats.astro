@@ -1,46 +1,87 @@
 ---
-import { localeFromPath, translator } from "../lib/i18n";
-const lang = localeFromPath(Astro.url.pathname);
-const t = translator(lang);
+import { localeFromPath } from "../lib/i18n";
+import { productFor } from "../data/product";
+const { tools } = productFor(localeFromPath(Astro.url.pathname));
 ---
 
-<section class="section stats-section" aria-labelledby="stats-title">
+<section
+  class="section tools-section"
+  id="herramientas"
+  aria-labelledby="stats-title"
+>
   <div class="container">
-    <div class="section-heading">
-      <p class="overline eyebrow">{t("Un formato concreto")}</p>
+    <div class="tools-heading">
+      <p class="overline eyebrow">{tools.eyebrow}</p>
       <h2 class="heading-1" id="stats-title">
-        {t("Contenido corto. Trabajo bien resuelto.")}
+        {tools.title}
       </h2>
     </div>
-    <div class="stats-grid">
-      <div class="hs-stat">
-        <span class="hs-stat__value">{t("15 s")}</span>
-        <span class="hs-stat__label">{t("para una idea clara")}</span>
-        <span class="hs-stat__source">
-          {t("Cortes, zooms y subtítulos pensados para el mensaje")}
-        </span>
-      </div>
-      <div class="hs-stat">
-        <span class="hs-stat__value">9:16</span>
-        <span class="hs-stat__label">{t("listo para tus canales")}</span>
-        <span class="hs-stat__source">
-          {t("Instagram Reels, TikTok y YouTube Shorts")}
-        </span>
-      </div>
-      <div class="hs-stat">
-        <span class="hs-stat__value hs-stat__value--brand">
-          {t("Tu marca")}
-        </span>
-        <span class="hs-stat__label">{t("también en la edición")}</span>
-        <span class="hs-stat__source">
-          {t("Una forma de comunicar que se sienta tuya")}
-        </span>
-      </div>
+    <div class="tools-list">
+      {tools.items.map((item) => (
+        <article data-product-tool>
+          <h3 class="heading-3">{item.title}</h3>
+          <p class="body muted">{item.description}</p>
+        </article>
+      ))}
     </div>
-    <p class="small source-note">
-      {t(
-        "Estamos preparando las primeras pruebas con startups y empresas chicas de Uruguay y Argentina.",
-      )}
-    </p>
+    <div class="tools-output">
+      <p class="label">{tools.output}</p>
+      <p class="small muted">{tools.note}</p>
+    </div>
   </div>
 </section>
+<style>
+  .tools-section {
+    border-top: 1px solid var(--border);
+  }
+  .tools-heading {
+    max-width: 680px;
+    margin-bottom: var(--space-8);
+  }
+  .tools-heading h2 {
+    margin-top: var(--space-3);
+  }
+  .tools-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-12);
+  }
+  .tools-list article {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+  .tools-list h3 {
+    margin: 0 0 var(--space-3);
+  }
+  .tools-list p {
+    margin: 0;
+    line-height: 1.7;
+  }
+  .tools-output {
+    border-block: 1px solid var(--border);
+    padding-block: var(--space-6);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-8);
+    margin-top: var(--space-4);
+  }
+  .tools-output p {
+    margin: 0;
+  }
+  .tools-output .label {
+    color: var(--primary);
+  }
+  .tools-output .small {
+    max-width: 560px;
+  }
+  @media (max-width: 650px) {
+    .tools-list {
+      grid-template-columns: 1fr;
+    }
+    .tools-output {
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+  }
+</style>

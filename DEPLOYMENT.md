@@ -167,3 +167,9 @@ El formulario admite también Estados Unidos (`US`) y Reino Unido (`GB`), y guar
 Antes de migrar v1 o v2, el servidor crea un snapshot consistente y privado `waitlist.sqlite.before-v3-<timestamp>.sqlite` con permisos 0600. Migra en una transacción, preservando IDs, contactos, países, fechas, atribución, consentimiento y huellas; los registros históricos reciben `language=es`. Reiniciar v3 no repite la migración. Ejecuta las pruebas y un backup consistente adicional antes del despliegue. Después verifica integridad, conteo y huella de las columnas preexistentes sin imprimir contactos.
 
 Si reviertes solo la interfaz, conserva el servidor compatible con esquema v3. No restaures un snapshot sobre una base que ya recibió nuevos registros. Comprueba la portada, los cuatro enlaces ingleses, los hreflang, el selector, el formulario inglés con y sin JavaScript y el guardado de país e idioma. Elimina únicamente las filas sintéticas identificadas para esta prueba.
+
+## Actualización de contenido del producto (18 de octubre de 2026)
+
+La landing ES/EN incorpora perfil de marca, propuestas de contenido, voz en off, acabados, recursos de edición, referencias y biblioteca de versiones. Las imágenes sociales nuevas son `og-product.png` y `og-product-en.png`; los archivos sociales anteriores se conservan para enlaces ya compartidos.
+
+Esta entrega solo actualiza archivos estáticos en `dist/`. No necesita variables nuevas, migraciones ni reiniciar `hooksage.service` o `cloudflared.service`. Copia primero assets y medios; conserva los assets compilados anteriores para las pestañas abiertas y reemplaza cada HTML de forma atómica. Mantén intactos `.service.env` y `/data/hooksage`. Comprueba ambas portadas, las ocho páginas por público, `/healthz`, imágenes sociales y reproducción con HTTP Range después de desplegar.

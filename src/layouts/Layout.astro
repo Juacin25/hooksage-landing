@@ -12,7 +12,8 @@ const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 const faqsForLanguage = contentFor(lang).faqs;
 const ogImage =
-  "https://hooksage.com/" + (lang === "en" ? "og-en.png" : "og.png");
+  "https://hooksage.com/" +
+  (lang === "en" ? "og-product-en.png" : "og-product.png");
 interface Props {
   title?: string;
   description?: string;
@@ -23,8 +24,8 @@ const {
     ? "Short-form video editing for startups & teams | Hooksage"
     : "Edición de videos para startups y pymes | Hooksage",
   description = lang === "en"
-    ? "Turn raw footage into 15-second videos with thoughtful cuts, zooms and captions. Join the Hooksage waitlist. Built for startups and small teams."
-    : "Convertí tus videos sin editar en piezas de 15 segundos con cortes, zooms y subtítulos. Acceso anticipado para startups y pymes de Uruguay y Argentina.",
+    ? "Content ideas, scripts and short videos shaped by your brand. Use your footage or a voiceover, with motion and sound. Join the Hooksage waitlist."
+    : "Ideas, guiones y edición de videos cortos según tu marca. Grabaciones o voz en off, con texto, movimiento y sonido. Sumate al acceso anticipado.",
   faqItems = faqsForLanguage,
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
@@ -46,8 +47,8 @@ const structuredData = {
       operatingSystem: "Web",
       description:
         lang === "en"
-          ? "AI video editing for startups, small businesses and personal brands. Cuts, zooms and captions for 15-second vertical videos."
-          : "Edición de videos con IA para startups, pymes y marcas personales. Cortes, zooms y subtítulos para videos verticales de 15 segundos.",
+          ? "Brand-led content ideas, scripts and short-form video editing, with voiceover, motion, sound and version history."
+          : "Ideas de contenido, guiones y edición de videos cortos según tu marca, con voz en off, movimiento, sonido y versiones.",
       inLanguage: lang,
       areaServed: [
         { "@type": "Country", name: "United States" },

@@ -4,13 +4,13 @@
 
 La versión para compartir en comunidades de Estados Unidos y Reino Unido es `https://hooksage.com/en/`. Ejemplo de atribución: `https://hooksage.com/en/?utm_source=reddit&utm_medium=community&utm_campaign=uk_validation`. El selector conserva la campaña y su página de entrada al cambiar de idioma. La landing y sus cuatro páginas de público tienen canonical y hreflang propios; no se fuerza una redirección por ubicación.
 
-La traducción mantiene la promesa de edición de material propio y el acceso anticipado, sin presentar el producto como disponible inmediatamente ni inventar validaciones estadounidenses o británicas. El formulario admite US y GB y guarda el idioma de inscripción. No se publicaron posts ni campañas como parte de este cambio.
+La traducción cubre marca, ideas, guiones y edición, y mantiene el acceso anticipado, sin presentar el producto como disponible inmediatamente ni inventar validaciones estadounidenses o británicas. El formulario admite US y GB y guarda el idioma de inscripción. No se publicaron posts ni campañas como parte de este cambio.
 
-17 de octubre de 2026. Público: startups y empresas chicas de Uruguay y Argentina, equipos de marketing sin editor full time y marcas personales. Objetivo: formularios guardados en la lista de espera. El tono usa voseo rioplatense.
+18 de octubre de 2026. Público: startups y empresas chicas de Uruguay y Argentina, equipos de marketing sin editor full time y marcas personales. Objetivo: formularios guardados en la lista de espera. El tono usa voseo rioplatense.
 
 ## Promesa
 
-“Más videos. Menos horas editando.” Pasá material sin editar y recibí piezas verticales de 15 segundos con cortes, zooms y subtítulos. El producto está en acceso anticipado: el CTA registra interés y avisa por email; no promete uso inmediato. Primer video gratis al registrarse. Planes con pago mensual: Founder US$14,97 (15 exportaciones por semana), Pyme US$29,99 (40) y Marca Personal US$49,99 (80).
+“Más videos. Menos horas editando.” Partí de ideas o grabaciones. El perfil de marca orienta propuestas con hook, guion y tomas; la edición combina voz, texto, movimiento y sonido. La salida actual es MP4 vertical de 720 × 1280 a 30 fps y la duración depende del montaje y la voz. El producto está en acceso anticipado: el CTA registra interés y avisa por email; no promete uso inmediato. Primer video gratis al registrarse. Planes con pago mensual: Founder US$14,97 (15 exportaciones por semana), Pyme US$29,99 (40) y Marca Personal US$49,99 (80).
 
 Las conversaciones de validación informan el enfoque. No se publican nombres, logos ni citas de esas personas como testimonios. Las fotos están identificadas como referencias, sin presentarlas como resultados ni clientes.
 
@@ -23,7 +23,7 @@ Las conversaciones de validación informan el enfoque. No se publican nombres, l
 | Marca personal | Tu experiencia merece salir del borrador.         | `/videos-para-marca-personal/`       |
 | Marketing      | La estrategia ya está. Falta resolver la edición. | `/videos-para-equipos-de-marketing/` |
 
-Los términos editor de videos cortos, edición para startups y pymes, subtítulos, cortes, zooms, Reels, TikTok y Shorts aparecen en contexto útil. No se añade `meta keywords`. Son hipótesis de mensajes: no hay datos de volumen, CPC ni evidencia de mejora de conversión.
+Los términos editor de videos cortos, perfil de marca, ideas de contenido, guiones, voz en off, edición para startups y pymes, subtítulos, cortes, zooms, Reels, TikTok y Shorts aparecen en contexto útil. No se añade `meta keywords`. Son hipótesis de mensajes: no hay datos de volumen, CPC ni evidencia de mejora de conversión.
 
 ## Campañas y medición
 

@@ -78,7 +78,7 @@ const schema = JSON.parse(
   doc.querySelector('script[type="application/ld+json"]').textContent,
 );
 const faq = schema["@graph"].find((item) => item["@type"] === "FAQPage");
-assert.equal(faq.mainEntity.length, 6);
+assert.equal(faq.mainEntity.length, 10);
 const summaries = [...doc.querySelectorAll(".faq-list summary")].map((item) =>
   item.textContent.trim(),
 );
@@ -103,6 +103,10 @@ for (const slug of [
     ),
   );
   assert.equal(page.document.querySelectorAll("h1").length, 1);
+  assert.doesNotMatch(
+    page.document.querySelector(".business-hero").textContent,
+    /15 segundos|15-second/,
+  );
   assert.ok(page.document.title.length <= 60);
   const description = page.document.querySelector(
     'meta[name="description"]',
@@ -135,62 +139,67 @@ for (const slug of [
 assert.equal(pageTitles.size, 4);
 assert.equal(pageDescriptions.size, 4);
 ok("Four business pages have unique metadata and relevant waitlist links");
-for (const pill of doc.querySelectorAll("[data-tone]")) {
-  pill.click();
-  assert.equal(
-    doc.querySelectorAll('[data-tone][aria-pressed="true"]').length,
-    1,
-  );
-  assert.equal(
-    doc.querySelector("[data-tone-preview] [data-sample-badge]").textContent,
-    pill.dataset.tone,
-  );
-  assert.equal(
-    doc.querySelector("#tone-sample-title").textContent,
-    pill.dataset.title,
-  );
-  assert.equal(
-    doc.querySelector("#tone-sample-description").textContent,
-    pill.dataset.description,
-  );
-}
-const productPill = [...doc.querySelectorAll("[data-tone]")].find(
-  (pill) => pill.dataset.tone === "Demo de producto",
+const brandText = doc.querySelector("#marca").textContent;
+for (const pattern of [
+  /PDF/,
+  /hook/,
+  /guion/,
+  /tomas/,
+  /Shorts/,
+  /ilustrativo/,
+])
+  assert.match(brandText, pattern);
+assert.equal(doc.querySelectorAll(".brand-profile dt").length, 3);
+assert.equal(doc.querySelectorAll(".brand-proposal dt").length, 3);
+assert.deepEqual(
+  [...doc.querySelectorAll("[data-finish] h3")].map((node) => node.textContent),
+  ["Natural", "Dinámico", "Impacto"],
 );
-productPill.click();
-assert.equal(
-  doc.querySelector("[data-tone-preview] .media-window").dataset.mediaKind,
-  "product",
+const workflowText = doc.querySelector("#como-funciona").textContent;
+for (const pattern of [
+  /voz original/,
+  /voz en off/,
+  /hasta dos clips o imágenes/,
+  /Natural, Dinámico o Impacto/,
+  /biblioteca/,
+  /duración/,
+])
+  assert.match(workflowText, pattern);
+assert.equal(doc.querySelectorAll("[data-product-tool]").length, 4);
+const toolsText = doc.querySelector("#herramientas").textContent;
+for (const pattern of [
+  /Limpieza y nivelado/,
+  /opcional/,
+  /PiP/,
+  /contadores/,
+  /logos/,
+  /referencia/,
+  /versión/,
+  /720 × 1280/,
+  /30 fps/,
+])
+  assert.match(toolsText, pattern);
+const faqText = faq.mainEntity
+  .map((item) => item.acceptedAnswer.text)
+  .join(" ");
+for (const pattern of [
+  /MCP local/,
+  /multiusuario/,
+  /MP4\/MOV/,
+  /duración depende del montaje y la voz/,
+])
+  assert.match(faqText, pattern);
+assert.doesNotMatch(
+  doc.querySelector(".hero-pitch").textContent,
+  /15 segundos/,
 );
-assert.equal(
-  doc.querySelector("[data-tone-preview] [data-sample-label]").textContent,
-  "Captura de Drivo",
-);
-assert.match(doc.querySelector("[data-tone-preview] img").alt, /Drivo/);
-doc.querySelector('[data-tone="Equipo"]').click();
-assert.equal(
-  doc.querySelector("[data-tone-preview] .media-window").dataset.mediaKind,
-  "photo",
-);
-assert.equal(
-  doc.querySelector("[data-tone-preview] [data-sample-label]").textContent,
-  "Foto de referencia",
-);
+assert.doesNotMatch(doc.querySelector("#precio").textContent, /de 15 segundos/);
+const productImage = doc.querySelector("#ejemplo-pymes img");
+assert.match(productImage.alt, /Drivo/);
+assert.equal(doc.querySelectorAll(".media-reference").length, 4);
 ok(
-  "All five tone choices update preview, descriptions, media kind, labels and aria-pressed",
+  "Brand profile, suggestions, voiceover, three finishes, sound, references and version history match the pilot scope",
 );
-const previewPhoto = doc.querySelector(
-  "[data-tone-preview] [data-sample-photo]",
-);
-const previewSource = doc.querySelector(
-  "[data-tone-preview] [data-sample-source]",
-);
-assert.match(previewPhoto.srcset, /team-collaboration-360.webp/);
-assert.match(previewSource.sizes, /840px/);
-assert.equal(previewPhoto.sizes, previewSource.sizes);
-assert.match(previewSource.srcset, /team-collaboration-360.avif/);
-assert.match(previewPhoto.alt, /referencia/);
-assert.equal(doc.querySelectorAll(".media-reference").length, 5);
 for (const name of [
   "founder-interview",
   "drivo-product",
@@ -680,7 +689,8 @@ ok(
 for (const item of [campaignWindow, destination, expired, hostile, noStorage])
   await item.happyDOM.close();
 for (const [name, width, height] of [
-  ["og.png", 1200, 630],
+  ["og-product.png", 1200, 630],
+  ["og-product-en.png", 1200, 630],
   ["apple-touch-icon.png", 180, 180],
 ]) {
   const metadata = await sharp(path.join(dist, name)).metadata();
@@ -712,6 +722,23 @@ const englishWindow = await fixture(
   },
 );
 const en = englishWindow.document;
+assert.match(en.querySelector("#marca").textContent, /PDF/);
+assert.match(en.querySelector("#marca").textContent, /shot list/);
+assert.deepEqual(
+  [...en.querySelectorAll("[data-finish] h3")].map((node) => node.textContent),
+  ["Natural", "Dynamic", "Impact"],
+);
+assert.match(
+  en.querySelector("#como-funciona").textContent,
+  /up to two supporting/,
+);
+assert.match(
+  en.querySelector("#herramientas").textContent,
+  /voice.*generation/,
+);
+assert.doesNotMatch(en.querySelector(".hero-pitch").textContent, /15-second/);
+assert.doesNotMatch(en.querySelector("#precio").textContent, /15-second/);
+
 assert.equal(en.querySelectorAll("[data-sample-case]").length, 3);
 en.querySelector("[data-sample-next]").click();
 en.querySelector("[data-sample-next]").click();
@@ -748,7 +775,7 @@ assert.equal(
 );
 assert.equal(
   en.querySelector('meta[property="og:image"]').content,
-  "https://hooksage.com/og-en.png",
+  "https://hooksage.com/og-product-en.png",
 );
 assert.equal(
   en.querySelector(".language-switch [aria-current=page]").textContent,
@@ -850,6 +877,10 @@ for (const [esSlug, enSlug] of [
   );
   assert.equal(page.document.documentElement.lang, "en");
   assert.equal(page.document.querySelectorAll("h1").length, 1);
+  assert.doesNotMatch(
+    page.document.querySelector(".business-hero").textContent,
+    /15 segundos|15-second/,
+  );
   assert.ok(page.document.title.length <= 60);
   assert.ok(
     page.document.querySelector("meta[name=description]").content.length <= 155,
@@ -866,7 +897,7 @@ for (const [esSlug, enSlug] of [
   }
   await page.happyDOM.close();
 }
-await fs.access(path.join(dist, "og-en.png"));
+await fs.access(path.join(dist, "og-product-en.png"));
 ok(
   "English pages, reciprocal language links, US dollar prices, US/UK country options and English form validation work",
 );

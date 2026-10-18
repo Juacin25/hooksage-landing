@@ -1,10 +1,12 @@
 # Hooksage
 
-Landing en español e inglés para startups, pymes, marcas personales y equipos de marketing. Hooksage convierte material sin editar en videos cortos con cortes, zooms y subtítulos. Astro genera diez páginas estáticas; un servidor Node guarda los formularios en SQLite. Se conservan las galerías, fotos de referencia, selector de tonos y diseño del kit de marca.
+Landing en español e inglés para startups, pymes, marcas personales y equipos de marketing. El piloto de Hooksage parte de ideas o grabaciones: perfil de marca, propuestas con hook, guion y tomas, y edición con voz, texto, movimiento y sonido. Astro genera diez páginas estáticas; un servidor Node guarda los formularios en SQLite. La landing conserva los ejemplos reales, las fotos identificadas como referencias y el diseño del kit de marca. Presenta los tres acabados Natural, Dinámico e Impacto.
 
 Los planes tienen facturación mensual en dólares: **Founder US$14,97 / 15 videos por semana**, **Pyme US$29,99 / 40 videos por semana** y **Marca Personal US$49,99 / 80 videos por semana**. El contacto público es **hooksage.app@gmail.com**.
 
 La portada muestra tres comparaciones antes/después en un carrusel con flechas y un ejemplo promocional con reproducción manual. Las copias optimizadas están en `public/videos/`; su procedencia y preparación se documentan en [docs/video-samples.md](docs/video-samples.md). Las fotos de las secciones inferiores siguen identificadas como referencias.
+
+El producto está en desarrollo; esta web registra interés y no ejecuta el editor. La cobertura de funcionalidades y sus límites se documentan en [docs/landing-product-scope.md](docs/landing-product-scope.md). El MP4 actual del piloto es vertical, 720 × 1280 a 30 fps; la duración depende del montaje y la voz.
 
 ## Desarrollo local
 
@@ -32,7 +34,7 @@ La landing abre en `http://127.0.0.1:4321/`. Astro redirige `/api` al servidor l
 
 La portada en español está en `/` y la inglesa en `/en/`. El selector ES/EN enlaza las versiones equivalentes de las cinco páginas; funciona sin JavaScript. Con JavaScript conserva la query de campaña y el ancla actual. No hay redirecciones automáticas por IP ni por idioma del navegador.
 
-Los componentes comparten estructura y estilos. Las traducciones están en `src/data/english.json` y `src/data/content.en.ts`; las rutas se resuelven en `src/lib/i18n.ts`. Cada página incluye canonical, hreflang recíproco, metadatos, FAQ y confirmaciones en su idioma. El formulario nativo y el envío con JavaScript guardan el mismo contrato; cambiar de idioma no duplica una inscripción. Los precios siguen en dólares por mes y las cuotas en videos exportados por semana: 15, 40 y 80.
+Los componentes comparten estructura y estilos. Las traducciones están en `src/data/english.json`, `src/data/content.en.ts` y `src/data/product.ts`; las rutas se resuelven en `src/lib/i18n.ts`. Cada página incluye canonical, hreflang recíproco, metadatos, FAQ y confirmaciones en su idioma. El formulario nativo y el envío con JavaScript guardan el mismo contrato; cambiar de idioma no duplica una inscripción. Los precios siguen en dólares por mes y las cuotas en videos exportados por semana: 15, 40 y 80.
 
 El servidor vuelve a validar los campos, usa consultas parametrizadas y confirma `201 {ok:true,created:true}` después de escribir en SQLite. Una combinación ya registrada de correo, empresa, ciudad y país devuelve `200 {ok:true,created:false}` sin sobrescribir el registro. La interfaz no cuenta ese reintento como una nueva conversión. Los errores mantienen los datos escritos para reintentar.
 

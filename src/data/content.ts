@@ -1,35 +1,68 @@
-import { englishFaqs, englishBusinesses, englishTones } from "./content.en";
+import { englishFaqs, englishBusinesses } from "./content.en";
 import { plans } from "./plan";
+const planSummary = plans
+  .map(
+    (plan) =>
+      plan.name +
+      ": US$" +
+      plan.monthlyPriceUSD +
+      " al mes y " +
+      plan.weeklyExports +
+      " videos exportados por semana",
+  )
+  .join(". ");
 export const faqs = [
   {
     question: "¿Para quién está pensado Hooksage?",
     answer:
-      "Para startups y empresas chicas de Uruguay y Argentina que ya graban contenido, pero no tienen un editor full time. También para founders, equipos de marketing y personas con marca personal que venden servicios, cursos o infoproductos.",
+      "Para startups, negocios chicos, creadores y equipos de marketing sin editor dedicado. Podés partir de grabaciones propias o de una idea para comunicar tu producto, servicio o marca personal.",
   },
   {
-    question: "¿Qué hace con el material que le paso?",
+    question: "¿Cómo usa mi marca para sugerir contenido?",
     answer:
-      "Estamos desarrollando un flujo que toma tu video sin editar y lo convierte en una pieza vertical de 15 segundos. El foco está en elegir los cortes, ajustar el ritmo, hacer zooms con criterio y colocar subtítulos legibles y bien sincronizados.",
+      "Creás un perfil editable o importás información desde un texto o PDF. Con ese contexto, el piloto propone hooks, guiones y listas de tomas. También permite descubrir referencias de Shorts por categoría y afinidad aproximada con la marca; no garantiza ventas ni viralidad.",
   },
   {
-    question:
-      "¿En qué se diferencia de editar con una herramienta de IA genérica?",
+    question: "¿Tengo que llegar con un video grabado?",
     answer:
-      "El objetivo es resolver la edición de principio a fin, con decisiones pensadas para video corto. Queremos que puedas dedicarte al mensaje y recibir una pieza coherente, sin tener que armar instrucciones y corregir cada corte por separado. Esa calidad es lo que vamos a validar en las primeras pruebas.",
+      "Podés editar una grabación y conservar tu voz original, o crear una pieza con guion y voz en off. Ese segundo camino admite un video principal y hasta dos clips o imágenes de apoyo. La generación de voz y sonidos nuevos es opcional y depende de los servicios configurados en el piloto.",
   },
   {
-    question: "¿Para qué canales van a servir los videos?",
+    question: "¿Qué cambia entre Natural, Dinámico e Impacto?",
     answer:
-      "El formato de salida será vertical 9:16 y de 15 segundos, pensado para Instagram Reels, TikTok y YouTube Shorts. Podés usarlo también en otros canales que admitan ese formato. Publicar sigue estando en tus manos; no estamos prometiendo publicación automática.",
+      "Son tres direcciones de acabado. Orientan las decisiones de ritmo, texto, gráficos y sonido, con controles avanzados para ajustarlas. El montaje responde al contenido y a los recursos disponibles; no aplica todos los efectos en cada video.",
+  },
+  {
+    question: "¿Puedo subir un video de referencia?",
+    answer:
+      "Sí. Una referencia puede orientar el ritmo y la dirección visual. Se analiza por separado del metraje que querés editar. Es un recurso distinto de las referencias de Shorts que podés explorar por categoría.",
+  },
+  {
+    question: "¿Qué formato y duración tienen las exportaciones?",
+    answer:
+      "La salida actual es MP4 vertical de 720 × 1280 a 30 fps, para canales como Reels, TikTok y Shorts. La duración depende del montaje y la voz. La entrada admite archivos MP4/MOV compatibles.",
+  },
+  {
+    question: "¿Puedo pedir cambios sin perder la edición anterior?",
+    answer:
+      "Sí. La biblioteca guarda originales y versiones automáticamente. Cada revisión crea un trabajo nuevo y conserva el resultado anterior, para poder retomarlo y compararlo. Revisá cada exportación antes de publicarla.",
   },
   {
     question: "¿Cuándo lo puedo probar y cuánto cuesta?",
-    answer: `Estamos preparando las primeras pruebas y todavía no hay una fecha confirmada. Sumarte a la lista no tiene costo ni requiere tarjeta. Al registrarte quedás en la lista para tu primer video gratis. ${plans.map((plan) => `${plan.name}: US$${plan.monthlyPriceUSD} al mes y ${plan.weeklyExports} videos exportados por semana`).join(". ")}. Las exportaciones se renuevan cada semana.`,
+    answer:
+      "El piloto está en desarrollo y hoy funciona de forma local; el servicio público multiusuario todavía está en preparación. No hay una fecha de acceso confirmada. Sumarte a la lista es gratis y no requiere tarjeta. Al registrarte quedás en la lista para tu primer video gratis. " +
+      planSummary +
+      ". Los precios son mensuales en dólares y las exportaciones se renuevan cada semana.",
   },
   {
     question: "¿Qué pasa cuando completo el formulario?",
     answer:
-      "Guardamos tus datos y te avisamos por email cuando puedas probar Hooksage. No hace falta que subas videos ahora y no se activa ninguna suscripción. WhatsApp es opcional; podés dejarnos tu número con código de país si preferís que también te contactemos por ahí.",
+      "Guardamos tus datos y te avisamos por email cuando puedas probar Hooksage. No hace falta subir videos ni documentos de marca ahora y no se activa una suscripción. WhatsApp es opcional; podés dejar tu número con código de país si preferís ese contacto.",
+  },
+  {
+    question: "¿Puedo conectarlo con un asistente?",
+    answer:
+      "El piloto incluye un MCP local para consultar proyectos y solicitar trabajos a la misma API. El acceso MCP remoto público todavía está pendiente. Es una opción para quien configura el piloto local, no un servicio público activo desde esta landing.",
   },
 ];
 export const businesses = [
@@ -49,7 +82,7 @@ export const businesses = [
     ],
     poster: "startup-talk",
     seo: "Videos para startups",
-    sample: "Tu producto, en 15 segundos.",
+    sample: "Tu producto, bien explicado.",
     metaTitle: "Videos para startups | Hooksage",
     metaDescription:
       "Edición de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
@@ -68,7 +101,7 @@ export const businesses = [
       "Una respuesta a una duda frecuente",
       "El proceso detrás de tu trabajo",
     ],
-    poster: "business-story",
+    poster: "drivo-product",
     seo: "Videos para pymes",
     sample: "Lo que hacés, bien contado.",
     metaTitle: "Videos para pymes | Hooksage",
@@ -91,7 +124,7 @@ export const businesses = [
     ],
     poster: "personal-story",
     seo: "Videos para marca personal",
-    sample: "Una idea clara. Quince segundos.",
+    sample: "Una idea clara. Tu forma de contarla.",
     metaTitle: "Videos para marca personal | Hooksage",
     metaDescription:
       "Edición de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
@@ -118,57 +151,13 @@ export const businesses = [
       "Edición de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
   },
 ];
-export const tones = [
-  {
-    name: "A cámara",
-    title: "Una idea que se entiende.",
-    description:
-      "Cortes sobre la voz, pausas limpias y subtítulos que acompañan lo que decís.",
-    icon: "users",
-    poster: "founder-interview",
-  },
-  {
-    name: "Demo de producto",
-    title: "Mostrá lo que hace tu producto.",
-    description:
-      "El detalle importante en primer plano y zooms que guían la atención.",
-    icon: "bulb",
-    poster: "drivo-product",
-  },
-  {
-    name: "Educativo",
-    title: "De una explicación a una pieza corta.",
-    description:
-      "Una idea por video, palabras clave destacadas y un cierre concreto.",
-    icon: "bulb",
-    poster: "creator-podcast",
-  },
-  {
-    name: "Campaña",
-    title: "Tu mensaje, con un ritmo claro.",
-    description:
-      "La propuesta al frente, texto legible y una llamada a la acción.",
-    icon: "tag",
-    poster: "product-campaign",
-  },
-  {
-    name: "Equipo",
-    title: "Las personas detrás de tu empresa.",
-    description:
-      "Voces reales y una edición que respeta la forma de comunicar de tu equipo.",
-    icon: "users",
-    poster: "team-collaboration",
-  },
-];
-
 export function contentFor(language: "es" | "en") {
-  if (language === "es") return { faqs, businesses, tones };
+  if (language === "es") return { faqs, businesses };
   return {
     faqs: englishFaqs,
     businesses: businesses.map((business) => ({
       ...business,
       ...englishBusinesses[business.slug],
     })),
-    tones: tones.map((tone, index) => ({ ...tone, ...englishTones[index] })),
   };
 }

@@ -1,156 +1,142 @@
 ---
 import { localeFromPath, translator } from "../lib/i18n";
+import { productFor } from "../data/product";
 import Icon from "./Icon.astro";
-import VideoCard from "./VideoCard.astro";
-import { contentFor } from "../data/content";
-import { referenceMedia, mediaSizes } from "../data/media";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
-const { tones } = contentFor(lang);
+const { finishes } = productFor(lang);
 ---
 
-<section
-  class="section tone-section tone-section--studio"
-  id="tonos"
-  aria-labelledby="tone-title"
->
+<section class="section finish-section" id="tonos" aria-labelledby="tone-title">
   <div class="container">
-    <div class="section-heading section-heading--row">
+    <div class="finish-heading">
       <div>
-        <p class="overline eyebrow">{t("La edición también comunica.")}</p>
+        <p class="overline eyebrow">{finishes.eyebrow}</p>
         <h2 class="heading-1" id="tone-title">
-          {t("Que se entienda.")}
-          <br />
-          {t("Que tenga ritmo.")}
+          {finishes.title}
         </h2>
       </div>
-      <p class="body muted">
-        {t(
-          "Subtítulos donde se leen bien. Zooms cuando suman. Cortes que acompañan tu mensaje.",
-        )}
-      </p>
+      <p class="body muted">{finishes.intro}</p>
     </div>
-    <div class="tone-studio">
-      <div class="tone-stage" data-tone-preview>
-        <div class="studio-topline">
-          <span class="small">
-            <span class="studio-dot" aria-hidden="true"></span>
-            {t("Vista de estilo")}
-          </span>
-          <span class="small muted">{t("9:16 / 15 s")}</span>
-        </div>
-        <VideoCard
-          tone={t("A cámara")}
-          business={t("Tu equipo")}
-          headline={tones[0].title}
-        />
-        <div class="studio-export small">
-          <span>{t("TikTok")}</span>
-          <span>{t("Reels")}</span>
-          <span>{t("Shorts")}</span>
-        </div>
-      </div>
-      <div class="tone-controls">
-        <span class="overline eyebrow">{t("Una pieza para cada mensaje")}</span>
-        <h3 class="heading-2">{t("¿Qué querés contar?")}</h3>
-        <p class="body muted">
-          {t(
-            "Explorá la intención de cada formato. La edición se adaptará al contenido que nos pases.",
-          )}
-        </p>
-        <div
-          class="tone-pills"
-          role="group"
-          aria-label={t("Elegí el formato del video")}
-        >
-          {tones.map((tone, index) => (
-            <button
-              type="button"
-              class="hs-btn hs-btn--secondary tone-pill"
-              aria-pressed={index === 0 ? "true" : "false"}
-              data-tone={tone.name}
-              data-title={tone.title}
-              data-description={tone.description}
-              data-poster={tone.poster}
-              data-alt={t(referenceMedia[tone.poster].alt)}
-              data-position={referenceMedia[tone.poster].position}
-              data-sizes={mediaSizes(referenceMedia[tone.poster])}
-              data-width={referenceMedia[tone.poster].width}
-              data-height={referenceMedia[tone.poster].height}
-              data-kind={referenceMedia[tone.poster].kind}
-              data-label={t(referenceMedia[tone.poster].label)}
-            >
-              <Icon name={tone.icon} size={20} />
-              {tone.name}
-            </button>
-          ))}
-        </div>
-        <div class="tone-description" aria-live="polite" aria-atomic="true">
-          <h4 class="heading-3" id="tone-sample-title">
-            {tones[0].title}
-          </h4>
-          <p class="body muted" id="tone-sample-description">
-            {tones[0].description}
-          </p>
-        </div>
-        <a
-          class="hs-btn hs-btn--primary"
-          href="#empezar"
-          data-waitlist-cta
-          data-cta-location="tones"
-        >
-          {t("Quiero probar Hooksage")}
-          <Icon name="arrow" />
-        </a>
-        <p class="small muted tone-reference-note">
-          {t(
-            "Esta es una referencia visual del formato. Vamos a validar la calidad de edición con material real en las primeras pruebas.",
-          )}
-        </p>
-      </div>
+    <div class="finish-list">
+      {finishes.items.map((item, index) => (
+        <article class="finish-row" data-finish>
+          <div class="finish-name">
+            <span class="small muted" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <h3>{item.name}</h3>
+          </div>
+          <div>
+            <h4 class="heading-3">{item.title}</h4>
+            <p class="body muted">{item.description}</p>
+          </div>
+          <p class="small muted finish-detail">{item.detail}</p>
+        </article>
+      ))}
+    </div>
+    <div class="finish-footer">
+      <p class="small muted">{finishes.note}</p>
+      <a
+        class="text-link small"
+        href="#empezar"
+        data-waitlist-cta
+        data-cta-location="tones"
+      >
+        {t("Quiero probar Hooksage")}
+        <Icon name="arrow" size={18} />
+      </a>
     </div>
   </div>
 </section>
-<script>
-  const pills = document.querySelectorAll<HTMLButtonElement>("[data-tone]");
-  const preview = document.querySelector<HTMLElement>("[data-tone-preview]");
-  pills.forEach((pill) =>
-    pill.addEventListener("click", () => {
-      pills.forEach((item) =>
-        item.setAttribute("aria-pressed", String(item === pill)),
-      );
-      const title = document.getElementById("tone-sample-title");
-      const description = document.getElementById("tone-sample-description");
-      const badge = preview?.querySelector("[data-sample-badge]");
-      const headline = preview?.querySelector("[data-sample-headline]");
-      const window = preview?.querySelector<HTMLElement>(".media-window");
-      const reference = preview?.querySelector("[data-sample-label]");
-      if (window) window.dataset.mediaKind = pill.dataset.kind || "photo";
-      if (reference)
-        reference.textContent = pill.dataset.label || "Foto de referencia";
-      const image = preview?.querySelector<HTMLImageElement>(
-        "[data-sample-photo]",
-      );
-      const source = preview?.querySelector<HTMLSourceElement>(
-        "[data-sample-source]",
-      );
-      if (title) title.textContent = pill.dataset.title || "";
-      if (description) description.textContent = pill.dataset.description || "";
-      if (badge) badge.textContent = pill.dataset.tone || "";
-      if (headline) headline.textContent = pill.dataset.title || "";
-      if (image) {
-        image.src = `/media/${pill.dataset.poster}.webp`;
-        image.srcset = `/media/${pill.dataset.poster}-360.webp 360w, /media/${pill.dataset.poster}.webp ${pill.dataset.width}w`;
-        image.sizes = pill.dataset.sizes || "280px";
-        image.alt = pill.dataset.alt || "";
-        image.width = Number(pill.dataset.width);
-        image.height = Number(pill.dataset.height);
-        image.style.objectPosition = pill.dataset.position || "center";
-      }
-      if (source) {
-        source.sizes = pill.dataset.sizes || "280px";
-        source.srcset = `/media/${pill.dataset.poster}-360.avif 360w, /media/${pill.dataset.poster}.avif ${pill.dataset.width}w`;
-      }
-    }),
-  );
-</script>
+<style>
+  .finish-section {
+    background: var(--surface-sunken);
+    border-block: 1px solid var(--border);
+  }
+  .finish-heading {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-12);
+    margin-bottom: var(--space-8);
+    align-items: end;
+  }
+  .finish-heading h2 {
+    margin-top: var(--space-3);
+    max-width: 560px;
+  }
+  .finish-heading > p {
+    margin: 0;
+    max-width: 460px;
+  }
+  .finish-row {
+    display: grid;
+    grid-template-columns: 0.85fr 1.4fr 0.8fr;
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--border);
+    align-items: start;
+  }
+  .finish-name {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+  .finish-name h3 {
+    font-family: var(--font-display);
+    font-size: 29px;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: var(--primary);
+  }
+  .finish-row h4 {
+    margin: 0 0 var(--space-2);
+  }
+  .finish-row p {
+    margin: 0;
+    line-height: 1.65;
+  }
+  .finish-detail {
+    padding-top: var(--space-1);
+  }
+  .finish-footer {
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: var(--space-8);
+    padding-top: var(--space-6);
+  }
+  .finish-footer p {
+    margin: 0;
+    max-width: 680px;
+  }
+  .finish-footer a {
+    flex-shrink: 0;
+  }
+  @media (max-width: 800px) {
+    .finish-heading {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+    .finish-row {
+      grid-template-columns: 1fr 2fr;
+    }
+    .finish-detail {
+      grid-column: 2;
+    }
+  }
+  @media (max-width: 520px) {
+    .finish-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+    .finish-detail {
+      grid-column: 1;
+    }
+    .finish-footer {
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+  }
+</style>

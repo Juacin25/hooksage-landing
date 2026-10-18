@@ -30,7 +30,7 @@ const faqItems =
         {
           question: "Do I need editing experience?",
           answer:
-            "No. We are building Hooksage to turn your raw footage into 15-second vertical videos with cuts, zooms and captions.",
+            "No. The pilot helps with ideas, scripts and editing. Start with your footage or a voiceover, choose a finish and review the result.",
         },
         {
           question: "Can I try it for free?",
@@ -46,7 +46,7 @@ const faqItems =
         {
           question: "¿Necesito saber editar?",
           answer:
-            "No necesitás saber editar. Estamos creando Hooksage para convertir tu material en crudo en videos verticales de 15 segundos, con cortes, zooms y subtítulos.",
+            "No necesitás saber editar. El piloto ayuda con ideas, guiones y edición. Partí de una grabación o voz en off, elegí un acabado y revisá el resultado.",
         },
         {
           question: "¿Puedo probar gratis?",
@@ -82,7 +82,7 @@ const faqItems =
           <Icon name="arrow" />
         </a>
         <p class="small muted">
-          Te avisamos cuando puedas probarlo. Sin tarjeta.
+          {t("Te avisamos cuando puedas probarlo. Sin tarjeta.")}
         </p>
       </div>
       <VideoCard
@@ -112,6 +112,11 @@ const faqItems =
           </article>
         ))}
       </div>
+      <p class="body muted business-seo">
+        {t(
+          "Tu perfil de marca ayuda a preparar propuestas con hook, guion y tomas. Estas ideas son puntos de partida.",
+        )}
+      </p>
       <p class="body muted business-seo">
         {t(
           "Hooksage te ayudará a convertir tu material en videos para TikTok, Instagram Reels y Shorts. Podés sumarte a la lista sin enviar material todavía.",

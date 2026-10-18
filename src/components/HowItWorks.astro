@@ -2,36 +2,13 @@
 import { localeFromPath, translator } from "../lib/i18n";
 import "../styles/workflow.css";
 import Icon from "./Icon.astro";
-import { basePlan } from "../data/plan";
+import { productFor } from "../data/product";
 import { referenceMedia } from "../data/media";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 const workspace = referenceMedia["team-workspace"];
-const steps = [
-  {
-    title: t("Pasá el material como lo grabaste."),
-    text: t(
-      "Una explicación a cámara, una demo o clips de tu equipo. Partí de tus videos sin cortar ni preparar una línea de tiempo.",
-    ),
-  },
-  {
-    title: t("Definí qué querés contar."),
-    text: t(
-      "Indicá el mensaje y el estilo. Hooksage se ocupará de los cortes, los zooms y los subtítulos, con foco en que la pieza se entienda.",
-    ),
-  },
-  {
-    title: t("Revisá, exportá y publicá."),
-    text:
-      lang === "en"
-        ? "Get your " +
-          basePlan.videoSeconds +
-          "-second vertical video, ready for TikTok, Reels and Shorts. Founder includes " +
-          basePlan.weeklyExports +
-          " video exports per week."
-        : `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan ${basePlan.name} incluye ${basePlan.weeklyExports} videos exportados por semana.`,
-  },
-];
+const { workflow } = productFor(lang);
+const steps = workflow.steps;
 ---
 
 <section
@@ -43,18 +20,10 @@ const steps = [
   <div class="container">
     <div class="workflow-heading">
       <div>
-        <p class="overline eyebrow">{t("Cómo funcionará")}</p>
-        <h2 id="how-title">
-          {t("De lo que grabás")}
-          <br />
-          {t("a lo que publicás.")}
-        </h2>
+        <p class="overline eyebrow">{workflow.eyebrow}</p>
+        <h2 id="how-title">{workflow.title}</h2>
       </div>
-      <p class="body muted">
-        {t(
-          "Un flujo para founders y equipos chicos: del material en crudo a una pieza corta para tus canales.",
-        )}
-      </p>
+      <p class="body muted">{workflow.intro}</p>
     </div>
     <div class="workflow-body">
       <figure class="workflow-photo">
@@ -78,9 +47,7 @@ const steps = [
           />
         </picture>
         <figcaption>
-          <span>
-            {t("Tu equipo pone las ideas. La herramienta resuelve la edición.")}
-          </span>
+          <span>{workflow.caption}</span>
           <span>{t("Foto de referencia")}</span>
         </figcaption>
       </figure>
