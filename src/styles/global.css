@@ -1610,3 +1610,93 @@ svg {
     font-size: 50px;
   }
 }
+
+/* Language is an ordinary link: it works before JavaScript loads. */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.language-switch {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.language-switch a {
+  min-width: 32px;
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+.language-switch a[aria-current="page"] {
+  background: var(--primary);
+  color: var(--surface-sunken);
+}
+.language-switch a:hover {
+  color: var(--ink);
+}
+.header-cta-short {
+  display: none;
+}
+@media (min-width: 1001px) and (max-width: 1200px) {
+  .site-header nav {
+    gap: 14px;
+  }
+  .header-inner {
+    gap: 16px;
+  }
+  .header-cta {
+    font-size: 12px;
+    padding-inline: 16px;
+  }
+}
+@media (max-width: 650px) {
+  .header-inner {
+    gap: 12px;
+  }
+  .header-actions {
+    gap: 8px;
+  }
+  .header-cta-full {
+    display: none;
+  }
+  .header-cta-short {
+    display: inline;
+  }
+  .header-cta {
+    padding-inline: 14px;
+    font-size: 12px;
+  }
+  .site-header .logo {
+    min-width: 0;
+  }
+  .site-header .logo img {
+    width: 124px;
+  }
+  .language-switch a {
+    min-width: 29px;
+  }
+}
+@media (max-width: 360px) {
+  .site-header .logo img {
+    width: 100px;
+  }
+  .header-inner {
+    gap: 8px;
+  }
+  .header-actions {
+    gap: 6px;
+  }
+  .header-cta {
+    padding-inline: 10px;
+  }
+}

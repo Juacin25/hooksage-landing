@@ -1,0 +1,14 @@
+---
+import BusinessLanding from "../../components/BusinessLanding.astro";
+import { contentFor } from "../../data/content";
+import { segments } from "../../lib/i18n";
+export function getStaticPaths() {
+  return contentFor("en").businesses.map((business) => ({
+    params: { sector: segments[business.slug] },
+    props: { business },
+  }));
+}
+const { business } = Astro.props;
+---
+
+<BusinessLanding business={business} />

@@ -1,11 +1,14 @@
 ---
+import { localeFromPath, translator, homePath } from "../lib/i18n";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 const { footer = false } = Astro.props;
 ---
 
 <a
-  href="/"
+  href={homePath(lang)}
   class:list={["logo", { "logo--footer": footer }]}
-  aria-label="Hooksage, inicio"
+  aria-label={t("Hooksage, inicio")}
 >
   <img
     class="logo-light"

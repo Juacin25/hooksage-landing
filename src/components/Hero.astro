@@ -1,6 +1,9 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import VideoCard from "./VideoCard.astro";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 const showcase = [
   {
     tone: "A cámara",
@@ -26,7 +29,12 @@ const showcase = [
     poster: "product-campaign",
     headline: "Tu próximo lanzamiento.",
   },
-];
+].map((sample) => ({
+  ...sample,
+  tone: t(sample.tone),
+  business: t(sample.business),
+  headline: t(sample.headline),
+}));
 ---
 
 <section class="hero hero--showcase section" aria-labelledby="hero-title">
@@ -34,19 +42,19 @@ const showcase = [
     <div class="hero-intro">
       <div class="hero-titlebox">
         <span class="hs-badge hs-badge--accent">
-          <span class="hs-badge__dot" aria-hidden="true"></span>Acceso
-          anticipado
+          <span class="hs-badge__dot" aria-hidden="true"></span>
+          {t("Acceso anticipado")}
         </span>
         <h1 class="display-xl" id="hero-title">
-          <span class="hero-title-line">Más videos.</span>{" "}
-          <span>Menos horas editando.</span>
+          <span class="hero-title-line">{t("Más videos.")}</span>{" "}
+          <span>{t("Menos horas editando.")}</span>
         </h1>
       </div>
       <div class="hero-pitch">
         <p class="body-l muted">
-          Pasá tu material sin editar y recibí videos de 15 segundos con cortes,
-          zooms y subtítulos. Para startups y empresas chicas que necesitan
-          publicar, sin dedicarle horas a la edición.
+          {t(
+            "Pasá tu material sin editar y recibí videos de 15 segundos con cortes, zooms y subtítulos. Para startups y empresas chicas que necesitan publicar, sin dedicarle horas a la edición.",
+          )}
         </p>
         <div class="hero-actions">
           <a
@@ -55,31 +63,31 @@ const showcase = [
             data-waitlist-cta
             data-cta-location="hero"
           >
-            Quiero probar Hooksage
+            {t("Quiero probar Hooksage")}
             <Icon name="arrow" />
           </a>
           <a class="text-link" href="#ejemplos">
-            Ver para quién es
+            {t("Ver para quién es")}
             <Icon name="arrow" size={18} />
           </a>
         </div>
         <p class="small reassurance">
           <Icon name="check" size={16} />
-          Primer video gratis al registrarse.
+          {t("Primer video gratis al registrarse.")}
         </p>
       </div>
     </div>
     <div class="showcase-window">
       <div class="showcase-toolbar">
         <span class="label">
-          <span class="studio-dot" aria-hidden="true"></span>Tu material. Una
-          edición con criterio.
+          <span class="studio-dot" aria-hidden="true"></span>
+          {t("Tu material. Una edición con criterio.")}
         </span>
-        <span class="small muted showcase-format">9:16 / 15 s</span>
+        <span class="small muted showcase-format">{t("9:16 / 15 s")}</span>
       </div>
       <div
         class="showcase-grid"
-        aria-label="Formatos de contenido para tu equipo"
+        aria-label={t("Formatos de contenido para tu equipo")}
       >
         {showcase.map((sample, index) => (
           <div class="showcase-card">
@@ -89,31 +97,32 @@ const showcase = [
       </div>
       <div class="showcase-footer">
         <p class="small muted">
-          Referencias de formatos, ilustradas con fotografías. Los videos se
-          crearán con tu propio material.
+          {t(
+            "Referencias de formatos, ilustradas con fotografías. Los videos se crearán con tu propio material.",
+          )}
         </p>
         <span class="small muted swipe-hint">
-          Deslizá para explorar
+          {t("Deslizá para explorar")}
           <Icon name="arrow" size={16} />
         </span>
       </div>
     </div>
     <div class="hero-footnote">
-      <span class="overline">Del material al contenido</span>
+      <span class="overline">{t("Del material al contenido")}</span>
       <span>
-        TikTok
+        {t("TikTok")}
         <span class="dot-separator" aria-hidden="true">
           ·
         </span>
-        Instagram Reels
+        {t("Instagram Reels")}
         <span class="dot-separator" aria-hidden="true">
           ·
         </span>
-        YouTube Shorts
+        {t("YouTube Shorts")}
       </span>
       <span class="small">
         <Icon name="location" size={18} />
-        Hecho en el Río de la Plata
+        {t("Hecho en el Río de la Plata")}
       </span>
     </div>
   </div>

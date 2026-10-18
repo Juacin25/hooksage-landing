@@ -1,33 +1,70 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import { formEndpoint, contactUrl } from "../lib/config";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const countries =
+  lang === "en"
+    ? [
+        ["US", "Estados Unidos"],
+        ["GB", "Reino Unido"],
+        ["UY", "Uruguay"],
+        ["AR", "Argentina"],
+      ]
+    : [
+        ["UY", "Uruguay"],
+        ["AR", "Argentina"],
+        ["US", "Estados Unidos"],
+        ["GB", "Reino Unido"],
+      ];
+const messages = Object.fromEntries(
+  Object.entries({
+    businessName:
+      "Escribí el nombre de tu empresa o marca (al menos 2 caracteres).",
+    type: "Elegí el tipo de equipo.",
+    contact: "Escribí tu nombre.",
+    email: "Escribí un email válido.",
+    country: "Elegí tu país.",
+    phone: "Revisá el número y el código de tu país.",
+    city: "Escribí tu ciudad.",
+    length: "Usá un máximo de 100 caracteres.",
+    notConfigured:
+      "El formulario aún no está disponible. Intentá de nuevo más tarde.",
+    sending: "Enviando…",
+    requestFailed:
+      "No pudimos enviar tus datos. Revisá tu conexión e intentá de nuevo.",
+    submit: "Quiero estar en la lista",
+  }).map(([key, source]) => [key, t(source)]),
+);
 ---
 
 <section class="section form-section" id="empezar" aria-labelledby="form-title">
   <div class="container form-grid">
     <div class="form-intro">
-      <span class="hs-badge hs-badge--accent">Primer video gratis</span>
+      <span class="hs-badge hs-badge--accent">{t("Primer video gratis")}</span>
       <h2 class="heading-1" id="form-title">
-        El próximo video de tu equipo
+        {t("El próximo video de tu equipo")}
         <br />
-        <span>puede salir de acá.</span>
+        <span>{t("puede salir de acá.")}</span>
       </h2>
       <p class="body-l muted">
-        Contanos qué estás construyendo. Te avisamos por email cuando puedas
-        probar Hooksage.
+        {t(
+          "Contanos qué estás construyendo. Te avisamos por email cuando puedas probar Hooksage.",
+        )}
       </p>
       <ul class="form-benefits body">
         <li>
           <Icon name="check" />
-          Sin tarjeta ni compromiso
+          {t("Sin tarjeta ni compromiso")}
         </li>
         <li>
           <Icon name="check" />
-          Con el material que ya tenés
+          {t("Con el material que ya tenés")}
         </li>
         <li>
           <Icon name="check" />
-          Listo para TikTok, Reels y Shorts
+          {t("Listo para TikTok, Reels y Shorts")}
         </li>
       </ul>
       <div class="form-signoff">
@@ -39,9 +76,9 @@ import { formEndpoint, contactUrl } from "../lib/config";
           loading="lazy"
         />
         <p class="small muted">
-          Vos ponés el contenido.
+          {t("Vos ponés el contenido.")}
           <br />
-          <strong>Nosotros resolvemos la edición.</strong>
+          <strong>{t("Nosotros resolvemos la edición.")}</strong>
         </p>
       </div>
     </div>
@@ -51,11 +88,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
         action={formEndpoint}
         method="post"
         data-endpoint={formEndpoint}
+        data-language={lang}
+        data-messages={JSON.stringify(messages)}
       >
         <input type="hidden" name="intent" value="waitlist" />
+        <input type="hidden" name="language" value={lang} />
         <input type="hidden" name="landing_path" value={Astro.url.pathname} />
         <div class="form-trap" aria-hidden="true">
-          <label for="website">Sitio web</label>
+          <label for="website">{t("Sitio web")}</label>
           <input
             id="website"
             name="website"
@@ -64,13 +104,15 @@ import { formEndpoint, contactUrl } from "../lib/config";
             autocomplete="off"
           />
         </div>
-        <h3 class="heading-3">Sé de los primeros en probarlo.</h3>
+        <h3 class="heading-3">{t("Sé de los primeros en probarlo.")}</h3>
         <p class="small muted form-subtitle">
-          Te avisamos del acceso por email. Los campos con * son obligatorios.
+          {t(
+            "Te avisamos del acceso por email. Los campos con * son obligatorios.",
+          )}
         </p>
         <div class="field">
           <label class="label" for="business-name">
-            Empresa o marca <span aria-hidden="true">*</span>
+            {t("Empresa o marca")} <span aria-hidden="true">*</span>
           </label>
           <input
             id="business-name"
@@ -80,14 +122,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="¿Cómo se llama tu empresa o marca?"
+            placeholder={t("¿Cómo se llama tu empresa o marca?")}
             aria-describedby="business-name-error"
           />
           <span class="field-error small" id="business-name-error"></span>
         </div>
         <div class="field">
           <label class="label" for="business-type">
-            Tipo de equipo <span aria-hidden="true">*</span>
+            {t("Tipo de equipo")} <span aria-hidden="true">*</span>
           </label>
           <select
             id="business-type"
@@ -95,19 +137,21 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             aria-describedby="business-type-error"
           >
-            <option value="">Elegí una opción</option>
-            <option>Startup</option>
-            <option>Pyme</option>
-            <option>Marca personal</option>
-            <option>Equipo de marketing</option>
-            <option>Agencia</option>
-            <option>Otro</option>
+            <option value="">{t("Elegí una opción")}</option>
+            <option value="Startup">{t("Startup")}</option>
+            <option value="Pyme">{t("Pyme")}</option>
+            <option value="Marca personal">{t("Marca personal")}</option>
+            <option value="Equipo de marketing">
+              {t("Equipo de marketing")}
+            </option>
+            <option value="Agencia">{t("Agencia")}</option>
+            <option value="Otro">{t("Otro")}</option>
           </select>
           <span class="field-error small" id="business-type-error"></span>
         </div>
         <div class="field">
           <label class="label" for="contact-name">
-            Tu nombre <span aria-hidden="true">*</span>
+            {t("Tu nombre")} <span aria-hidden="true">*</span>
           </label>
           <input
             id="contact-name"
@@ -117,14 +161,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="¿Cómo te llamás?"
+            placeholder={t("¿Cómo te llamás?")}
             aria-describedby="contact-name-error"
           />
           <span class="field-error small" id="contact-name-error"></span>
         </div>
         <div class="field">
           <label class="label" for="email">
-            Email <span aria-hidden="true">*</span>
+            {t("Email")} <span aria-hidden="true">*</span>
           </label>
           <input
             id="email"
@@ -134,14 +178,14 @@ import { formEndpoint, contactUrl } from "../lib/config";
             inputmode="email"
             required
             maxlength="254"
-            placeholder="tu@correo.com"
+            placeholder={t("tu@correo.com")}
             aria-describedby="email-error"
           />
           <span class="field-error small" id="email-error"></span>
         </div>
         <div class="field">
           <label class="label" for="country">
-            País <span aria-hidden="true">*</span>
+            {t("País")} <span aria-hidden="true">*</span>
           </label>
           <select
             id="country"
@@ -149,15 +193,16 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             aria-describedby="country-error"
           >
-            <option value="">Elegí tu país</option>
-            <option value="UY">Uruguay</option>
-            <option value="AR">Argentina</option>
+            <option value="">{t("Elegí tu país")}</option>
+            {countries.map(([value, label]) => (
+              <option value={value}>{t(label)}</option>
+            ))}
           </select>
           <span class="field-error small" id="country-error"></span>
         </div>
         <div class="field">
           <label class="label" for="whatsapp">
-            WhatsApp <span class="optional">(opcional)</span>
+            {t("WhatsApp")} <span class="optional">{t("(opcional)")}</span>
           </label>
           <input
             id="whatsapp"
@@ -167,18 +212,20 @@ import { formEndpoint, contactUrl } from "../lib/config";
             inputmode="tel"
             maxlength="24"
             pattern="\+[0-9\s\(\)\.\-]{8,23}"
-            title="Incluí el código de país: +598 para Uruguay o +54 para Argentina."
-            placeholder="+598 99 123 456"
+            title={t(
+              "Incluí el código de país, por ejemplo +1, +44, +598 o +54.",
+            )}
+            placeholder={t("+598 99 123 456")}
             aria-describedby="whatsapp-help whatsapp-error"
           />
           <span class="small muted field-help" id="whatsapp-help">
-            Incluí el código de país: +598 para Uruguay o +54 para Argentina.
+            {t("Incluí el código de país, por ejemplo +1, +44, +598 o +54.")}
           </span>
           <span class="field-error small" id="whatsapp-error"></span>
         </div>
         <div class="field">
           <label class="label" for="city">
-            Ciudad <span aria-hidden="true">*</span>
+            {t("Ciudad")} <span aria-hidden="true">*</span>
           </label>
           <input
             id="city"
@@ -188,17 +235,18 @@ import { formEndpoint, contactUrl } from "../lib/config";
             required
             minlength="2"
             maxlength="100"
-            placeholder="Montevideo, Buenos Aires, Rosario…"
+            placeholder={t("Montevideo, Buenos Aires, Rosario…")}
             aria-describedby="city-error"
           />
           <span class="field-error small" id="city-error"></span>
         </div>
         <p class="small muted form-consent">
-          Usaremos estos datos para coordinar las primeras pruebas y avisarte
-          del acceso.
+          {t(
+            "Usaremos estos datos para coordinar las primeras pruebas y avisarte del acceso.",
+          )}
         </p>
         <button class="hs-btn hs-btn--primary" type="submit">
-          <span data-submit-label>Quiero estar en la lista</span>
+          <span data-submit-label>{t("Quiero estar en la lista")}</span>
           <Icon name="arrow" />
         </button>
         <p
@@ -210,8 +258,8 @@ import { formEndpoint, contactUrl } from "../lib/config";
         ></p>
         <noscript>
           <p class="small">
-            Podés enviar este formulario sin activar JavaScript.
-            <a href={contactUrl}>También podés escribirnos por email.</a>
+            {t("Podés enviar este formulario sin activar JavaScript.")}
+            <a href={contactUrl}>{t("También podés escribirnos por email.")}</a>
           </p>
         </noscript>
       </form>
@@ -219,16 +267,16 @@ import { formEndpoint, contactUrl } from "../lib/config";
         <div class="success-icon">
           <Icon name="check" size={32} />
         </div>
-        <h3 class="heading-2">¡Listo! Ya estás en la lista.</h3>
+        <h3 class="heading-2">{t("¡Listo! Ya estás en la lista.")}</h3>
         <p class="body muted">
-          Te avisaremos por email cuando puedas probar Hooksage.
+          {t("Te avisaremos por email cuando puedas probar Hooksage.")}
         </p>
         <a
           class="hs-btn hs-btn--primary"
           id="success-contact"
           href={contactUrl}
         >
-          Escribirnos por email
+          {t("Escribirnos por email")}
         </a>
       </div>
     </div>
@@ -242,6 +290,9 @@ import { formEndpoint, contactUrl } from "../lib/config";
     typeof window.fetch === "function" &&
     typeof window.AbortController === "function"
   ) {
+    const messages: Record<string, string> = JSON.parse(
+      form.dataset.messages || "{}",
+    );
     const status = document.getElementById("form-status")!;
     const button = form.querySelector<HTMLButtonElement>(
       'button[type="submit"]',
@@ -256,6 +307,18 @@ import { formEndpoint, contactUrl } from "../lib/config";
       city: form.querySelector<HTMLInputElement>("#city")!,
       country: form.querySelector<HTMLSelectElement>("#country")!,
     };
+    fields.country.addEventListener("change", () => {
+      const examples: Record<string, string> = {
+        US: "+1 202 555 0123",
+        GB: "+44 7700 900123",
+        UY: "+598 99 123 456",
+        AR: "+54 9 11 1234 5678",
+      };
+      fields.phone.placeholder =
+        examples[fields.country.value] ||
+        (form.dataset.language === "en" ? examples.US : examples.UY);
+      if (fields.phone.value) validate(fields.phone);
+    });
     let sending = false;
     form.addEventListener(
       "input",
@@ -282,36 +345,37 @@ import { formEndpoint, contactUrl } from "../lib/config";
     function validate(field: HTMLInputElement | HTMLSelectElement) {
       let message = "";
       if (field === fields.name && field.value.trim().length < 2)
-        message =
-          "Escribí el nombre de tu empresa o marca (al menos 2 caracteres).";
-      if (field === fields.type && !field.value)
-        message = "Elegí el tipo de equipo.";
+        message = messages.businessName;
+      if (field === fields.type && !field.value) message = messages.type;
       if (field === fields.contact && field.value.trim().length < 2)
-        message = "Escribí tu nombre.";
+        message = messages.contact;
       if (
         field === fields.email &&
         (!field.value.trim() ||
           fields.email.validity.typeMismatch ||
           field.value.trim().length > 254)
       )
-        message = "Escribí un email válido.";
-      if (field === fields.country && !["UY", "AR"].includes(field.value))
-        message = "Elegí tu país.";
+        message = messages.email;
+      if (
+        field === fields.country &&
+        !["UY", "AR", "US", "GB"].includes(field.value)
+      )
+        message = messages.country;
       if (
         field === fields.phone &&
         fields.phone.value.trim() &&
         phoneNumber() === null
       )
-        message = "Revisá el número y el código de tu país (+598 o +54).";
+        message = messages.phone;
       if (field === fields.city && field.value.trim().length < 2)
-        message = "Escribí tu ciudad.";
+        message = messages.city;
       if (
         [fields.name, fields.contact, fields.city].includes(
           field as HTMLInputElement,
         ) &&
         field.value.trim().length > 100
       )
-        message = "Usá un máximo de 100 caracteres.";
+        message = messages.length;
       field.setAttribute("aria-invalid", String(Boolean(message)));
       document.getElementById(`${field.id}-error`)!.textContent = message;
       return !message;
@@ -339,8 +403,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         window.HooksageFunnel?.track("waitlist_form_error", {
           error_type: "not_configured",
         });
-        status.textContent =
-          "El formulario aún no está disponible. Intentá de nuevo más tarde.";
+        status.textContent = messages.notConfigured;
         status.dataset.error = "true";
         status.focus();
         return;
@@ -348,7 +411,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
       sending = true;
       button.disabled = true;
       form.setAttribute("aria-busy", "true");
-      label.textContent = "Enviando…";
+      label.textContent = messages.sending;
       const controller = new AbortController();
       const timeout = window.setTimeout(() => controller.abort(), 15000);
       try {
@@ -359,6 +422,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
           email: fields.email.value.trim(),
           whatsapp: phoneNumber() || "",
           country: fields.country.value,
+          language: form.dataset.language || "es",
           city: fields.city.value.trim(),
           neighborhood: "",
           intent: "waitlist",
@@ -389,8 +453,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         window.HooksageFunnel?.track("waitlist_form_error", {
           error_type: "request_failed",
         });
-        status.textContent =
-          "No pudimos enviar tus datos. Revisá tu conexión e intentá de nuevo.";
+        status.textContent = messages.requestFailed;
         status.dataset.error = "true";
         status.focus();
       } finally {
@@ -398,7 +461,7 @@ import { formEndpoint, contactUrl } from "../lib/config";
         sending = false;
         button.disabled = false;
         form.removeAttribute("aria-busy");
-        label.textContent = "Quiero estar en la lista";
+        label.textContent = messages.submit;
       }
     });
     // Native validation and POST remain available if enhancement cannot start.

@@ -1,21 +1,35 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import "../styles/workflow.css";
 import Icon from "./Icon.astro";
 import { basePlan } from "../data/plan";
 import { referenceMedia } from "../data/media";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 const workspace = referenceMedia["team-workspace"];
 const steps = [
   {
-    title: "Pasá el material como lo grabaste.",
-    text: "Una explicación a cámara, una demo o clips de tu equipo. Partí de tus videos sin cortar ni preparar una línea de tiempo.",
+    title: t("Pasá el material como lo grabaste."),
+    text: t(
+      "Una explicación a cámara, una demo o clips de tu equipo. Partí de tus videos sin cortar ni preparar una línea de tiempo.",
+    ),
   },
   {
-    title: "Definí qué querés contar.",
-    text: "Indicá el mensaje y el estilo. Hooksage se ocupará de los cortes, los zooms y los subtítulos, con foco en que la pieza se entienda.",
+    title: t("Definí qué querés contar."),
+    text: t(
+      "Indicá el mensaje y el estilo. Hooksage se ocupará de los cortes, los zooms y los subtítulos, con foco en que la pieza se entienda.",
+    ),
   },
   {
-    title: "Revisá, exportá y publicá.",
-    text: `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan ${basePlan.name} incluye ${basePlan.weeklyExports} videos exportados por semana.`,
+    title: t("Revisá, exportá y publicá."),
+    text:
+      lang === "en"
+        ? "Get your " +
+          basePlan.videoSeconds +
+          "-second vertical video, ready for TikTok, Reels and Shorts. Founder includes " +
+          basePlan.weeklyExports +
+          " video exports per week."
+        : `Recibí tu video vertical de ${basePlan.videoSeconds} segundos, listo para TikTok, Reels y Shorts. El plan ${basePlan.name} incluye ${basePlan.weeklyExports} videos exportados por semana.`,
   },
 ];
 ---
@@ -29,15 +43,17 @@ const steps = [
   <div class="container">
     <div class="workflow-heading">
       <div>
-        <p class="overline eyebrow">Cómo funcionará</p>
+        <p class="overline eyebrow">{t("Cómo funcionará")}</p>
         <h2 id="how-title">
-          De lo que grabás
-          <br />a lo que publicás.
+          {t("De lo que grabás")}
+          <br />
+          {t("a lo que publicás.")}
         </h2>
       </div>
       <p class="body muted">
-        Un flujo para founders y equipos chicos: del material en crudo a una
-        pieza corta para tus canales.
+        {t(
+          "Un flujo para founders y equipos chicos: del material en crudo a una pieza corta para tus canales.",
+        )}
       </p>
     </div>
     <div class="workflow-body">
@@ -54,16 +70,18 @@ const steps = [
             sizes="(max-width: 800px) calc(100vw - 32px), 520px"
             width={workspace.width}
             height={workspace.height}
-            alt="Un equipo de trabajo compartiendo ideas y preparando contenido."
+            alt={t(
+              "Un equipo de trabajo compartiendo ideas y preparando contenido.",
+            )}
             loading="lazy"
             decoding="async"
           />
         </picture>
         <figcaption>
           <span>
-            Tu equipo pone las ideas. La herramienta resuelve la edición.
+            {t("Tu equipo pone las ideas. La herramienta resuelve la edición.")}
           </span>
-          <span>Foto de referencia</span>
+          <span>{t("Foto de referencia")}</span>
         </figcaption>
       </figure>
       <div class="workflow-guide">
@@ -89,9 +107,9 @@ const steps = [
         data-waitlist-cta
         data-cta-location="workflow"
       >
-        Quiero probar Hooksage <Icon name="arrow" />
+        {t("Quiero probar Hooksage")} <Icon name="arrow" />
       </a>
-      <p>Te avisamos cuando puedas probarlo.</p>
+      <p>{t("Te avisamos cuando puedas probarlo.")}</p>
     </div>
   </div>
 </section>

@@ -1,37 +1,46 @@
+---
+import { localeFromPath, translator } from "../lib/i18n";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+---
+
 <section class="section stats-section" aria-labelledby="stats-title">
   <div class="container">
     <div class="section-heading">
-      <p class="overline eyebrow">Un formato concreto</p>
+      <p class="overline eyebrow">{t("Un formato concreto")}</p>
       <h2 class="heading-1" id="stats-title">
-        Contenido corto. Trabajo bien resuelto.
+        {t("Contenido corto. Trabajo bien resuelto.")}
       </h2>
     </div>
     <div class="stats-grid">
       <div class="hs-stat">
-        <span class="hs-stat__value">15 s</span>
-        <span class="hs-stat__label">para una idea clara</span>
+        <span class="hs-stat__value">{t("15 s")}</span>
+        <span class="hs-stat__label">{t("para una idea clara")}</span>
         <span class="hs-stat__source">
-          Cortes, zooms y subtítulos pensados para el mensaje
+          {t("Cortes, zooms y subtítulos pensados para el mensaje")}
         </span>
       </div>
       <div class="hs-stat">
         <span class="hs-stat__value">9:16</span>
-        <span class="hs-stat__label">listo para tus canales</span>
+        <span class="hs-stat__label">{t("listo para tus canales")}</span>
         <span class="hs-stat__source">
-          Instagram Reels, TikTok y YouTube Shorts
+          {t("Instagram Reels, TikTok y YouTube Shorts")}
         </span>
       </div>
       <div class="hs-stat">
-        <span class="hs-stat__value hs-stat__value--brand">Tu marca</span>
-        <span class="hs-stat__label">también en la edición</span>
+        <span class="hs-stat__value hs-stat__value--brand">
+          {t("Tu marca")}
+        </span>
+        <span class="hs-stat__label">{t("también en la edición")}</span>
         <span class="hs-stat__source">
-          Una forma de comunicar que se sienta tuya
+          {t("Una forma de comunicar que se sienta tuya")}
         </span>
       </div>
     </div>
     <p class="small source-note">
-      Estamos preparando las primeras pruebas con startups y empresas chicas de
-      Uruguay y Argentina.
+      {t(
+        "Estamos preparando las primeras pruebas con startups y empresas chicas de Uruguay y Argentina.",
+      )}
     </p>
   </div>
 </section>

@@ -1,39 +1,46 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
-import { plans } from "../data/plan";
+import { plansFor } from "../data/plan";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const plans = plansFor(lang);
 const features = [
   "Cortes, zooms y subtítulos",
   "Videos verticales de 15 segundos",
   "Listos para Reels, TikTok y Shorts",
-];
+].map(t);
 ---
 
 <section class="section pricing" id="precio" aria-labelledby="price-title">
   <div class="container">
     <div class="section-heading centered">
-      <p class="overline eyebrow">Tres formas de seguir el ritmo</p>
+      <p class="overline eyebrow">{t("Tres formas de seguir el ritmo")}</p>
       <h2 class="heading-1" id="price-title">
-        Un plan para lo que viene.
+        {t("Un plan para lo que viene.")}
       </h2>
       <p class="body muted">
-        La misma edición. Elegí cuántos videos necesitás por semana.
+        {t("La misma edición. Elegí cuántos videos necesitás por semana.")}
       </p>
     </div>
     <div class="pricing-grid">
       {plans.map((plan) => (
-        <article class="hs-card hs-price" aria-label={`Plan ${plan.name}`}>
+        <article
+          class="hs-card hs-price"
+          aria-label={lang === "en" ? plan.name + " plan" : "Plan " + plan.name}
+        >
           <div class="price-header">
             <h3 class="hs-price__name">{plan.name}</h3>
           </div>
           <p class="small muted price-description">{plan.description}</p>
           <div class="hs-price__amount">
-            <span class="price-currency">US$</span>
+            <span class="price-currency">{t("US$")}</span>
             {plan.monthlyPriceUSD}
-            <span class="hs-price__period">/ mes</span>
+            <span class="hs-price__period">{t("/ mes")}</span>
           </div>
           <p class="price-quota">
             <strong>{plan.weeklyExports}</strong>{" "}
-            <span>videos exportados por semana</span>
+            <span>{t("videos exportados por semana")}</span>
           </p>
           <ul class="hs-price__list">
             {features.map((feature) => (
@@ -43,24 +50,25 @@ const features = [
               </li>
             ))}
           </ul>
-          <p class="small muted">Cancelá cuando quieras.</p>
+          <p class="small muted">{t("Cancelá cuando quieras.")}</p>
           <a
             class="hs-btn hs-btn--primary"
             href="#empezar"
             data-waitlist-cta
             data-cta-location="pricing"
           >
-            Quiero probar Hooksage
+            {t("Quiero probar Hooksage")}
             <Icon name="arrow" />
           </a>
         </article>
       ))}
     </div>
     <p class="small muted pricing-note">
-      Precios en dólares, con pago mensual. Las exportaciones se renuevan cada
-      semana.
+      {t(
+        "Precios en dólares, con pago mensual. Las exportaciones se renuevan cada semana.",
+      )}
       <br />
-      Sumarte a la lista no activa un plan. Sin pago ni tarjeta.
+      {t("Sumarte a la lista no activa un plan. Sin pago ni tarjeta.")}
     </p>
   </div>
 </section>

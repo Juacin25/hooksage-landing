@@ -1,8 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import VideoCard from "../components/VideoCard.astro";
-import Icon from "../components/Icon.astro";
-import FinalCTA from "../components/FinalCTA.astro";
+import BusinessLanding from "../components/BusinessLanding.astro";
 import { businesses } from "../data/content";
 export function getStaticPaths() {
   return businesses.map((business) => ({
@@ -10,105 +7,7 @@ export function getStaticPaths() {
     props: { business },
   }));
 }
-interface Props {
-  business: (typeof businesses)[number];
-}
-const { business }: Props = Astro.props;
-const faqItems = [
-  {
-    question: `¿Qué material puedo usar para ${business.name.toLowerCase()}?`,
-    answer: `Podés grabar: ${business.ideas.map((idea) => idea.toLowerCase()).join(", ")}. Grabá con el equipo que tengas y priorizá que la voz se escuche bien.`,
-  },
-  {
-    question: "¿Necesito saber editar?",
-    answer:
-      "No necesitás saber editar. Estamos creando Hooksage para convertir tu material en crudo en videos verticales de 15 segundos, con cortes, zooms y subtítulos.",
-  },
-  {
-    question: "¿Puedo probar gratis?",
-    answer:
-      "Sumate a la lista y te avisaremos cuando puedas probar Hooksage. El primer video será gratis, sin tarjeta. No se cobra nada por registrarte.",
-  },
-];
+const { business } = Astro.props;
 ---
 
-<Layout
-  title={business.metaTitle}
-  description={business.metaDescription}
-  faqItems={faqItems}
->
-  <section class="section business-hero">
-    <div class="container business-hero-grid">
-      <div>
-        <a href="/#ejemplos" class="text-link small">
-          Todos los equipos
-          <Icon name="arrow" size={18} />
-        </a>
-        <p class="overline eyebrow">Uruguay y Argentina</p>
-        <h1 class="display-l">{business.seo}</h1>
-        <p class="heading-2 business-tagline">{business.headline}</p>
-        <p class="body-l muted">{business.description}</p>
-        <a
-          href={`/?rubro=${business.slug}#empezar`}
-          data-waitlist-cta
-          data-cta-location="business"
-          class="hs-btn hs-btn--primary"
-        >
-          Quiero probar Hooksage
-          <Icon name="arrow" />
-        </a>
-        <p class="small muted">
-          Te avisamos cuando puedas probarlo. Sin tarjeta.
-        </p>
-      </div>
-      <VideoCard
-        tone={business.tone}
-        business={business.singular}
-        poster={business.poster}
-        headline={business.sample}
-        dark
-        eager
-      />
-    </div>
-  </section>
-  <section class="section business-ideas">
-    <div class="container">
-      <p class="overline eyebrow">Empezá con lo que ya tenés</p>
-      <h2 class="heading-1">Tres ideas de qué grabar.</h2>
-      <div class="steps-grid">
-        {business.ideas.map((idea, i) => (
-          <article class="hs-card hs-feature">
-            <span class="hs-feature__step">Idea 0{i + 1}</span>
-            <h3 class="heading-3">{idea}</h3>
-            <p class="body muted">
-              Partí de material real. Elegí una idea por pieza y dejá que la
-              edición acompañe lo que querés comunicar.
-            </p>
-          </article>
-        ))}
-      </div>
-      <p class="body muted business-seo">
-        Hooksage te ayudará a convertir tu material en videos para TikTok,
-        Instagram Reels y Shorts. Podés sumarte a la lista sin enviar material
-        todavía.
-      </p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container faq-grid">
-      <h2 class="heading-1">Preguntas sobre {business.seo.toLowerCase()}.</h2>
-      <div class="faq-list">
-        {faqItems.map((faq) => (
-          <details>
-            <summary>
-              <span>{faq.question}</span>
-              <Icon name="chevron" size={20} />
-            </summary>
-            <p class="body muted">{faq.answer}</p>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-  <FinalCTA />
-</Layout>
+<BusinessLanding business={business} />

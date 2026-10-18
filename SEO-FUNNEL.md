@@ -1,5 +1,11 @@
 # Hooksage: mensaje y funnel de registro
 
+## Validación en inglés
+
+La versión para compartir en comunidades de Estados Unidos y Reino Unido es `https://hooksage.com/en/`. Ejemplo de atribución: `https://hooksage.com/en/?utm_source=reddit&utm_medium=community&utm_campaign=uk_validation`. El selector conserva la campaña y su página de entrada al cambiar de idioma. La landing y sus cuatro páginas de público tienen canonical y hreflang propios; no se fuerza una redirección por ubicación.
+
+La traducción mantiene la promesa de edición de material propio y el acceso anticipado, sin presentar el producto como disponible inmediatamente ni inventar validaciones estadounidenses o británicas. El formulario admite US y GB y guarda el idioma de inscripción. No se publicaron posts ni campañas como parte de este cambio.
+
 17 de octubre de 2026. Público: startups y empresas chicas de Uruguay y Argentina, equipos de marketing sin editor full time y marcas personales. Objetivo: formularios guardados en la lista de espera. El tono usa voseo rioplatense.
 
 ## Promesa

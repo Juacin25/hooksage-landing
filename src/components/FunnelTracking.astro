@@ -11,6 +11,11 @@
     ];
     const paths = new Set([
       "/",
+      "/en/",
+      "/en/videos-for-startups/",
+      "/en/videos-for-small-businesses/",
+      "/en/videos-for-personal-brands/",
+      "/en/videos-for-marketing-teams/",
       "/videos-para-startups/",
       "/videos-para-pymes/",
       "/videos-para-marca-personal/",
@@ -27,25 +32,26 @@
     }
     let context = { landing_path: path };
     let capturedAt = Date.now();
-    if (!Object.keys(campaign).length) {
-      try {
-        const saved = JSON.parse(sessionStorage.getItem(storageKey) || "null");
-        if (
-          saved &&
-          typeof saved.captured_at === "number" &&
-          saved.captured_at <= Date.now() &&
-          Date.now() - saved.captured_at < ttl &&
-          paths.has(saved.landing_path)
-        ) {
-          context = { landing_path: saved.landing_path };
-          capturedAt = saved.captured_at;
-          for (const key of utmKeys)
-            if (validTag(saved[key])) context[key] = saved[key];
-        }
-      } catch {
-        /* Storage is optional; registration works without it. */
-      }
-    } else context = { landing_path: path, ...campaign };
+    const hasCampaign = Object.keys(campaign).length > 0;
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(storageKey) || "null");
+      const validSaved =
+        saved &&
+        typeof saved.captured_at === "number" &&
+        saved.captured_at <= Date.now() &&
+        Date.now() - saved.captured_at < ttl &&
+        paths.has(saved.landing_path);
+      const sameCampaign =
+        validSaved && utmKeys.every((key) => campaign[key] === saved[key]);
+      if (validSaved && (!hasCampaign || sameCampaign)) {
+        context = { landing_path: saved.landing_path };
+        capturedAt = saved.captured_at;
+        for (const key of utmKeys)
+          if (validTag(saved[key])) context[key] = saved[key];
+      } else if (hasCampaign) context = { landing_path: path, ...campaign };
+    } catch {
+      if (hasCampaign) context = { landing_path: path, ...campaign };
+    }
     try {
       sessionStorage.setItem(
         storageKey,

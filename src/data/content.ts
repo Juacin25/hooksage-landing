@@ -1,3 +1,4 @@
+import { englishFaqs, englishBusinesses, englishTones } from "./content.en";
 import { plans } from "./plan";
 export const faqs = [
   {
@@ -159,3 +160,15 @@ export const tones = [
     poster: "team-collaboration",
   },
 ];
+
+export function contentFor(language: "es" | "en") {
+  if (language === "es") return { faqs, businesses, tones };
+  return {
+    faqs: englishFaqs,
+    businesses: businesses.map((business) => ({
+      ...business,
+      ...englishBusinesses[business.slug],
+    })),
+    tones: tones.map((tone, index) => ({ ...tone, ...englishTones[index] })),
+  };
+}

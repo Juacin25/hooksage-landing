@@ -1,6 +1,9 @@
 ---
+import { localeFromPath, translator, waitlistHref } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import { referenceMedia, mediaSizes } from "../data/media";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 interface Props {
   tone?: string;
   business?: string;
@@ -13,10 +16,10 @@ interface Props {
   source?: string;
 }
 const {
-  tone = "A cámara",
-  business = "Tu equipo",
+  tone = t("A cámara"),
+  business = t("Tu equipo"),
   poster = "founder-interview",
-  headline = "Una idea que se entiende.",
+  headline = t("Una idea que se entiende."),
   lift = false,
   compact = false,
   dark = false,
@@ -27,9 +30,7 @@ const resolvedPoster = referenceMedia[poster] ? poster : "founder-interview";
 const media = referenceMedia[resolvedPoster];
 const imageSizes = mediaSizes(media);
 // TODO: replace reference photography with authorized customer video and its real poster.
-const formHref = Astro.params.rubro
-  ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
-  : "/#empezar";
+const formHref = waitlistHref(Astro.url.pathname);
 ---
 
 <figure
@@ -51,7 +52,12 @@ const formHref = Astro.params.rubro
         controls
         width="360"
         height="640"
-        aria-label={`Video para ${business}: ${tone}`}
+        aria-label={
+          (lang === "en" ? "Video for " : "Video para ") +
+          business +
+          ": " +
+          tone
+        }
       />
     ) : (
       <picture>
@@ -67,7 +73,7 @@ const formHref = Astro.params.rubro
           src={`/media/${resolvedPoster}.webp`}
           srcset={`/media/${resolvedPoster}-360.webp 360w, /media/${resolvedPoster}.webp ${media.width}w`}
           sizes={imageSizes}
-          alt={media.alt}
+          alt={t(media.alt)}
           width={media.width}
           height={media.height}
           loading={eager ? "eager" : "lazy"}
@@ -81,13 +87,16 @@ const formHref = Astro.params.rubro
       <span class="hs-badge hs-badge--brand" data-sample-badge>
         {tone}
       </span>
-      <span class="hs-video__time" aria-label="Formato de salida: 15 segundos">
-        15 s
+      <span
+        class="hs-video__time"
+        aria-label={t("Formato de salida: 15 segundos")}
+      >
+        {t("15 s")}
       </span>
     </div>
     {!source && (
       <span class="media-reference" data-sample-label>
-        {media.label}
+        {t(media.label)}
       </span>
     )}
   </div>
@@ -104,7 +113,11 @@ const formHref = Astro.params.rubro
         href={formHref}
         data-waitlist-cta
         data-cta-location="gallery"
-        aria-label={`Quiero probar Hooksage para ${business.toLowerCase()}`}
+        aria-label={
+          (lang === "en"
+            ? "Join the waitlist for "
+            : "Quiero probar Hooksage para ") + business.toLowerCase()
+        }
       >
         <Icon name="arrow" size={20} />
       </a>

@@ -17,7 +17,8 @@ const schema = `CREATE TABLE waitlist_entries (
   utm_source TEXT, utm_medium TEXT, utm_campaign TEXT, utm_content TEXT, utm_term TEXT,
   consent_version TEXT NOT NULL DEFAULT 'waitlist-v2',
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  country TEXT NOT NULL DEFAULT 'MX' CHECK(country IN ('UY','AR','MX'))
+  country TEXT NOT NULL DEFAULT 'MX' CHECK(country IN ('UY','AR','MX','US','GB')),
+  language TEXT NOT NULL DEFAULT 'es' CHECK(language IN ('es','en'))
 )`;
 
 export function openDatabase(filename) {
@@ -29,32 +30,66 @@ export function openDatabase(filename) {
       "PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL; PRAGMA busy_timeout = 5000;",
     );
     const version = db.prepare("PRAGMA user_version").get().user_version;
-    if (version > 2) throw new Error("Unsupported database schema version");
+    if (version > 3) throw new Error("Unsupported database schema version");
     const exists = db
       .prepare(
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name='waitlist_entries'",
       )
       .get();
-    if (exists && version < 2) {
+    if (exists && version < 3) {
+      const common = [
+        "id",
+        "fingerprint",
+        "business_name",
+        "business_type",
+        "contact_name",
+        "email",
+        "whatsapp",
+        "city",
+        "neighborhood",
+        "landing_path",
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_content",
+        "utm_term",
+        "consent_version",
+        "created_at",
+      ];
+      const oldColumns = new Set(
+        db
+          .prepare("PRAGMA table_info(waitlist_entries)")
+          .all()
+          .map((column) => column.name),
+      );
+      if (common.some((column) => !oldColumns.has(column)))
+        throw new Error("Unsupported legacy database schema");
+      const select = [
+        ...common,
+        oldColumns.has("country") ? "country" : "'MX'",
+        "'es'",
+      ].join(",");
       // Snapshot the original database on the same private volume before any schema change.
-      const snapshot = `${filename}.before-v2-${Date.now()}.sqlite`;
+      const snapshot = `${filename}.before-v3-${Date.now()}.sqlite`;
       db.exec(`VACUUM INTO '${snapshot.replaceAll("'", "''")}'`);
       chmodSync(snapshot, 0o600);
       db.exec("BEGIN IMMEDIATE");
       try {
-        db.exec("ALTER TABLE waitlist_entries RENAME TO waitlist_entries_v1");
+        db.exec(
+          "ALTER TABLE waitlist_entries RENAME TO waitlist_entries_legacy",
+        );
         db.exec(schema);
-        db.exec(`INSERT INTO waitlist_entries SELECT *, 'MX' FROM waitlist_entries_v1;
-          DROP TABLE waitlist_entries_v1;
+        db.exec(`INSERT INTO waitlist_entries SELECT ${select} FROM waitlist_entries_legacy;
+          DROP TABLE waitlist_entries_legacy;
           CREATE INDEX waitlist_created_at ON waitlist_entries(created_at);
-          PRAGMA user_version = 2; COMMIT;`);
+          PRAGMA user_version = 3; COMMIT;`);
       } catch (error) {
         db.exec("ROLLBACK");
         throw error;
       }
     } else if (!exists) {
       db.exec(
-        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 2; COMMIT;`,
+        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 3; COMMIT;`,
       );
     }
     return db;
@@ -80,8 +115,8 @@ export function saveEntry(db, entry) {
     .prepare(
       `INSERT INTO waitlist_entries (
     fingerprint, business_name, business_type, contact_name, email, whatsapp, city,
-    neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term, country, consent_version
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term, country, consent_version, language
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(fingerprint) DO NOTHING`,
     )
     .run(
@@ -103,6 +138,7 @@ export function saveEntry(db, entry) {
       ].map((key) => entry.attribution[key] || null),
       country,
       country === "MX" ? "waitlist-v1" : "waitlist-v2",
+      entry.language || "es",
     );
   return { created: Number(result.changes) === 1 };
 }

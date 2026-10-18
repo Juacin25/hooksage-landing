@@ -14,5 +14,8 @@ export function normalizePhone(value, country) {
   if (country === "UY" && /^598[249]\d{7}$/.test(digits)) return `+${digits}`;
   if (country === "AR" && /^54(?:9)?[1-9]\d{9}$/.test(digits))
     return `+${digits}`;
+  if (country === "US" && /^1[2-9]\d{2}[2-9]\d{6}$/.test(digits))
+    return "+" + digits;
+  if (country === "GB" && /^44[1-9]\d{8,9}$/.test(digits)) return "+" + digits;
   return null;
 }

@@ -130,9 +130,19 @@ export function createApp({
       const htmlForm =
         encodedForm &&
         String(request.headers.accept || "").includes("text/html");
+      let responseLanguage = String(request.headers["accept-language"] || "")
+        .toLowerCase()
+        .startsWith("en")
+        ? "en"
+        : "es";
+      try {
+        const referrer = new URL(request.headers.referer);
+        if (allowedOrigins.has(referrer.origin))
+          responseLanguage = referrer.pathname.startsWith("/en/") ? "en" : "es";
+      } catch {}
       const reply = (status, body, headers = {}) =>
         htmlForm
-          ? sendFormResponse(response, status, body, headers)
+          ? sendFormResponse(response, status, body, headers, responseLanguage)
           : json(response, status, body, headers);
       if (pathname !== "/api/waitlist") return reply(404, { ok: false });
       const origin = request.headers.origin;
@@ -162,7 +172,10 @@ export function createApp({
         return reply(413, { ok: false });
       let entry;
       try {
-        entry = validateEntry(await readBody(request, encodedForm));
+        const input = await readBody(request, encodedForm);
+        if (input?.language === "en" || input?.language === "es")
+          responseLanguage = input.language;
+        entry = validateEntry(input);
       } catch (error) {
         return reply(error.status || 400, { ok: false });
       }

@@ -1,7 +1,11 @@
 ---
+import { localeFromPath, translator, businessPath } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import VideoCard from "./VideoCard.astro";
-import { businesses } from "../data/content";
+import { contentFor } from "../data/content";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const { businesses } = contentFor(lang);
 ---
 
 <section
@@ -12,19 +16,23 @@ import { businesses } from "../data/content";
   <div class="container">
     <div class="section-heading section-heading--row">
       <div>
-        <p class="overline eyebrow">Para quién es</p>
+        <p class="overline eyebrow">{t("Para quién es")}</p>
         <h2 class="heading-1" id="examples-title">
-          Un equipo chico.
+          {t("Un equipo chico.")}
           <br />
-          Mucho para contar.
+          {t("Mucho para contar.")}
         </h2>
       </div>
       <p class="body muted">
-        Si ya tenés qué decir, la edición no debería frenar lo que publicás.
-        Estos son algunos contenidos con los que podés empezar.
+        {t(
+          "Si ya tenés qué decir, la edición no debería frenar lo que publicás. Estos son algunos contenidos con los que podés empezar.",
+        )}
       </p>
     </div>
-    <nav class="business-rail" aria-label="Explorar ideas por tipo de equipo">
+    <nav
+      class="business-rail"
+      aria-label={t("Explorar ideas por tipo de equipo")}
+    >
       {businesses.map((business) => (
         <a href={`#ejemplo-${business.slug}`} class="hs-btn hs-btn--secondary">
           <Icon name={business.icon} size={20} />
@@ -44,12 +52,12 @@ import { businesses } from "../data/content";
           />
           <div class="example-copy">
             <h3 class="heading-3">
-              <a href={`/videos-para-${business.slug}/`}>
+              <a href={businessPath(business.slug, lang)}>
                 {business.name}
                 <Icon name="arrow" size={20} />
               </a>
             </h3>
-            <p class="small muted">Material con el que podés empezar:</p>
+            <p class="small muted">{t("Material con el que podés empezar:")}</p>
             <ul class="small">
               {business.ideas.map((idea) => (
                 <li>
@@ -60,9 +68,9 @@ import { businesses } from "../data/content";
             </ul>
             <a
               class="text-link small example-more"
-              href={`/videos-para-${business.slug}/`}
+              href={businessPath(business.slug, lang)}
             >
-              Ver ideas para mi equipo
+              {t("Ver ideas para mi equipo")}
               <Icon name="arrow" size={16} />
             </a>
           </div>
@@ -70,8 +78,9 @@ import { businesses } from "../data/content";
       ))}
     </div>
     <p class="small muted examples-note">
-      Fotografías de referencia. No son videos editados por Hooksage ni
-      testimonios de clientes.
+      {t(
+        "Fotografías de referencia. No son videos editados por Hooksage ni testimonios de clientes.",
+      )}
     </p>
   </div>
 </section>

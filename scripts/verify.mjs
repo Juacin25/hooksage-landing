@@ -36,7 +36,7 @@ async function fixture(fetcher, options = {}) {
       throw new Error("Unexpected network request");
     });
   if (options.noFetch) window.fetch = undefined;
-  window.document.write(html);
+  window.document.write(options.html || html);
   for (const tag of window.document.querySelectorAll('script[type="module"]')) {
     if (tag.hasAttribute("src")) {
       const source = await fs.readFile(
@@ -401,6 +401,7 @@ assert.deepEqual(payload, {
   whatsapp: "+59899123456",
   neighborhood: "",
   country: "UY",
+  language: "es",
 });
 assert.equal(successForm.hidden, true);
 assert.equal(success.document.querySelector("#form-success").hidden, false);
@@ -603,8 +604,180 @@ assert.match(
   /sitemap.xml/,
 );
 const sitemap = await fs.readFile(path.join(dist, "sitemap-0.xml"), "utf8");
-assert.equal((sitemap.match(/<loc>/g) || []).length, 5);
-ok("OG, touch icon, robots and all five sitemap URLs exist");
+assert.equal((sitemap.match(/<loc>/g) || []).length, 10);
+ok("OG, touch icon, robots and all ten sitemap URLs exist");
+
+const englishHtml = await fs.readFile(path.join(dist, "en/index.html"), "utf8");
+const englishWindow = await fixture(
+  async (_, options) => {
+    const entry = JSON.parse(options.body);
+    assert.equal(entry.language, "en");
+    assert.equal(entry.businessType, "Pyme");
+    assert.equal(entry.country, "GB");
+    assert.equal(entry.whatsapp, "+447700900123");
+    assert.equal(entry.attribution.utm_source, "reddit");
+    return { ok: true, json: async () => ({ ok: true, created: true }) };
+  },
+  {
+    html: englishHtml,
+    url: "http://localhost:4321/en/?utm_source=reddit&utm_campaign=uk_validation#empezar",
+  },
+);
+const en = englishWindow.document;
+assert.equal(en.documentElement.lang, "en");
+assert.match(en.querySelector("h1").textContent, /More videos./);
+assert.match(en.querySelector("h1").textContent, /Less time editing./);
+assert.equal(
+  en.querySelector("link[rel=canonical]").href,
+  "https://hooksage.com/en/",
+);
+assert.equal(
+  en.querySelector("link[hreflang=es]").href,
+  "https://hooksage.com/",
+);
+assert.equal(
+  en.querySelector("link[hreflang=en]").href,
+  "https://hooksage.com/en/",
+);
+assert.equal(
+  en.querySelector('meta[property="og:image"]').content,
+  "https://hooksage.com/og-en.png",
+);
+assert.equal(
+  en.querySelector(".language-switch [aria-current=page]").textContent,
+  "EN",
+);
+assert.equal(
+  new URL(en.querySelector(".language-switch [lang=es]").href).searchParams.get(
+    "utm_source",
+  ),
+  "reddit",
+);
+assert.equal(
+  new URL(en.querySelector(".language-switch [lang=es]").href).hash,
+  "#empezar",
+);
+assert.deepEqual(
+  [...en.querySelectorAll("#country option")].map((option) => option.value),
+  ["", "US", "GB", "UY", "AR"],
+);
+for (const [name, price, quota] of [
+  ["Founder", "14.97", 15],
+  ["Small Business", "29.99", 40],
+  ["Personal Brand", "49.99", 80],
+]) {
+  const card = [...en.querySelectorAll(".hs-price")].find(
+    (card) => card.querySelector("h3").textContent.trim() === name,
+  );
+  assert.ok(card);
+  assert.ok(
+    card.querySelector(".hs-price__amount").textContent.includes(price),
+  );
+  assert.equal(
+    Number(card.querySelector(".price-quota strong").textContent),
+    quota,
+  );
+}
+const enSchema = JSON.parse(
+  en.querySelector('script[type="application/ld+json"]').textContent,
+);
+assert.deepEqual(
+  enSchema["@graph"]
+    .find((item) => item["@type"] === "FAQPage")
+    .mainEntity.map((item) => item.name),
+  [...en.querySelectorAll(".faq-list summary")].map((item) =>
+    item.textContent.trim(),
+  ),
+);
+submit(englishWindow);
+assert.match(
+  en.querySelector("#business-name-error").textContent,
+  /Enter your business/,
+);
+assert.match(
+  en.querySelector("#country-error").textContent,
+  /Choose your country/,
+);
+fill(englishWindow);
+en.querySelector("#business-type").value = "Pyme";
+en.querySelector("#country").value = "GB";
+en.querySelector("#whatsapp").value = "+44 7700 900123";
+submit(englishWindow);
+await new Promise((resolve) => setTimeout(resolve, 5));
+assert.equal(en.querySelector("#form-success").hidden, false);
+assert.match(
+  en.querySelector("#form-success").textContent,
+  /You're on the list/,
+);
+assert.equal(
+  englishWindow.dataLayer.filter((item) => item.event === "generate_lead")
+    .length,
+  1,
+);
+const nativeEnglish = await fixture(undefined, {
+  html: englishHtml,
+  noFetch: true,
+  url: "http://localhost:4321/en/",
+});
+assert.equal(nativeEnglish.document.querySelector("form").noValidate, false);
+assert.equal(
+  nativeEnglish.document.querySelector("[name=language]").value,
+  "en",
+);
+assert.equal(
+  nativeEnglish.document.querySelector("form").getAttribute("action"),
+  "/api/waitlist",
+);
+for (const [esSlug, enSlug] of [
+  ["startups", "startups"],
+  ["pymes", "small-businesses"],
+  ["marca-personal", "personal-brands"],
+  ["equipos-de-marketing", "marketing-teams"],
+]) {
+  const page = new Window();
+  page.document.write(
+    await fs.readFile(
+      path.join(dist, "en/videos-for-" + enSlug + "/index.html"),
+      "utf8",
+    ),
+  );
+  assert.equal(page.document.documentElement.lang, "en");
+  assert.equal(page.document.querySelectorAll("h1").length, 1);
+  assert.ok(page.document.title.length <= 60);
+  assert.ok(
+    page.document.querySelector("meta[name=description]").content.length <= 155,
+  );
+  assert.equal(
+    page.document.querySelector("link[hreflang=es]").href,
+    "https://hooksage.com/videos-para-" + esSlug + "/",
+  );
+  for (const cta of page.document.querySelectorAll("[data-waitlist-cta]")) {
+    const url = new URL(cta.href, "https://hooksage.com");
+    assert.equal(url.pathname, "/en/");
+    assert.equal(url.searchParams.get("rubro"), esSlug);
+    assert.equal(url.hash, "#empezar");
+  }
+  await page.happyDOM.close();
+}
+await fs.access(path.join(dist, "og-en.png"));
+ok(
+  "English pages, reciprocal language links, US dollar prices, US/UK country options and English form validation work",
+);
+const switchedLanguage = await fixture(undefined, {
+  url: "http://localhost:4321/?utm_source=reddit&utm_campaign=uk_validation#empezar",
+  saved: englishWindow.sessionStorage.getItem("hooksage:campaign"),
+});
+assert.equal(
+  switchedLanguage.HooksageFunnel.getAttribution().landing_path,
+  "/en/",
+);
+assert.equal(
+  switchedLanguage.HooksageFunnel.getAttribution().utm_source,
+  "reddit",
+);
+await switchedLanguage.happyDOM.close();
+await englishWindow.happyDOM.close();
+await nativeEnglish.happyDOM.close();
 for (const item of [w, success, failed]) await item.happyDOM.close();
 console.log(
   `${passed} verification groups passed. No external requests were sent.`,

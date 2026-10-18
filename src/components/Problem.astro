@@ -1,36 +1,43 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 ---
 
 <section class="section problem" aria-labelledby="problem-title">
   <div class="container split-section">
     <div>
-      <p class="overline eyebrow">El cuello de botella</p>
+      <p class="overline eyebrow">{t("El cuello de botella")}</p>
       <h2 class="heading-1" id="problem-title">
-        El contenido está grabado.
+        {t("El contenido está grabado.")}
         <br />
-        La edición sigue pendiente.
+        {t("La edición sigue pendiente.")}
       </h2>
     </div>
     <ul class="problem-list body-l">
       <li>
         <Icon name="clock" />
         <span>
-          Entre cortar silencios, ajustar zooms y corregir subtítulos, una pieza
-          corta te lleva horas.
+          {t(
+            "Entre cortar silencios, ajustar zooms y corregir subtítulos, una pieza corta te lleva horas.",
+          )}
         </span>
       </li>
       <li>
         <Icon name="users" />
         <span>
-          La misma persona termina grabando, editando y llevando el negocio.
+          {t(
+            "La misma persona termina grabando, editando y llevando el negocio.",
+          )}
         </span>
       </li>
       <li>
         <Icon name="wallet" />
         <span>
-          Tu equipo quiere publicar más, pero no tiene un editor dedicado para
-          sostener ese ritmo.
+          {t(
+            "Tu equipo quiere publicar más, pero no tiene un editor dedicado para sostener ese ritmo.",
+          )}
         </span>
       </li>
     </ul>

@@ -1,6 +1,9 @@
 ---
+import { localeFromPath, translator, homePath } from "../lib/i18n";
 import Logo from "./Logo.astro";
 import { contactEmail, contactUrl } from "../lib/config";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
 ---
 
 <footer class="site-footer" data-theme="dark">
@@ -8,19 +11,21 @@ import { contactEmail, contactUrl } from "../lib/config";
     <div class="footer-main">
       <div>
         <Logo footer />
-        <p class="small muted">Hecho en Latam para Latam</p>
+        <p class="small muted">{t("Hecho en Latam para Latam")}</p>
       </div>
-      <nav aria-label="Navegación del pie">
-        <a href="/#como-funciona">Cómo funciona</a>
-        <a href="/#ejemplos">Para quién es</a>
-        <a href="/#precio">Precio</a>
-        <a href="/#preguntas">Preguntas</a>
+      <nav aria-label={t("Navegación del pie")}>
+        <a href={homePath(lang) + "#como-funciona"}>{t("Cómo funciona")}</a>
+        <a href={homePath(lang) + "#ejemplos"}>{t("Para quién es")}</a>
+        <a href={homePath(lang) + "#precio"}>{t("Precio")}</a>
+        <a href={homePath(lang) + "#preguntas"}>{t("Preguntas")}</a>
         <a href={contactUrl}>{contactEmail}</a>
       </nav>
     </div>
     <div class="footer-bottom small">
-      <span>© 2026 Hooksage.</span>
-      <span>Edición de videos para equipos chicos. Uruguay y Argentina.</span>
+      <span>{t("© 2026 Hooksage.")}</span>
+      <span>
+        {t("Edición de videos para equipos chicos. Uruguay y Argentina.")}
+      </span>
     </div>
   </div>
 </footer>

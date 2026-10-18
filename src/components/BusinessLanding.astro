@@ -1,0 +1,142 @@
+---
+import {
+  localeFromPath,
+  translator,
+  homePath,
+  waitlistHref,
+} from "../lib/i18n";
+import Layout from "../layouts/Layout.astro";
+import VideoCard from "./VideoCard.astro";
+import Icon from "./Icon.astro";
+import FinalCTA from "./FinalCTA.astro";
+import { businesses } from "../data/content";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+interface Props {
+  business: (typeof businesses)[number];
+}
+const { business }: Props = Astro.props;
+const faqItems =
+  lang === "en"
+    ? [
+        {
+          question:
+            "What footage can I use for " + business.name.toLowerCase() + "?",
+          answer:
+            "You could film: " +
+            business.ideas.map((idea) => idea.toLowerCase()).join(", ") +
+            ". Use the equipment you have and make sure voices can be heard clearly.",
+        },
+        {
+          question: "Do I need editing experience?",
+          answer:
+            "No. We are building Hooksage to turn your raw footage into 15-second vertical videos with cuts, zooms and captions.",
+        },
+        {
+          question: "Can I try it for free?",
+          answer:
+            "Join the waitlist and we will email you when access opens. Your first video will be free. No card is needed and signing up does not start a subscription.",
+        },
+      ]
+    : [
+        {
+          question: `¿Qué material puedo usar para ${business.name.toLowerCase()}?`,
+          answer: `Podés grabar: ${business.ideas.map((idea) => idea.toLowerCase()).join(", ")}. Grabá con el equipo que tengas y priorizá que la voz se escuche bien.`,
+        },
+        {
+          question: "¿Necesito saber editar?",
+          answer:
+            "No necesitás saber editar. Estamos creando Hooksage para convertir tu material en crudo en videos verticales de 15 segundos, con cortes, zooms y subtítulos.",
+        },
+        {
+          question: "¿Puedo probar gratis?",
+          answer:
+            "Sumate a la lista y te avisaremos cuando puedas probar Hooksage. El primer video será gratis, sin tarjeta. No se cobra nada por registrarte.",
+        },
+      ];
+---
+
+<Layout
+  title={business.metaTitle}
+  description={business.metaDescription}
+  faqItems={faqItems}
+>
+  <section class="section business-hero">
+    <div class="container business-hero-grid">
+      <div>
+        <a href={homePath(lang) + "#ejemplos"} class="text-link small">
+          {t("Todos los equipos")}
+          <Icon name="arrow" size={18} />
+        </a>
+        <p class="overline eyebrow">{t("Uruguay y Argentina")}</p>
+        <h1 class="display-l">{business.seo}</h1>
+        <p class="heading-2 business-tagline">{business.headline}</p>
+        <p class="body-l muted">{business.description}</p>
+        <a
+          href={waitlistHref(Astro.url.pathname)}
+          data-waitlist-cta
+          data-cta-location="business"
+          class="hs-btn hs-btn--primary"
+        >
+          {t("Quiero probar Hooksage")}
+          <Icon name="arrow" />
+        </a>
+        <p class="small muted">
+          Te avisamos cuando puedas probarlo. Sin tarjeta.
+        </p>
+      </div>
+      <VideoCard
+        tone={business.tone}
+        business={business.singular}
+        poster={business.poster}
+        headline={business.sample}
+        dark
+        eager
+      />
+    </div>
+  </section>
+  <section class="section business-ideas">
+    <div class="container">
+      <p class="overline eyebrow">{t("Empezá con lo que ya tenés")}</p>
+      <h2 class="heading-1">{t("Tres ideas de qué grabar.")}</h2>
+      <div class="steps-grid">
+        {business.ideas.map((idea, i) => (
+          <article class="hs-card hs-feature">
+            <span class="hs-feature__step">Idea 0{i + 1}</span>
+            <h3 class="heading-3">{idea}</h3>
+            <p class="body muted">
+              {t(
+                "Partí de material real. Elegí una idea por pieza y dejá que la edición acompañe lo que querés comunicar.",
+              )}
+            </p>
+          </article>
+        ))}
+      </div>
+      <p class="body muted business-seo">
+        {t(
+          "Hooksage te ayudará a convertir tu material en videos para TikTok, Instagram Reels y Shorts. Podés sumarte a la lista sin enviar material todavía.",
+        )}
+      </p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container faq-grid">
+      <h2 class="heading-1">
+        {lang === "en" ? "Questions about " : "Preguntas sobre "}
+        {business.seo.toLowerCase()}.
+      </h2>
+      <div class="faq-list">
+        {faqItems.map((faq) => (
+          <details>
+            <summary>
+              <span>{faq.question}</span>
+              <Icon name="chevron" size={20} />
+            </summary>
+            <p class="body muted">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+  <FinalCTA />
+</Layout>

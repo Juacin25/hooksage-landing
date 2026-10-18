@@ -1,17 +1,21 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
-import { faqs } from "../data/content";
+import { contentFor } from "../data/content";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const { faqs } = contentFor(lang);
 ---
 
 <section class="section faq-section" id="preguntas" aria-labelledby="faq-title">
   <div class="container faq-grid">
     <div>
-      <p class="overline eyebrow">Sin vueltas</p>
+      <p class="overline eyebrow">{t("Sin vueltas")}</p>
       <h2 class="heading-1" id="faq-title">
-        Lo que querés saber antes de empezar.
+        {t("Lo que querés saber antes de empezar.")}
       </h2>
       <p class="body muted">
-        Sobre el producto, las primeras pruebas y el acceso.
+        {t("Sobre el producto, las primeras pruebas y el acceso.")}
       </p>
     </div>
     <div class="faq-list">

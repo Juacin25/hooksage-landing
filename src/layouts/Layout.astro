@@ -6,16 +6,26 @@ import "../styles/showcase.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FunnelTracking from "../components/FunnelTracking.astro";
-import { faqs } from "../data/content";
+import { contentFor, type faqs } from "../data/content";
+import { localeFromPath, translator, alternatePath } from "../lib/i18n";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const faqsForLanguage = contentFor(lang).faqs;
+const ogImage =
+  "https://hooksage.com/" + (lang === "en" ? "og-en.png" : "og.png");
 interface Props {
   title?: string;
   description?: string;
   faqItems?: typeof faqs;
 }
 const {
-  title = "Edición de videos para startups y pymes | Hooksage",
-  description = "Convertí tus videos sin editar en piezas de 15 segundos con cortes, zooms y subtítulos. Acceso anticipado para startups y pymes de Uruguay y Argentina.",
-  faqItems = faqs,
+  title = lang === "en"
+    ? "Short-form video editing for startups & teams | Hooksage"
+    : "Edición de videos para startups y pymes | Hooksage",
+  description = lang === "en"
+    ? "Turn raw footage into 15-second videos with thoughtful cuts, zooms and captions. Join the Hooksage waitlist. Built for startups and small teams."
+    : "Convertí tus videos sin editar en piezas de 15 segundos con cortes, zooms y subtítulos. Acceso anticipado para startups y pymes de Uruguay y Argentina.",
+  faqItems = faqsForLanguage,
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
 const structuredData = {
@@ -35,8 +45,13 @@ const structuredData = {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "Web",
       description:
-        "Edición de videos con IA para startups, pymes y marcas personales. Cortes, zooms y subtítulos para videos verticales de 15 segundos.",
+        lang === "en"
+          ? "AI video editing for startups, small businesses and personal brands. Cuts, zooms and captions for 15-second vertical videos."
+          : "Edición de videos con IA para startups, pymes y marcas personales. Cortes, zooms y subtítulos para videos verticales de 15 segundos.",
+      inLanguage: lang,
       areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "United Kingdom" },
         { "@type": "Country", name: "Uruguay" },
         { "@type": "Country", name: "Argentina" },
       ],
@@ -54,7 +69,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="es-UY">
+<html lang={lang === "en" ? "en" : "es-UY"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -62,26 +77,64 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="es-UY" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href={
+        new URL(
+          alternatePath(Astro.url.pathname, "es"),
+          "https://hooksage.com/",
+        ).href
+      }
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href={
+        new URL(
+          alternatePath(Astro.url.pathname, "en"),
+          "https://hooksage.com/",
+        ).href
+      }
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={
+        new URL(
+          alternatePath(Astro.url.pathname, "es"),
+          "https://hooksage.com/",
+        ).href
+      }
+    />
     <link rel="icon" href="/logos/hooksage-app-icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_UY" />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : "es_UY"} />
+    <meta
+      property="og:locale:alternate"
+      content={lang === "en" ? "es_UY" : "en_US"}
+    />
+    <meta property="og:locale:alternate" content="en_GB" />
     <meta property="og:site_name" content="Hooksage" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content="https://hooksage.com/og.png" />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Hooksage. Más videos. Menos horas editando. Startups y pymes de Uruguay y Argentina."
+      content={
+        lang === "en"
+          ? "Hooksage. More videos. Less time editing. For startups and small teams."
+          : "Hooksage. Más videos. Menos horas editando. Startups y pymes de Uruguay y Argentina."
+      }
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://hooksage.com/og.png" />
+    <meta name="twitter:image" content={ogImage} />
     <link
       rel="preload"
       href="/fonts/bricolage-grotesque-latin-800-normal.woff2"
@@ -145,7 +198,7 @@ const structuredData = {
   </head>
   <body>
     <a class="skip-link hs-btn hs-btn--primary" href="#contenido">
-      Saltar al contenido
+      {t("Saltar al contenido")}
     </a>
     <Header />
     <main id="contenido">

@@ -38,8 +38,11 @@ export function validateEntry(input) {
     return null;
   if (input.website !== undefined && input.website !== "") return null;
   const country = input.country === undefined ? "MX" : input.country;
-  if (!["UY", "AR", "MX"].includes(country)) return null;
+  if (!["UY", "AR", "MX", "US", "GB"].includes(country)) return null;
+  const language = input.language === undefined ? "es" : input.language;
+  if (!["es", "en"].includes(language)) return null;
   const entry = {
+    language,
     country,
     businessName: text(input.businessName, 2, 100),
     businessType: types.has(input.businessType) ? input.businessType : null,

@@ -151,3 +151,13 @@ Al abrir una base v1, el servidor crea primero una copia consistente y privada `
 Antes de desplegar, ejecuta las pruebas de migración y crea además un backup consistente con el comando privado. Compara el conteo y una huella de las filas preexistentes antes y después, sin imprimir datos de contacto. No reemplaces el archivo de base con el paquete. Después de migrar, conserva `server/database.mjs` v2 si necesitas revertir solo la interfaz: el servidor v1 no es compatible con el esquema nuevo. No restaures un snapshot sobre una base que ya recibió altas nuevas; preserva ambas y prepara una recuperación que no pierda registros.
 
 Los enlaces de los cuatro rubros gastronómicos anteriores devuelven 301 a la portada y conservan la query de campaña. Las páginas activas son `/videos-para-startups/`, `/videos-para-pymes/`, `/videos-para-marca-personal/` y `/videos-para-equipos-de-marketing/`.
+
+## Versión en inglés y esquema v3
+
+La portada inglesa es `/en/`, con cuatro páginas `/en/videos-for-…/` y selector ES/EN. El build incluye ambos idiomas y `public/og-en.png`. No requiere variables de entorno, otro servicio ni otra base. Reutiliza la misma sesión, volumen, configuración privada y túnel. Sube juntos `dist/`, `server/` y `scripts/database.mjs`, conservando los assets compilados anteriores para las pestañas abiertas.
+
+El formulario admite también Estados Unidos (`US`) y Reino Unido (`GB`), y guarda `language` (`es` o `en`). WhatsApp sigue siendo opcional. Las pestañas anteriores sin idioma conservan español; la huella de deduplicación no depende del idioma.
+
+Antes de migrar v1 o v2, el servidor crea un snapshot consistente y privado `waitlist.sqlite.before-v3-<timestamp>.sqlite` con permisos 0600. Migra en una transacción, preservando IDs, contactos, países, fechas, atribución, consentimiento y huellas; los registros históricos reciben `language=es`. Reiniciar v3 no repite la migración. Ejecuta las pruebas y un backup consistente adicional antes del despliegue. Después verifica integridad, conteo y huella de las columnas preexistentes sin imprimir contactos.
+
+Si reviertes solo la interfaz, conserva el servidor compatible con esquema v3. No restaures un snapshot sobre una base que ya recibió nuevos registros. Comprueba la portada, los cuatro enlaces ingleses, los hreflang, el selector, el formulario inglés con y sin JavaScript y el guardado de país e idioma. Elimina únicamente las filas sintéticas identificadas para esta prueba.

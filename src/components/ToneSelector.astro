@@ -1,8 +1,12 @@
 ---
+import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import VideoCard from "./VideoCard.astro";
-import { tones } from "../data/content";
+import { contentFor } from "../data/content";
 import { referenceMedia, mediaSizes } from "../data/media";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const { tones } = contentFor(lang);
 ---
 
 <section
@@ -13,48 +17,51 @@ import { referenceMedia, mediaSizes } from "../data/media";
   <div class="container">
     <div class="section-heading section-heading--row">
       <div>
-        <p class="overline eyebrow">La edición también comunica.</p>
+        <p class="overline eyebrow">{t("La edición también comunica.")}</p>
         <h2 class="heading-1" id="tone-title">
-          Que se entienda.
+          {t("Que se entienda.")}
           <br />
-          Que tenga ritmo.
+          {t("Que tenga ritmo.")}
         </h2>
       </div>
       <p class="body muted">
-        Subtítulos donde se leen bien. Zooms cuando suman. Cortes que acompañan
-        tu mensaje.
+        {t(
+          "Subtítulos donde se leen bien. Zooms cuando suman. Cortes que acompañan tu mensaje.",
+        )}
       </p>
     </div>
     <div class="tone-studio">
       <div class="tone-stage" data-tone-preview>
         <div class="studio-topline">
           <span class="small">
-            <span class="studio-dot" aria-hidden="true"></span>Vista de estilo
+            <span class="studio-dot" aria-hidden="true"></span>
+            {t("Vista de estilo")}
           </span>
-          <span class="small muted">9:16 / 15 s</span>
+          <span class="small muted">{t("9:16 / 15 s")}</span>
         </div>
         <VideoCard
-          tone="A cámara"
-          business="Tu equipo"
+          tone={t("A cámara")}
+          business={t("Tu equipo")}
           headline={tones[0].title}
         />
         <div class="studio-export small">
-          <span>TikTok</span>
-          <span>Reels</span>
-          <span>Shorts</span>
+          <span>{t("TikTok")}</span>
+          <span>{t("Reels")}</span>
+          <span>{t("Shorts")}</span>
         </div>
       </div>
       <div class="tone-controls">
-        <span class="overline eyebrow">Una pieza para cada mensaje</span>
-        <h3 class="heading-2">¿Qué querés contar?</h3>
+        <span class="overline eyebrow">{t("Una pieza para cada mensaje")}</span>
+        <h3 class="heading-2">{t("¿Qué querés contar?")}</h3>
         <p class="body muted">
-          Explorá la intención de cada formato. La edición se adaptará al
-          contenido que nos pases.
+          {t(
+            "Explorá la intención de cada formato. La edición se adaptará al contenido que nos pases.",
+          )}
         </p>
         <div
           class="tone-pills"
           role="group"
-          aria-label="Elegí el formato del video"
+          aria-label={t("Elegí el formato del video")}
         >
           {tones.map((tone, index) => (
             <button
@@ -65,13 +72,13 @@ import { referenceMedia, mediaSizes } from "../data/media";
               data-title={tone.title}
               data-description={tone.description}
               data-poster={tone.poster}
-              data-alt={referenceMedia[tone.poster].alt}
+              data-alt={t(referenceMedia[tone.poster].alt)}
               data-position={referenceMedia[tone.poster].position}
               data-sizes={mediaSizes(referenceMedia[tone.poster])}
               data-width={referenceMedia[tone.poster].width}
               data-height={referenceMedia[tone.poster].height}
               data-kind={referenceMedia[tone.poster].kind}
-              data-label={referenceMedia[tone.poster].label}
+              data-label={t(referenceMedia[tone.poster].label)}
             >
               <Icon name={tone.icon} size={20} />
               {tone.name}
@@ -92,12 +99,13 @@ import { referenceMedia, mediaSizes } from "../data/media";
           data-waitlist-cta
           data-cta-location="tones"
         >
-          Quiero probar Hooksage
+          {t("Quiero probar Hooksage")}
           <Icon name="arrow" />
         </a>
         <p class="small muted tone-reference-note">
-          Esta es una referencia visual del formato. Vamos a validar la calidad
-          de edición con material real en las primeras pruebas.
+          {t(
+            "Esta es una referencia visual del formato. Vamos a validar la calidad de edición con material real en las primeras pruebas.",
+          )}
         </p>
       </div>
     </div>

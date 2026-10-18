@@ -474,14 +474,15 @@ test("Schema v1 migrates losslessly with a private snapshot and supports both co
     const original = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 2);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 3);
     const migrated = db.prepare("SELECT * FROM waitlist_entries").get();
-    const { country, ...preserved } = migrated;
+    const { country, language, ...preserved } = migrated;
+    assert.equal(language, "es");
     assert.equal(country, "MX");
     assert.deepEqual(preserved, { ...original });
     assert.equal(saveEntry(db, legacy).created, false);
     const snapshots = (await fs.readdir(folder)).filter((name) =>
-      name.includes("before-v2"),
+      name.includes("before-v3"),
     );
     assert.equal(snapshots.length, 1);
     const snapshot = path.join(folder, snapshots[0]);
@@ -512,7 +513,7 @@ test("Schema v1 migrates losslessly with a private snapshot and supports both co
       3,
     );
     assert.equal(
-      (await fs.readdir(folder)).filter((name) => name.includes("before-v2"))
+      (await fs.readdir(folder)).filter((name) => name.includes("before-v3"))
         .length,
       1,
     );
@@ -640,6 +641,226 @@ test("Old niche URLs redirect to the new landing and retain campaign parameters"
       assert.equal(response.status, 301);
       assert.equal(response.headers.get("location"), "/?utm_source=instagram");
     }
+  } finally {
+    await f.close();
+  }
+});
+
+test("Schema v2 migration preserves every existing field and country, adds Spanish as the historical language and snapshots privately", async () => {
+  const folder = await fs.mkdtemp(
+    path.join(os.tmpdir(), "hooksage-v2-migration-"),
+  );
+  const filename = path.join(folder, "waitlist.sqlite");
+  let db;
+  try {
+    db = new DatabaseSync(filename);
+    db.exec(
+      await fs.readFile(
+        new URL("./fixtures/waitlist-v2.sql", import.meta.url),
+        "utf8",
+      ),
+    );
+    const old = {
+      ...entry,
+      country: "UY",
+      businessName: "Existing startup",
+      businessType: "Startup",
+      email: "existing@example.test",
+      whatsapp: "",
+      city: "Montevideo",
+    };
+    const fingerprint = createHash("sha256")
+      .update(
+        [
+          old.email,
+          old.businessName.toLocaleLowerCase("es"),
+          old.city.toLocaleLowerCase("es"),
+          old.country,
+        ].join("\0"),
+      )
+      .digest("hex");
+    db.prepare(
+      "INSERT INTO waitlist_entries (fingerprint,business_name,business_type,contact_name,email,whatsapp,city,neighborhood,landing_path,country) VALUES (?,?,?,?,?,?,?,?,?,?)",
+    ).run(
+      fingerprint,
+      old.businessName,
+      old.businessType,
+      "Existing contact",
+      old.email,
+      old.whatsapp,
+      old.city,
+      "",
+      "/",
+      old.country,
+    );
+    const original = db.prepare("SELECT * FROM waitlist_entries").get();
+    db.close();
+    db = openDatabase(filename);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 3);
+    const { language, ...preserved } = db
+      .prepare("SELECT * FROM waitlist_entries")
+      .get();
+    assert.equal(language, "es");
+    assert.deepEqual(preserved, { ...original });
+    assert.equal(
+      saveEntry(
+        db,
+        validateEntry({
+          ...old,
+          contactName: "Existing contact",
+          language: "en",
+        }),
+      ).created,
+      false,
+    );
+    const snapshots = (await fs.readdir(folder)).filter((name) =>
+      name.includes("before-v3"),
+    );
+    assert.equal(snapshots.length, 1);
+    const snapshot = path.join(folder, snapshots[0]);
+    assert.equal((await fs.stat(snapshot)).mode & 0o777, 0o600);
+    const copy = new DatabaseSync(snapshot, { readOnly: true });
+    assert.deepEqual(
+      copy.prepare("SELECT * FROM waitlist_entries").get(),
+      original,
+    );
+    assert.equal(copy.prepare("PRAGMA user_version").get().user_version, 2);
+    copy.close();
+    for (const country of ["US", "GB"])
+      assert.equal(
+        saveEntry(
+          db,
+          validateEntry({
+            ...entry,
+            businessName: "New " + country,
+            businessType: "Startup",
+            country,
+            whatsapp: "",
+            language: "en",
+          }),
+        ).created,
+        true,
+      );
+    db.close();
+    db = openDatabase(filename);
+    assert.equal(
+      db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      3,
+    );
+    assert.equal(
+      (await fs.readdir(folder)).filter((name) => name.includes("before-v3"))
+        .length,
+      1,
+    );
+    assert.equal(
+      db.prepare("PRAGMA integrity_check").get().integrity_check,
+      "ok",
+    );
+  } finally {
+    db?.close();
+    await fs.rm(folder, { recursive: true, force: true });
+  }
+});
+
+test("US and UK submissions retain English contact preference, normalize phones and confirm native forms in English", async () => {
+  const f = await fixture();
+  try {
+    for (const [country, whatsapp, normalized] of [
+      ["US", "+1 202 555 0123", "+12025550123"],
+      ["GB", "+44 7700 900123", "+447700900123"],
+    ]) {
+      for (const native of [false, true]) {
+        const input = {
+          ...entry,
+          businessName: "English " + country + " " + native,
+          businessType: "Pyme",
+          country,
+          whatsapp,
+          language: "en",
+        };
+        const response = native
+          ? await f.post(undefined, {
+              headers: {
+                Origin: origin,
+                "Content-Type": "application/x-www-form-urlencoded",
+                Accept: "text/html",
+              },
+              body: new URLSearchParams({
+                ...input,
+                attribution: "",
+                landing_path: "/en/",
+              }).toString(),
+            })
+          : await f.post(input);
+        assert.equal(response.status, 201);
+        if (native) {
+          const html = await response.text();
+          assert.match(html, /<html lang="en">/);
+          assert.match(html, /You are on the list/);
+          assert.ok(html.includes('href="/en/"'));
+          assert.doesNotMatch(html, /Ya estás|English US|example.test/);
+        }
+        const row = f.db
+          .prepare(
+            "SELECT country,whatsapp,language FROM waitlist_entries WHERE business_name=?",
+          )
+          .get(input.businessName);
+        assert.deepEqual(
+          { ...row },
+          { country, whatsapp: normalized, language: "en" },
+        );
+      }
+      assert.equal(
+        (
+          await f.post({
+            ...entry,
+            businessName: "No phone " + country,
+            businessType: "Startup",
+            country,
+            whatsapp: "",
+            language: "en",
+          })
+        ).status,
+        201,
+      );
+    }
+    for (const patch of [
+      { country: "UK", whatsapp: "" },
+      { country: "US", whatsapp: "+447700900123" },
+      { country: "GB", whatsapp: "+12025550123" },
+      { country: "US", whatsapp: "+1 111 111 1111" },
+      { country: "GB", whatsapp: "+44 123" },
+      { language: "de", country: "US", whatsapp: "" },
+    ]) {
+      assert.equal(
+        (
+          await f.post({
+            ...entry,
+            businessType: "Startup",
+            language: "en",
+            ...patch,
+          })
+        ).status,
+        400,
+      );
+    }
+    const invalid = await f.post(undefined, {
+      headers: {
+        Origin: origin,
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "text/html",
+      },
+      body: new URLSearchParams({
+        ...entry,
+        country: "US",
+        language: "en",
+        email: "invalid",
+      }).toString(),
+    });
+    assert.equal(invalid.status, 400);
+    const html = await invalid.text();
+    assert.match(html, /Check the form fields/);
+    assert.doesNotMatch(html, /Revisá|Ya estás/);
   } finally {
     await f.close();
   }

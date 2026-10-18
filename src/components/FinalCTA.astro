@@ -1,8 +1,9 @@
 ---
+import { localeFromPath, translator, waitlistHref } from "../lib/i18n";
 import Icon from "./Icon.astro";
-const formHref = Astro.params.rubro
-  ? `/?rubro=${encodeURIComponent(Astro.params.rubro)}#empezar`
-  : "/#empezar";
+const lang = localeFromPath(Astro.url.pathname);
+const t = translator(lang);
+const formHref = waitlistHref(Astro.url.pathname);
 ---
 
 <section class="section final-cta" aria-labelledby="final-title">
@@ -15,8 +16,8 @@ const formHref = Astro.params.rubro
       loading="lazy"
     />
     <h2 class="heading-1" id="final-title">
-      El próximo video de tu equipo <br />
-      empieza con lo que ya grabaste.
+      {t("El próximo video de tu equipo")} <br />
+      {t("empieza con lo que ya grabaste.")}
     </h2>
     <a
       class="hs-btn hs-btn--primary"
@@ -24,11 +25,11 @@ const formHref = Astro.params.rubro
       data-waitlist-cta
       data-cta-location="finalcta"
     >
-      Quiero probar Hooksage
+      {t("Quiero probar Hooksage")}
       <Icon name="arrow" />
     </a>
     <p class="small muted">
-      Te avisamos cuando puedas probar Hooksage. Sin tarjeta.
+      {t("Te avisamos cuando puedas probar Hooksage. Sin tarjeta.")}
     </p>
   </div>
 </section>

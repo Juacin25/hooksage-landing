@@ -1,3 +1,4 @@
+import { translator, type Language } from "../lib/i18n";
 // Monthly billing; export allowances renew weekly.
 export const plans = [
   {
@@ -23,3 +24,23 @@ export const plans = [
   },
 ] as const;
 export const basePlan = plans[0];
+
+export function plansFor(language: Language) {
+  const t = translator(language);
+  return plans.map((plan) => ({
+    ...plan,
+    name:
+      language === "en"
+        ? {
+            Founder: "Founder",
+            Pyme: "Small Business",
+            "Marca Personal": "Personal Brand",
+          }[plan.name]
+        : plan.name,
+    description: t(plan.description),
+    monthlyPriceUSD:
+      language === "en"
+        ? plan.monthlyPriceUSD.replace(",", ".")
+        : plan.monthlyPriceUSD,
+  }));
+}
