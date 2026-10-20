@@ -1,6 +1,6 @@
 # Revisión local del feedback de Reddit
 
-20 de octubre de 2026. Implementación revisada localmente y aprobada por el usuario para publicación. La instancia de revisión conserva una base separada de producción.
+20 de octubre de 2026. Implementación revisada localmente, aprobada por el usuario y publicada en producción. La instancia de revisión conserva una base separada de producción.
 
 ## Qué revisar
 
@@ -26,3 +26,7 @@ El esquema v4 preserva los registros y genera un snapshot privado antes de migra
 El enlace y la respuesta no se incluyen en los eventos de analítica. La consulta de origen, el campo trampa, límites y fallback HTML nativo se conservan. `scripts/database.mjs export` incluye las columnas nuevas y mantiene el escape de celdas CSV.
 
 La publicación aprobada debe seguir la sección nueva de DEPLOYMENT.md: esta entrega sí requiere actualizar el receptor y reiniciarlo para migrar antes de activar el formulario nuevo.
+
+## Publicación aprobada
+
+Código `cd884bea3c4337765723d1964345f8e5e54eac88`, publicado el 20 de octubre de 2026. Diez rutas ES/EN y ambos dominios verificados por HTTPS desde Tenki; formulario JSON español y HTML nativo inglés guardaron ambos campos opcionales. SQLite v4 conserva los cinco registros anteriores; los datos ficticios de prueba se eliminaron. Ver el registro de validación para el detalle operativo.

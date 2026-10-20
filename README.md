@@ -97,4 +97,4 @@ Las fotografías están identificadas como referencias, con créditos en [public
 
 ## Revisión local del feedback de Reddit
 
-La versión completa se revisa en `http://127.0.0.1:8795/` y `/en/`. El backend usa `/private/tmp/hooksage-reddit-review/waitlist.sqlite` y tiene las notificaciones desactivadas. La revisión fue aprobada para publicación el 20 de octubre de 2026. Ver [docs/local-reddit-review.md](docs/local-reddit-review.md).
+La versión completa se revisa en `http://127.0.0.1:8795/` y `/en/`. El backend usa `/private/tmp/hooksage-reddit-review/waitlist.sqlite` y tiene las notificaciones desactivadas. La versión fue aprobada y publicada el 20 de octubre de 2026 en https://hooksage.com y https://hooksage.com/en/. Ver [docs/local-reddit-review.md](docs/local-reddit-review.md).

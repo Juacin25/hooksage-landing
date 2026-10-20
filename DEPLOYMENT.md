@@ -177,7 +177,7 @@ Esta entrega solo actualiza archivos estáticos en `dist/`. No necesita variable
 
 ## Revisión local del feedback de Reddit · 20 de octubre de 2026
 
-Estado: revisión local aprobada por el usuario el 20 de octubre de 2026; publicación autorizada. Esta entrega incluye cambios de frontend y receptor, por lo que las instrucciones de una entrega anterior de solo `dist/` no bastan.
+Estado: desplegada en https://hooksage.com y https://www.hooksage.com el 20 de octubre de 2026. Commit de código: `cd884bea3c4337765723d1964345f8e5e54eac88`. Esta entrega incluye cambios de frontend y receptor, por lo que las instrucciones de una entrega anterior de solo `dist/` no bastan.
 
 Antes de publicarla tras la aprobación del equipo:
 

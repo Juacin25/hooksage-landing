@@ -49,3 +49,17 @@ Esta sección corresponde a la entrega local en revisión y reemplaza las expect
 No se afirma una mejora de conversión medida: los cambios están preparados para evaluación del equipo y posterior validación con usuarios.
 
 Revisión final en navegador: ES y EN sin desbordamiento a 320 y 390 px; selector de suscripción probado en el ancho de 320 px. Se confirmó el guardado de los dos campos opcionales en los dos envíos ficticios y su inclusión en el CSV exportado desde la base local de prueba. Captura de portada en `/private/tmp/hooksage-reddit-review/landing-desktop.png`.
+
+## Publicación del feedback de Reddit · 20 de octubre de 2026
+
+Código publicado: `cd884bea3c4337765723d1964345f8e5e54eac88`. Se reutilizaron la sesión de Tenki, la configuración privada, el volumen y el túnel existentes.
+
+- Se ejecutaron las 18 pruebas de API con Node 24.14.0 de Tenki: todas correctas. Se verificaron por SHA-256 los 183 archivos del manifiesto de la entrega.
+- Se creó un backup consistente privado antes de migrar a SQLite v4. Los cinco registros preexistentes conservaron todas sus columnas anteriores, comprobadas por huella; `integrity_check=ok`. El túnel conservó el mismo proceso.
+- Las diez rutas ES/EN respondieron 200 por HTTPS desde Tenki. Se comparó el HTML completo con la compilación aprobada, revirtiendo únicamente la ofuscación de email agregada por Cloudflare. Ambos dominios respondieron 200; HTTP redirigió con 301 a HTTPS.
+- Los siete MP4 respondieron 206 y devolvieron correctamente los bytes solicitados. El navegador mostró el titular nuevo, los campos opcionales y el cambio de packs a suscripción en inglés.
+- Un envío JSON en español y un formulario HTML nativo en inglés guardaron enlace, respuesta, país e idioma. El reintento JSON no duplicó el alta. Se eliminaron solo los registros ficticios identificados de esta comprobación y el conteo final fue cinco, con los originales intactos.
+- Las notificaciones permanecen configuradas y el journal de la invocación no registró desactivación ni errores de Resend. Esto no se presenta como confirmación de entrega en el buzón.
+- La analítica está habilitada en el build público y deshabilitada en la instancia local separada del puerto 8795. Las solicitudes técnicas de prueba no ejecutaron el Pixel del navegador.
+
+La conexión Wi-Fi de este Mac presentó un certificado emitido por Fortinet al cliente de terminal; no se desactivó TLS ni se cambió la confianza del sistema. La validación HTTPS pública se completó desde Tenki y la landing cargó en el navegador. Este filtro de red es independiente del despliegue.
