@@ -1,74 +1,288 @@
 ---
 import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
-import { plansFor } from "../data/plan";
+import { plansFor, packsFor } from "../data/plan";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
-const plans = plansFor(lang);
+const panels = [
+  {
+    id: "packs",
+    label: t("Packs"),
+    intro: t("Para cuando necesitás videos, sin una cuota mensual."),
+    recurring: false,
+    items: packsFor(lang).map((p) => ({
+      ...p,
+      price: p.priceUSD,
+      quantity: p.exports,
+    })),
+  },
+  {
+    id: "subscriptions",
+    label: t("Suscripción"),
+    intro: t("Un cupo de videos cada semana. Un solo cobro al mes."),
+    recurring: true,
+    items: plansFor(lang).map((p) => ({
+      ...p,
+      price: p.monthlyPriceUSD,
+      quantity: p.weeklyExports,
+    })),
+  },
+];
+const unitPrice = (price: string, quantity: number) =>
+  (Number(price.replace(",", ".")) / quantity)
+    .toFixed(2)
+    .replace(".", lang === "en" ? "." : ",");
 const features = [
   "Cortes, zooms y subtítulos",
   "MP4 vertical para tus redes",
-  "Listos para Reels, TikTok y Shorts",
+  "Ideas de contenido y tu marca",
 ].map(t);
 ---
 
 <section class="section pricing" id="precio" aria-labelledby="price-title">
   <div class="container">
     <div class="section-heading centered">
-      <p class="overline eyebrow">{t("Tres formas de seguir el ritmo")}</p>
+      <p class="overline eyebrow">{t("Contenido a tu ritmo")}</p>
       <h2 class="heading-1" id="price-title">
-        {t("Un plan para lo que viene.")}
+        {t("Una campaña. O todas las semanas.")}
       </h2>
       <p class="body muted">
-        {t("La misma edición. Elegí cuántos videos necesitás por semana.")}
+        {t(
+          "Comprá un pack puntual o pagá menos por video con una suscripción.",
+        )}
       </p>
     </div>
-    <div class="pricing-grid">
-      {plans.map((plan) => (
-        <article
-          class="hs-card hs-price"
-          aria-label={lang === "en" ? plan.name + " plan" : "Plan " + plan.name}
+    <div
+      class="pricing-tabs"
+      role="tablist"
+      aria-label={t("Modalidad de pago")}
+      hidden
+      data-pricing-tabs
+    >
+      {panels.map((p, index) => (
+        <button
+          type="button"
+          id={"pricing-tab-" + p.id}
+          role="tab"
+          aria-selected={index === 0 ? "true" : "false"}
+          aria-controls={"pricing-panel-" + p.id}
+          tabindex={index === 0 ? 0 : -1}
         >
-          <div class="price-header">
-            <h3 class="hs-price__name">{plan.name}</h3>
-          </div>
-          <p class="small muted price-description">{plan.description}</p>
-          <div class="hs-price__amount">
-            <span class="price-currency">{t("US$")}</span>
-            {plan.monthlyPriceUSD}
-            <span class="hs-price__period">{t("/ mes")}</span>
-          </div>
-          <p class="price-quota">
-            <strong>{plan.weeklyExports}</strong>{" "}
-            <span>{t("videos exportados por semana")}</span>
-          </p>
-          <ul class="hs-price__list">
-            {features.map((feature) => (
-              <li>
-                <Icon name="check" />
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="small muted">{t("Cancelá cuando quieras.")}</p>
-          <a
-            class="hs-btn hs-btn--primary"
-            href="#empezar"
-            data-waitlist-cta
-            data-cta-location="pricing"
-          >
-            {t("Quiero probar Hooksage")}
-            <Icon name="arrow" />
-          </a>
-        </article>
+          {p.label}
+        </button>
       ))}
     </div>
+    {panels.map((panel) => (
+      <div
+        class="pricing-panel"
+        id={"pricing-panel-" + panel.id}
+        role="tabpanel"
+        aria-labelledby={"pricing-tab-" + panel.id}
+        data-pricing-panel
+      >
+        <p class="pricing-panel-intro muted">
+          {panel.label} · {panel.intro}
+        </p>
+        <div class="pricing-grid">
+          {panel.items.map((item, index) => (
+            <article
+              class:list={[
+                "hs-card hs-price",
+                { "hs-price--featured": index === 1 },
+              ]}
+              aria-label={
+                panel.recurring
+                  ? lang === "en"
+                    ? item.name + " plan"
+                    : "Plan " + item.name
+                  : item.name
+              }
+            >
+              <div class="price-header">
+                <h3 class="hs-price__name">{item.name}</h3>
+              </div>
+              <p class="small muted price-description">{item.description}</p>
+              <div class="hs-price__amount">
+                <span class="price-currency">{t("US$")}</span>
+                {item.price}
+                <span class="hs-price__period">
+                  {t(panel.recurring ? "/ mes" : "pago único")}
+                </span>
+              </div>
+              <div class="price-quota">
+                <p>
+                  <strong>{item.quantity}</strong>{" "}
+                  <span>
+                    {t(
+                      panel.recurring
+                        ? "videos exportados por semana"
+                        : "videos en el pack",
+                    )}
+                  </span>
+                </p>
+                <p class="price-quota-detail muted">
+                  {panel.recurring
+                    ? t("Hasta {count} videos en 4 semanas").replace(
+                        "{count}",
+                        String(item.quantity * 4),
+                      )
+                    : "≈ " +
+                      t("US$") +
+                      unitPrice(item.price, item.quantity) +
+                      " " +
+                      t("por video")}
+                </p>
+              </div>
+              <ul class="hs-price__list">
+                {features.map((feature) => (
+                  <li>
+                    <Icon name="check" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="small muted">
+                {t(
+                  panel.recurring
+                    ? "Cobro mensual. Cancelá cuando quieras."
+                    : "Un solo pago. Sin renovación automática.",
+                )}
+              </p>
+              <a
+                class:list={[
+                  "hs-btn",
+                  index === 1 ? "hs-btn--primary" : "hs-btn--secondary",
+                ]}
+                href="#empezar"
+                data-waitlist-cta
+                data-cta-location="pricing"
+              >
+                {t("Probar con mi video")}
+                <Icon name="arrow" />
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
     <p class="small muted pricing-note">
       {t(
-        "Precios en dólares, con pago mensual. Las exportaciones se renuevan cada semana.",
+        "Precios en dólares. Cobro mensual, cupos de videos que se renuevan cada semana.",
       )}
       <br />
-      {t("Sumarte a la lista no activa un plan. Sin pago ni tarjeta.")}
+      {t("Sumarte a la prueba no activa un plan. Sin pago ni tarjeta.")}
     </p>
   </div>
 </section>
+
+<script>
+  const control = document.querySelector<HTMLElement>("[data-pricing-tabs]");
+  if (control) {
+    const tabs = [
+      ...control.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
+    ];
+    const select = (selected: HTMLButtonElement) =>
+      tabs.forEach((tab) => {
+        const active = tab === selected;
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        const panel = document.getElementById(
+          tab.getAttribute("aria-controls")!,
+        );
+        if (panel) panel.hidden = !active;
+      });
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => select(tab));
+      tab.addEventListener("keydown", (event) => {
+        let next: number | undefined;
+        if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+        if (event.key === "ArrowLeft")
+          next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = tabs.length - 1;
+        if (next !== undefined) {
+          event.preventDefault();
+          select(tabs[next]);
+          tabs[next].focus();
+        }
+      });
+    });
+    select(tabs[0]);
+    control.hidden = false;
+  }
+</script>
+
+<style>
+  .pricing-tabs {
+    display: flex;
+    gap: 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 20px;
+    padding: 4px;
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+  .pricing-tabs[hidden],
+  .pricing-panel[hidden] {
+    display: none;
+  }
+  .pricing-tabs button {
+    min-height: 44px;
+    padding: 8px 24px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .pricing-tabs button[aria-selected="true"] {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .pricing-panel + .pricing-panel {
+    margin-top: 36px;
+  }
+  .pricing-panel-intro {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .pricing-grid .price-quota {
+    display: block;
+  }
+  .price-quota > p:first-child {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .price-quota .price-quota-detail {
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
+  }
+  .pricing-grid .hs-price--featured {
+    border-color: var(--primary);
+    border-width: 1px;
+  }
+  .pricing-grid .hs-price__amount {
+    flex-wrap: wrap;
+  }
+  .pricing-grid .hs-price__period {
+    white-space: nowrap;
+  }
+  @media (max-width: 400px) {
+    .pricing-grid .hs-price__amount {
+      font-size: 44px;
+      row-gap: 8px;
+    }
+    .pricing-grid .hs-price__period {
+      flex-basis: 100%;
+      margin-left: 0;
+    }
+  }
+</style>

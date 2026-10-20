@@ -11,8 +11,8 @@ export function sendFormResponse(
   const success = body.ok === true;
   const title = success
     ? en
-      ? "You are on the list!"
-      : "¡Listo! Ya estás en la lista."
+      ? "We received your request."
+      : "Recibimos tu solicitud."
     : en
       ? "We could not complete your registration."
       : "No pudimos completar el registro.";
@@ -29,8 +29,8 @@ export function sendFormResponse(
   };
   const description = success
     ? en
-      ? "We will email you when you can try Hooksage."
-      : "Te avisaremos por correo cuando puedas probar Hooksage."
+      ? "We will email you to arrange your free first edit. If you have not shared your clip yet, you can reply with a link when we contact you."
+      : "Te escribimos por email para coordinar tu primera edición gratis. Si todavía no compartiste el clip, podés responder con un enlace cuando te contactemos."
     : descriptions[body.error] ||
       (en
         ? "Go back to the form and try again. You can also email us."

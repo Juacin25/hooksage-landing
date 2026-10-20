@@ -1,4 +1,8 @@
 import { normalizePhone } from "./phone.mjs";
+import {
+  normalizeFootageUrl,
+  normalizeEditingFeedback,
+} from "./trial-fields.mjs";
 const types = new Set([
   "Startup",
   "Pyme",
@@ -51,6 +55,8 @@ export function validateEntry(input) {
     whatsapp: normalizePhone(input.whatsapp ?? "", country),
     city: text(input.city, 2, 100),
     neighborhood: text(input.neighborhood ?? "", 0, 100),
+    footageUrl: normalizeFootageUrl(input.footageUrl ?? ""),
+    editingFeedback: normalizeEditingFeedback(input.editingFeedback ?? ""),
   };
   if (Object.values(entry).some((value) => value === null)) return null;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(entry.email)) return null;

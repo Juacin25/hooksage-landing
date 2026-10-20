@@ -2,9 +2,9 @@
 
 Landing en español e inglés para startups, pymes, marcas personales y equipos de marketing. El piloto de Hooksage parte de ideas o grabaciones: perfil de marca, propuestas con hook, guion y tomas, y edición con voz, texto, movimiento y sonido. Astro genera diez páginas estáticas; un servidor Node guarda los formularios en SQLite. La landing conserva los ejemplos reales, las fotos identificadas como referencias y el diseño del kit de marca. Presenta los tres acabados Natural, Dinámico e Impacto.
 
-Los planes tienen facturación mensual en dólares: **Founder US$14,97 / 15 videos por semana**, **Pyme US$29,99 / 40 videos por semana** y **Marca Personal US$49,99 / 80 videos por semana**. El contacto público es **hooksage.app@gmail.com**.
+Pricing de la versión local en revisión: **Founder US$14,99 / 5 videos por semana**, **Pyme US$34,99 / 15 videos por semana** y **Marca Personal US$59,99 / 40 videos por semana**, con cobro mensual. Packs de pago único: 5 videos por US$5,99, 15 por US$14,99 y 40 por US$34,99. Estos cambios esperan la evaluación del equipo antes de publicarse. El contacto público es **hooksage.app@gmail.com**.
 
-La portada muestra tres comparaciones antes/después en un carrusel con flechas y un ejemplo promocional con reproducción manual. Las copias optimizadas están en `public/videos/`; su procedencia y preparación se documentan en [docs/video-samples.md](docs/video-samples.md). Las fotos de las secciones inferiores siguen identificadas como referencias.
+La portada muestra tres comparaciones antes/después en un carrusel con flechas y un anuncio de la marca en un bloque desplegable separado. En móvil, Antes/Después cambia la versión mostrada; en escritorio se ven ambas juntas. Las copias optimizadas están en `public/videos/`; su procedencia y preparación se documentan en [docs/video-samples.md](docs/video-samples.md). Las fotos de las secciones inferiores siguen identificadas como referencias.
 
 El producto está en desarrollo; esta web registra interés y no ejecuta el editor. La cobertura de funcionalidades y sus límites se documentan en [docs/landing-product-scope.md](docs/landing-product-scope.md). El MP4 actual del piloto es vertical, 720 × 1280 a 30 fps; la duración depende del montaje y la voz.
 
@@ -28,15 +28,15 @@ La landing abre en `http://127.0.0.1:4321/`. Astro redirige `/api` al servidor l
 
 ## Formularios y datos
 
-`POST /api/waitlist` recibe empresa o marca, tipo de equipo, nombre del contacto, correo, país (Uruguay, Argentina, Estados Unidos o Reino Unido), ciudad y WhatsApp opcional con código internacional. Guarda también el idioma elegido (`es` o `en`), la ruta de entrada, cinco UTMs permitidas, fecha UTC y versión del aviso de uso de datos. Conserva compatibilidad con los registros históricos de México.
+`POST /api/waitlist` recibe empresa o marca, tipo de equipo, nombre del contacto, correo, país (Uruguay, Argentina, Estados Unidos o Reino Unido), ciudad y WhatsApp opcional con código internacional. Guarda también el idioma elegido (`es` o `en`), la ruta de entrada, cinco UTMs permitidas, fecha UTC y versión del aviso de uso de datos. Conserva compatibilidad con los registros históricos de México. Admite además `footageUrl` (enlace HTTPS opcional, hasta 2048 caracteres) y `editingFeedback` (respuesta opcional, hasta 1000 caracteres). El receptor guarda el enlace sin descargar su contenido. El equipo coordina por email la primera edición gratis; el formulario no ejecuta el editor.
 
 ## Idiomas
 
 La portada en español está en `/` y la inglesa en `/en/`. El selector ES/EN enlaza las versiones equivalentes de las cinco páginas; funciona sin JavaScript. Con JavaScript conserva la query de campaña y el ancla actual. No hay redirecciones automáticas por IP ni por idioma del navegador.
 
-Los componentes comparten estructura y estilos. Las traducciones están en `src/data/english.json`, `src/data/content.en.ts` y `src/data/product.ts`; las rutas se resuelven en `src/lib/i18n.ts`. Cada página incluye canonical, hreflang recíproco, metadatos, FAQ y confirmaciones en su idioma. El formulario nativo y el envío con JavaScript guardan el mismo contrato; cambiar de idioma no duplica una inscripción. Los precios siguen en dólares por mes y las cuotas en videos exportados por semana: 15, 40 y 80.
+Los componentes comparten estructura y estilos. Las traducciones están en `src/data/english.json`, `src/data/content.en.ts` y `src/data/product.ts`; las rutas se resuelven en `src/lib/i18n.ts`. Cada página incluye canonical, hreflang recíproco, metadatos, FAQ y confirmaciones en su idioma. El formulario nativo y el envío con JavaScript guardan el mismo contrato; cambiar de idioma no duplica una inscripción. Los precios siguen en dólares por mes y las cuotas en videos exportados por semana: 5, 15 y 40 en la propuesta local.
 
-El servidor vuelve a validar los campos, usa consultas parametrizadas y confirma `201 {ok:true,created:true}` después de escribir en SQLite. Una combinación ya registrada de correo, empresa, ciudad y país devuelve `200 {ok:true,created:false}` sin sobrescribir el registro. La interfaz no cuenta ese reintento como una nueva conversión. Los errores mantienen los datos escritos para reintentar.
+El servidor vuelve a validar los campos, usa consultas parametrizadas y confirma `201 {ok:true,created:true}` después de escribir en SQLite. Una combinación ya registrada de correo, empresa, ciudad y país devuelve `200 {ok:true,created:false}` sin sobrescribir sus datos originales. Si el enlace al clip o la respuesta de edición estaban vacíos, puede completarlos una sola vez; un reintento no reemplaza valores ya guardados. El equipo recibe aviso al agregar esos datos, sin contarlo como otra conversión. La interfaz no cuenta ese reintento como una nueva conversión. Los errores mantienen los datos escritos para reintentar.
 
 Los datos no se pueden listar, descargar ni modificar desde una API pública. El receptor acepta JSON y formularios HTML desde los orígenes configurados, limita intentos por dirección y rechaza un campo trampa. Esa protección básica no sustituye un servicio especializado contra bots si aparece abuso real.
 
@@ -52,7 +52,7 @@ Los datos no se pueden listar, descargar ni modificar desde una API pública. El
 
 Hay una plantilla sin credenciales en `.server.env.example`. En Tenki, `hooksage.service` ejecuta el servidor con el archivo privado `.service.env`. La unidad reinicia el proceso si se detiene y se activa al arrancar la VM.
 
-`PUBLIC_FORM_ENDPOINT` es opcional y público, y solo se utiliza en desarrollo. Las compilaciones de producción siempre envían a `/api/waitlist` en el mismo dominio, aunque un `.env` antiguo contenga otra URL. El formulario también permite el envío HTML nativo cuando JavaScript está desactivado o no puede iniciarse. Nunca pongas credenciales en variables `PUBLIC_*`.
+`PUBLIC_FORM_ENDPOINT` es opcional y público, y solo se utiliza en desarrollo. Las compilaciones de producción siempre envían a `/api/waitlist` en el mismo dominio, aunque un `.env` antiguo contenga otra URL. El formulario también permite el envío HTML nativo cuando JavaScript está desactivado o no puede iniciarse. `PUBLIC_ENABLE_ANALYTICS=false` desactiva Meta Pixel en la compilación local de revisión. Nunca pongas credenciales en variables `PUBLIC_*`.
 
 ## Consultar, exportar y respaldar
 
@@ -94,3 +94,7 @@ La verificación de interfaz usa Happy DOM con solicitudes simuladas. La del bac
 - `infra/`: runtime de Tenki y unidad systemd del servidor.
 
 Las fotografías están identificadas como referencias, con créditos en [public/media/CREDITS.md](public/media/CREDITS.md). No representan clientes ni videos generados por Hooksage.
+
+## Revisión local del feedback de Reddit
+
+La versión completa se revisa en `http://127.0.0.1:8795/` y `/en/`. El backend usa `/private/tmp/hooksage-reddit-review/waitlist.sqlite` y tiene las notificaciones desactivadas. La revisión fue aprobada para publicación el 20 de octubre de 2026. Ver [docs/local-reddit-review.md](docs/local-reddit-review.md).

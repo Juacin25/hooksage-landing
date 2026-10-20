@@ -34,3 +34,18 @@ Se creó un volumen persistente de 1 GiB en Tenki y una instancia mínima de 1 C
 **Pendiente para campañas:** conectar el dominio elegido y las herramientas de medición publicitaria, y establecer una rutina de copias y seguimiento del saldo. Los anuncios y los píxeles no están publicados ni conectados. El procedimiento de operación y sus costos están en `DEPLOYMENT.md`.
 
 La instancia continúa en http://127.0.0.1:4321/. No se publicaron campañas ni se modificó DNS. Ver `SEO-FUNNEL.md` para las hipótesis y el plan de comprobación.
+
+
+## Revisión local del feedback de Reddit · 20 de octubre de 2026
+
+Esta sección corresponde a la entrega local en revisión y reemplaza las expectativas antiguas de texto, pricing y formulario de este registro histórico. No se hizo push ni despliegue.
+
+- Astro check: 0 errores, 0 advertencias. Compilación estática de las diez rutas ES/EN correcta.
+- Interfaz: 17 grupos correctos, con titular concreto, pricing de packs y cupos semanales, comparación Antes/Después, selector móvil, pregunta opcional de edición y enlace opcional al clip. Se verifica que los nuevos valores no entren en eventos de analítica.
+- API: 18 pruebas correctas. Cubren guardado de enlaces y texto en JSON y formulario HTML nativo, validación, avisos simulados, deduplicación, incorporación de datos nuevos a una persona ya registrada y migraciones sin pérdida de v1/v2/v3 a v4 con snapshot privado. Se conservaron los controles de origen, límites, preparación de consultas y aislamiento de archivos.
+- Navegador local: el MP4 editado comenzó a reproducirse con `readyState=4`, sin error de decodificación. El selector Antes/Después cambia el reproductor móvil visible. A 390 px no hay desbordamiento horizontal. Los formularios ES/EN devolvieron éxito y SQLite confirmó el enlace y la respuesta en ambos registros ficticios.
+- Entorno de revisión: puerto 8795, SQLite separado en `/private/tmp/hooksage-reddit-review/`, notificaciones por email desactivadas y Meta Pixel ausente en la compilación local. Las pruebas del servidor usan fixtures temporales, no la base pública.
+
+No se afirma una mejora de conversión medida: los cambios están preparados para evaluación del equipo y posterior validación con usuarios.
+
+Revisión final en navegador: ES y EN sin desbordamiento a 320 y 390 px; selector de suscripción probado en el ancho de 320 px. Se confirmó el guardado de los dos campos opcionales en los dos envíos ficticios y su inclusión en el CSV exportado desde la base local de prueba. Captura de portada en `/private/tmp/hooksage-reddit-review/landing-desktop.png`.

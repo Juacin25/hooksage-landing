@@ -23,3 +23,10 @@ Codificación: H.264, píxeles yuv420p, 30 fps, audio AAC y metadatos MP4 al pri
 Las etiquetas y descripciones están en español e inglés; los propios videos conservan su español original. Cada editado tiene una pista WebVTT en inglés, seleccionable desde los controles del reproductor. No hay reproducción automática y los MP4 usan `preload=none`. El carrusel cambia de par mediante flechas, anuncia el ejemplo seleccionado y admite teclado. Al cambiar se pausan todos los videos. Sin JavaScript se muestran los tres pares y se ocultan las flechas; los controles HTML siguen funcionando.
 
 La comparación está dentro del hero, antes de las fotografías ilustrativas de las secciones inferiores. El botón secundario lleva a `#ver-edicion`; cada versión mantiene su propio selector ES/EN y su enlace al formulario.
+
+
+## Revisión local del 20 de octubre de 2026
+
+La comparación ocupa dos columnas en escritorio y un reproductor por vez en móvil, con botones Antes/Después. Las flechas siguen recorriendo los tres pares. La diferencia de duración, los subtítulos, el reencuadre y los textos se señalan según lo que se observa en cada muestra; no se atribuye la reducción completa a silencios ni a una selección de mejores momentos que los archivos por sí solos no prueban.
+
+El anuncio de 15 segundos está en un bloque desplegable identificado como pieza de la marca, separado de los pares. No se presenta como otra comparación ni se inventa un material de partida. Los MP4 y posters se conservan.

@@ -11,6 +11,7 @@ const cases = [
     edited: 5.8,
     width: 480,
     height: 864,
+    changes: ["Subtítulos", "Reencuadre"],
   },
   {
     id: "drivo",
@@ -19,6 +20,7 @@ const cases = [
     edited: 11.2,
     width: 720,
     height: 1280,
+    changes: ["Subtítulos", "Corte más corto"],
   },
   {
     id: "founder-ad",
@@ -27,19 +29,22 @@ const cases = [
     edited: 9.7,
     width: 576,
     height: 1024,
+    changes: ["Texto en pantalla", "Énfasis visual"],
   },
 ];
 const versionLabels = { original: "Antes", edited: "Después" };
-const description = {
+const descriptions = {
   original: "Material original",
   edited: "Cortes, encuadre y subtítulos",
 };
 const versions = ["original", "edited"] as const;
-const duration = (seconds: number) =>
+const number = (seconds: number) =>
   seconds.toLocaleString(lang === "en" ? "en-US" : "es-UY", {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
-  }) + (lang === "en" ? " sec" : " s");
+  });
+const duration = (seconds: number) =>
+  number(seconds) + (lang === "en" ? " sec" : " s");
 ---
 
 <section
@@ -50,136 +55,158 @@ const duration = (seconds: number) =>
 >
   <div class="samples-intro">
     <div>
-      <p class="overline eyebrow">{t("Muestras en video")}</p>
+      <p class="overline eyebrow">{t("El mismo clip. Otra edición.")}</p>
       <h2 class="heading-2" id="samples-title">
-        {t("Del video en crudo al corte final.")}
+        {t("Mirá qué cambia.")}
       </h2>
     </div>
     <p class="small muted">
       {t(
-        "El mismo mensaje, antes y después de editar. Poneles play para comparar el ritmo, el encuadre y los subtítulos.",
+        "Es el mismo clip: compará el encuadre, los textos y cuánto dura. Poné play para escuchar el ritmo.",
       )}
     </p>
   </div>
-  <div class="samples-layout">
-    <div class="sample-comparison">
-      <div class="sample-selector" data-sample-nav hidden>
-        <p
-          class="sample-current small"
-          data-sample-status
-          data-prefix={t("Ejemplo")}
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
+
+  <div class="sample-comparison">
+    <div class="sample-selector" data-sample-nav hidden>
+      <p
+        class="sample-current small"
+        data-sample-status
+        data-prefix={t("Ejemplo")}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {t("Ejemplo")} 1 / {cases.length} · {t(cases[0].label)}
+      </p>
+      <div class="sample-arrows">
+        <button
+          type="button"
+          data-sample-prev
+          aria-label={t("Ejemplo anterior")}
+          aria-controls="sample-cases"
         >
-          {t("Ejemplo")} 1 / {cases.length} · {t(cases[0].label)}
-        </p>
-        <div class="sample-arrows">
-          <button
-            type="button"
-            data-sample-prev
-            aria-label={t("Ejemplo anterior")}
-            aria-controls="sample-cases"
-          >
-            <Icon name="arrow" size={18} />
-          </button>
-          <button
-            type="button"
-            data-sample-next
-            aria-label={t("Siguiente ejemplo")}
-            aria-controls="sample-cases"
-          >
-            <Icon name="arrow" size={18} />
-          </button>
-        </div>
-      </div>
-      <div class="sample-cases" id="sample-cases">
-        {cases.map((item) => (
-          <div
-            class="sample-case"
-            data-sample-case
-            data-label={t(item.label)}
-            role="group"
-            aria-label={t(item.label)}
-          >
-            <h3 class="sr-only">{t(item.label)}</h3>
-            {versions.map((version) => (
-              <figure
-                class:list={[
-                  "sample-film",
-                  { "sample-film--edited": version === "edited" },
-                ]}
-              >
-                <figcaption class="sample-caption">
-                  <span class="sample-state">{t(versionLabels[version])}</span>
-                  <span class="small muted">{duration(item[version])}</span>
-                </figcaption>
-                <video
-                  class="sample-player"
-                  controls
-                  playsinline
-                  preload="none"
-                  poster={"/videos/" + item.id + "-" + version + "-poster.webp"}
-                  width={version === "original" ? item.width : 720}
-                  height={version === "original" ? item.height : 1280}
-                  aria-label={
-                    t(item.label) +
-                    " · " +
-                    t(versionLabels[version]) +
-                    ": " +
-                    t(description[version])
-                  }
-                  aria-describedby="sample-language-note"
-                >
-                  <source
-                    src={"/videos/" + item.id + "-" + version + ".mp4"}
-                    type="video/mp4"
-                  />
-                  {version === "edited" && (
-                    <track
-                      kind="subtitles"
-                      srclang="en"
-                      label="English"
-                      src={"/videos/" + item.id + "-edited.en.vtt"}
-                    />
-                  )}
-                  <a href={"/videos/" + item.id + "-" + version + ".mp4"}>
-                    {t("Abrir video")}
-                  </a>
-                </video>
-                <p class="small sample-description">
-                  {t(description[version])}
-                </p>
-              </figure>
-            ))}
-          </div>
-        ))}
+          <Icon name="arrow" size={18} />
+        </button>
+        <button
+          type="button"
+          data-sample-next
+          aria-label={t("Siguiente ejemplo")}
+          aria-controls="sample-cases"
+        >
+          <Icon name="arrow" size={18} />
+        </button>
       </div>
     </div>
-    <figure class="sample-film sample-film--promo">
-      <figcaption class="sample-caption">
-        <span class="sample-state">{t("Promocional")}</span>
-        <span class="small muted">{lang === "en" ? "15 sec" : "15 s"}</span>
-      </figcaption>
-      <video
-        class="sample-player"
-        controls
-        playsinline
-        preload="none"
-        poster="/videos/promo-poster.webp"
-        width="720"
-        height="1280"
-        aria-label={t("Ejemplo de video promocional con texto y música")}
-        aria-describedby="sample-language-note"
-      >
-        <source src="/videos/promo.mp4" type="video/mp4" />
-        <a href="/videos/promo.mp4">{t("Abrir video")}</a>
-      </video>
-      <p class="small sample-description">
-        {t("Otro formato: una pieza promocional.")}
-      </p>
-    </figure>
+    <div
+      class="sample-version-switch"
+      role="group"
+      aria-label={t("Versión del video")}
+    >
+      {versions.map((version) => (
+        <button
+          type="button"
+          data-sample-version={version}
+          aria-pressed={version === "edited" ? "true" : "false"}
+        >
+          {t(versionLabels[version])}
+        </button>
+      ))}
+    </div>
+    <div class="sample-cases" id="sample-cases">
+      {cases.map((item) => (
+        <div
+          class="sample-case"
+          data-sample-case
+          data-label={t(item.label)}
+          role="group"
+          aria-label={t(item.label)}
+        >
+          <h3 class="sr-only">{t(item.label)}</h3>
+          {versions.map((version) => (
+            <figure
+              class:list={[
+                "sample-film",
+                {
+                  "sample-film--edited": version === "edited",
+                  "sample-film--original": version === "original",
+                },
+              ]}
+            >
+              <figcaption class="sample-caption">
+                <span>
+                  <span class="sample-state">{t(versionLabels[version])}</span>
+                  <span class="sample-context">
+                    {t(
+                      version === "original"
+                        ? "Tu grabación"
+                        : "El corte editado",
+                    )}
+                  </span>
+                </span>
+                <span class="small muted">{duration(item[version])}</span>
+              </figcaption>
+              <video
+                class="sample-player"
+                controls
+                playsinline
+                preload="none"
+                poster={"/videos/" + item.id + "-" + version + "-poster.webp"}
+                width={version === "original" ? item.width : 720}
+                height={version === "original" ? item.height : 1280}
+                aria-label={
+                  t(item.label) +
+                  " · " +
+                  t(versionLabels[version]) +
+                  ": " +
+                  t(descriptions[version])
+                }
+                aria-describedby="sample-language-note"
+              >
+                <source
+                  src={"/videos/" + item.id + "-" + version + ".mp4"}
+                  type="video/mp4"
+                />
+                {version === "edited" && (
+                  <track
+                    kind="subtitles"
+                    srclang="en"
+                    label="English"
+                    src={"/videos/" + item.id + "-edited.en.vtt"}
+                  />
+                )}
+                <a href={"/videos/" + item.id + "-" + version + ".mp4"}>
+                  {t("Abrir video")}
+                </a>
+              </video>
+            </figure>
+          ))}
+          <div
+            class="sample-changes"
+            aria-label={t("Qué cambió en esta edición")}
+          >
+            <p class="sample-duration">
+              <span>{duration(item.original)}</span>
+              <Icon name="arrow" size={18} />
+              <strong>{duration(item.edited)}</strong>
+              <span class="sample-time-saved">
+                {duration(item.original - item.edited)} {t("menos")}
+              </span>
+            </p>
+            <ul>
+              {item.changes.map((change) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  {t(change)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
+
   <div class="samples-footer">
     <p class="small muted" id="sample-language-note">
       {t(
@@ -192,10 +219,50 @@ const duration = (seconds: number) =>
       data-waitlist-cta
       data-cta-location="samples"
     >
-      {t("Quiero probarlo con mi material")}
-      <span aria-hidden="true">↗</span>
+      {t("Probalo con un video tuyo")}
+      <Icon name="arrow" size={18} />
     </a>
   </div>
+
+  <details class="sample-brand-ad">
+    <summary>
+      {t("Ver un anuncio de Hooksage")}
+      <Icon name="chevron" size={18} />
+    </summary>
+    <div class="sample-brand-ad-body">
+      <div>
+        <p class="overline eyebrow">{t("Un anuncio de la marca")}</p>
+        <h3 class="heading-3">
+          {t("Otro formato, separado de la comparación.")}
+        </h3>
+        <p class="small muted">
+          {t(
+            "Esta pieza promociona Hooksage. Los ejemplos de arriba son los que muestran una grabación junto a su versión editada.",
+          )}
+        </p>
+      </div>
+      <figure class="sample-film sample-film--promo">
+        <figcaption class="sample-caption">
+          <span class="sample-state">{t("Promocional")}</span>
+          <span class="small muted">{duration(15)}</span>
+        </figcaption>
+        <video
+          class="sample-player"
+          controls
+          playsinline
+          preload="none"
+          poster="/videos/promo-poster.webp"
+          width="720"
+          height="1280"
+          aria-label={t("Anuncio de Hooksage con texto y música")}
+          aria-describedby="sample-language-note"
+        >
+          <source src="/videos/promo.mp4" type="video/mp4" />
+          <a href="/videos/promo.mp4">{t("Abrir video")}</a>
+        </video>
+      </figure>
+    </div>
+  </details>
 </section>
 
 <script>
@@ -204,27 +271,31 @@ const duration = (seconds: number) =>
     const players = [
       ...root.querySelectorAll<HTMLVideoElement>(".sample-player"),
     ];
+    const pause = () =>
+      players.forEach((p) => {
+        if (!p.paused) p.pause();
+      });
     players.forEach((player) =>
-      player.addEventListener("play", () => {
+      player.addEventListener("play", () =>
         players.forEach((other) => {
           if (other !== player && !other.paused) other.pause();
-        });
-      }),
+        }),
+      ),
     );
-    const cases = [...root.querySelectorAll<HTMLElement>("[data-sample-case]")];
+    const panels = [
+      ...root.querySelectorAll<HTMLElement>("[data-sample-case]"),
+    ];
     const nav = root.querySelector<HTMLElement>("[data-sample-nav]");
     const status = root.querySelector<HTMLElement>("[data-sample-status]");
     const previous =
       root.querySelector<HTMLButtonElement>("[data-sample-prev]");
     const next = root.querySelector<HTMLButtonElement>("[data-sample-next]");
-    if (nav && status && previous && next && cases.length > 1) {
+    if (nav && status && previous && next && panels.length > 1) {
       let selected = 0;
-      const selectCase = (index: number) => {
-        selected = (index + cases.length) % cases.length;
-        players.forEach((player) => {
-          if (!player.paused) player.pause();
-        });
-        cases.forEach((panel, i) => {
+      const select = (index: number) => {
+        selected = (index + panels.length) % panels.length;
+        pause();
+        panels.forEach((panel, i) => {
           panel.hidden = i !== selected;
         });
         status.textContent =
@@ -232,20 +303,39 @@ const duration = (seconds: number) =>
           " " +
           (selected + 1) +
           " / " +
-          cases.length +
+          panels.length +
           " · " +
-          cases[selected].dataset.label;
+          panels[selected].dataset.label;
       };
-      previous.addEventListener("click", () => selectCase(selected - 1));
-      next.addEventListener("click", () => selectCase(selected + 1));
+      previous.addEventListener("click", () => select(selected - 1));
+      next.addEventListener("click", () => select(selected + 1));
       nav.addEventListener("keydown", (event) => {
-        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
         event.preventDefault();
-        selectCase(selected + (event.key === "ArrowRight" ? 1 : -1));
+        select(selected + (event.key === "ArrowRight" ? 1 : -1));
       });
-      selectCase(0);
+      const switches = [
+        ...root.querySelectorAll<HTMLButtonElement>("[data-sample-version]"),
+      ];
+      switches.forEach((button) =>
+        button.addEventListener("click", () => {
+          pause();
+          root.dataset.version = button.dataset.sampleVersion;
+          switches.forEach((item) =>
+            item.setAttribute("aria-pressed", String(item === button)),
+          );
+        }),
+      );
+      select(0);
+      root.dataset.version = "edited";
+      root.dataset.enhanced = "true";
       nav.hidden = false;
     }
+    root
+      .querySelector<HTMLDetailsElement>(".sample-brand-ad")
+      ?.addEventListener("toggle", (event) => {
+        if (!(event.currentTarget as HTMLDetailsElement).open) pause();
+      });
   }
 </script>
 
@@ -269,93 +359,70 @@ const duration = (seconds: number) =>
     display: flex;
     align-items: end;
     justify-content: space-between;
-    gap: var(--space-8);
-    margin-bottom: var(--space-6);
+    gap: 32px;
+    margin-bottom: 24px;
   }
   .samples-intro h2 {
-    max-width: 590px;
     margin: 0;
-    font-size: clamp(25px, 2.7vw, 34px);
+    font-size: clamp(28px, 3vw, 38px);
     letter-spacing: -0.025em;
   }
   .samples-intro .eyebrow {
-    margin-bottom: var(--space-2);
+    margin-bottom: 8px;
   }
   .samples-intro > p {
-    max-width: 330px;
-    margin: 0;
-    line-height: 1.65;
-  }
-  .samples-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: var(--space-8);
-    max-width: 960px;
-    margin-inline: auto;
+    max-width: 380px;
+    line-height: 1.6;
   }
   .sample-comparison {
-    min-width: 0;
+    max-width: 680px;
+    margin-inline: auto;
   }
   .sample-selector {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: var(--space-3);
-    min-height: 44px;
-    margin-bottom: var(--space-2);
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 8px;
+    margin-bottom: 8px;
   }
   .sample-selector[hidden],
   .sample-case[hidden] {
     display: none;
   }
   .sample-current {
-    margin: 0;
     color: var(--ink-muted);
   }
   .sample-arrows {
     display: flex;
-    gap: var(--space-2);
-    flex-shrink: 0;
+    gap: 8px;
   }
   .sample-arrows button {
-    width: 44px;
-    height: 44px;
     display: grid;
     place-items: center;
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--border);
     border-radius: 50%;
     background: var(--surface-sunken);
     color: var(--ink);
     cursor: pointer;
-    transition:
-      border-color 0.15s ease,
-      color 0.15s ease;
   }
   .sample-arrows button:hover {
-    border-color: var(--primary);
     color: var(--primary);
-  }
-  .sample-arrows button:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 3px;
+    border-color: var(--primary);
   }
   [data-sample-prev] :global(svg) {
     transform: rotate(180deg);
   }
+  .sample-cases {
+    display: grid;
+    gap: 32px;
+  }
   .sample-case {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
-  }
-  .sample-cases {
-    display: grid;
-    gap: var(--space-6);
-  }
-  .sample-film--promo {
-    align-self: start;
-  }
-  [data-sample-nav]:not([hidden]) ~ .sample-cases {
-    margin-top: 0;
+    gap: 12px 24px;
   }
   .sample-film {
     min-width: 0;
@@ -363,14 +430,22 @@ const duration = (seconds: number) =>
   }
   .sample-caption {
     display: flex;
-    justify-content: space-between;
-    gap: var(--space-2);
     align-items: center;
-    padding-block: var(--space-3);
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 0;
+  }
+  .sample-caption > span:first-child {
+    display: grid;
+    gap: 2px;
   }
   .sample-state {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
+  }
+  .sample-context {
+    font-size: 12px;
+    color: var(--ink-muted);
   }
   .sample-film--edited .sample-state {
     color: var(--primary);
@@ -381,40 +456,71 @@ const duration = (seconds: number) =>
     height: auto;
     aspect-ratio: 9/16;
     object-fit: contain;
-    background: #000;
+    background: var(--surface-sunken);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
+  }
+  .sample-film--edited .sample-player {
+    border-color: var(--primary);
   }
   .sample-player:focus-visible {
     outline: 3px solid var(--primary);
     outline-offset: 4px;
   }
-  .sample-film--edited .sample-player {
-    border-color: var(--primary);
+  .sample-version-switch {
+    display: none;
   }
-  .sample-film--promo {
-    padding-top: 52px;
-    padding-left: var(--space-8);
-    border-left: 1px solid var(--border);
+  .sample-changes {
+    grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0 20px;
   }
-  .sample-film--promo .sample-caption {
-    padding-top: var(--space-3);
+  .sample-duration {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    color: var(--ink-muted);
   }
-  .sample-description {
-    margin: var(--space-3) 0 0;
-    line-height: 1.5;
+  .sample-duration strong {
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .sample-time-saved {
+    font-size: 12px;
+    margin-left: 8px;
+  }
+  .sample-changes ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+  }
+  .sample-changes li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sample-changes li :global(svg) {
+    color: var(--primary);
   }
   .samples-footer {
     display: flex;
     justify-content: space-between;
-    gap: var(--space-6);
     align-items: center;
-    border-bottom: 1px solid var(--border);
-    margin-top: var(--space-6);
-    padding-bottom: var(--space-6);
+    gap: 24px;
+    padding-block: 20px;
   }
   .samples-footer > p {
-    margin: 0;
     max-width: 570px;
     font-size: 12px;
     line-height: 1.6;
@@ -422,45 +528,116 @@ const duration = (seconds: number) =>
   .samples-footer > a {
     flex-shrink: 0;
   }
+  .sample-brand-ad {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .sample-brand-ad > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--ink-muted);
+    list-style: none;
+  }
+  .sample-brand-ad > summary::-webkit-details-marker {
+    display: none;
+  }
+  .sample-brand-ad[open] > summary :global(svg) {
+    transform: rotate(180deg);
+  }
+  .sample-brand-ad-body {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 40px;
+    align-items: center;
+    max-width: 760px;
+    margin: 0 auto 24px;
+  }
+  .sample-brand-ad-body p:not(.eyebrow) {
+    margin-top: 16px;
+  }
+  .sample-brand-ad-body h3 {
+    max-width: 340px;
+  }
   @media (max-width: 760px) {
     .samples-intro {
       display: block;
     }
     .samples-intro > p {
-      max-width: 500px;
-      margin-top: var(--space-3);
-    }
-    .samples-layout {
-      grid-template-columns: 1fr;
-      gap: var(--space-6);
-      max-width: 550px;
-    }
-    .sample-film--promo {
-      padding-top: 0;
-      padding-left: 0;
-      border-left: 0;
-      border-top: 1px solid var(--border);
-      max-width: 280px;
-      width: 100%;
-      justify-self: center;
+      margin-top: 12px;
+      max-width: 520px;
     }
     .samples-footer {
+      flex-direction: column;
+      align-items: start;
+      gap: 8px;
+    }
+    .sample-changes {
       align-items: start;
       flex-direction: column;
-      gap: var(--space-4);
+    }
+    .sample-brand-ad-body {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      max-width: 320px;
+    }
+    .sample-brand-ad-body .sample-film {
+      max-width: 240px;
+      margin-inline: auto;
     }
   }
-  @media (max-width: 420px) {
+  @media (max-width: 560px) {
+    .sample-comparison {
+      max-width: 360px;
+    }
     .sample-case {
-      gap: var(--space-3);
+      grid-template-columns: 1fr;
     }
-    .sample-caption .small {
-      font-size: 11px;
+    .sample-version-switch {
+      display: none;
+      gap: 4px;
+      border: 1px solid var(--border);
+      background: var(--surface-sunken);
+      border-radius: 999px;
+      padding: 4px;
+      margin-block: 4px 8px;
     }
-    .sample-state {
-      font-size: 13px;
+    .sample-version-switch button {
+      flex: 1;
+      min-height: 44px;
+      border: 0;
+      background: transparent;
+      color: var(--ink-muted);
+      border-radius: 999px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .sample-description {
+    .sample-version-switch button[aria-pressed="true"] {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    [data-enhanced] .sample-version-switch {
+      display: flex;
+    }
+    [data-enhanced][data-version="edited"] .sample-film--original,
+    [data-enhanced][data-version="original"] .sample-film--edited {
+      display: none;
+    }
+    .sample-caption {
+      padding-top: 8px;
+    }
+    .sample-changes {
+      padding-bottom: 16px;
+    }
+    .sample-time-saved {
+      margin-left: 4px;
+    }
+    .sample-current {
       font-size: 12px;
     }
   }

@@ -1,4 +1,4 @@
-import { plansFor } from "./plan";
+import { plansFor, packsFor } from "./plan";
 const planSummary = plansFor("en")
   .map(
     (plan) =>
@@ -51,12 +51,16 @@ export const englishFaqs = [
     answer:
       "The pilot is in development and currently runs locally; public multi-user access is still being prepared. There is no confirmed access date. Joining the waitlist is free and needs no card. Sign up for your first free video when access opens. " +
       planSummary +
-      ". Prices are in US dollars, billed monthly. Export allowances reset weekly.",
+      ". Prices are in US dollars, billed monthly. Export allowances reset weekly. One-off packs are also available: " +
+      packsFor("en")
+        .map((pack) => pack.exports + " videos for US$" + pack.priceUSD)
+        .join(", ") +
+      ".",
   },
   {
     question: "What happens when I submit the form?",
     answer:
-      "We save your details and email you when you can try Hooksage. You don't need to upload footage or brand documents now, and signing up doesn't start a subscription. WhatsApp is optional; include your country code if you prefer that contact.",
+      "We save your request. You can share a link to your clip and tell us what you had to redo in your last edit; both are optional. Someone on the team will email you to arrange a free first edit. The public editor is still in development, and submitting the form does not create an account or start a subscription. WhatsApp is optional.",
   },
   {
     question: "Can I connect an assistant?",

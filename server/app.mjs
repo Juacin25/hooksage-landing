@@ -183,11 +183,18 @@ export function createApp({
       }
       if (!entry) return reply(400, { ok: false, error: "invalid_fields" });
       try {
-        const { created } = saveEntry(db, entry);
+        const { created, detailsAdded, notificationDetails } = saveEntry(
+          db,
+          entry,
+        );
         reply(created ? 201 : 200, { ok: true, created });
         // The database is the source of truth; a failed email never fails the submission.
-        if (created && notify)
-          notify(entry).catch(() => logger.error("waitlist_notify_failed"));
+        if ((created || detailsAdded) && notify)
+          notify({
+            ...entry,
+            ...notificationDetails,
+            requestUpdate: detailsAdded,
+          }).catch(() => logger.error("waitlist_notify_failed"));
         return;
       } catch {
         // Never log request bodies or database error strings containing user data.

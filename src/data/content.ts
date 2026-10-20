@@ -1,5 +1,5 @@
 import { englishFaqs, englishBusinesses } from "./content.en";
-import { plans } from "./plan";
+import { plans, packs } from "./plan";
 const planSummary = plans
   .map(
     (plan) =>
@@ -52,12 +52,16 @@ export const faqs = [
     answer:
       "El piloto está en desarrollo y hoy funciona de forma local; el servicio público multiusuario todavía está en preparación. No hay una fecha de acceso confirmada. Sumarte a la lista es gratis y no requiere tarjeta. Al registrarte quedás en la lista para tu primer video gratis. " +
       planSummary +
-      ". Los precios son mensuales en dólares y las exportaciones se renuevan cada semana.",
+      ". Los precios son mensuales en dólares y las exportaciones se renuevan cada semana. También hay packs de pago único: " +
+      packs
+        .map((pack) => pack.exports + " videos por US$" + pack.priceUSD)
+        .join(", ") +
+      ".",
   },
   {
     question: "¿Qué pasa cuando completo el formulario?",
     answer:
-      "Guardamos tus datos y te avisamos por email cuando puedas probar Hooksage. No hace falta subir videos ni documentos de marca ahora y no se activa una suscripción. WhatsApp es opcional; podés dejar tu número con código de país si preferís ese contacto.",
+      "Guardamos tu solicitud. Podés compartir un enlace al clip y contarnos qué tuviste que rehacer en tu última edición; ambos son opcionales. Una persona del equipo te escribe por email para coordinar una primera edición gratis. El editor público sigue en desarrollo y completar el formulario no abre una cuenta ni activa una suscripción. WhatsApp es opcional.",
   },
   {
     question: "¿Puedo conectarlo con un asistente?",

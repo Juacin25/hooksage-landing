@@ -173,3 +173,17 @@ Si reviertes solo la interfaz, conserva el servidor compatible con esquema v3. N
 La landing ES/EN incorpora perfil de marca, propuestas de contenido, voz en off, acabados, recursos de edición, referencias y biblioteca de versiones. Las imágenes sociales nuevas son `og-product.png` y `og-product-en.png`; los archivos sociales anteriores se conservan para enlaces ya compartidos.
 
 Esta entrega solo actualiza archivos estáticos en `dist/`. No necesita variables nuevas, migraciones ni reiniciar `hooksage.service` o `cloudflared.service`. Copia primero assets y medios; conserva los assets compilados anteriores para las pestañas abiertas y reemplaza cada HTML de forma atómica. Mantén intactos `.service.env` y `/data/hooksage`. Comprueba ambas portadas, las ocho páginas por público, `/healthz`, imágenes sociales y reproducción con HTTP Range después de desplegar.
+
+
+## Revisión local del feedback de Reddit · 20 de octubre de 2026
+
+Estado: revisión local aprobada por el usuario el 20 de octubre de 2026; publicación autorizada. Esta entrega incluye cambios de frontend y receptor, por lo que las instrucciones de una entrega anterior de solo `dist/` no bastan.
+
+Antes de publicarla tras la aprobación del equipo:
+
+- Respaldar SQLite y verificar el conteo de registros. `server/database.mjs` actualiza los esquemas v1/v2/v3 a v4 y guarda un snapshot privado `*.before-v4-*.sqlite` antes de migrar. v4 agrega `footage_url` y `editing_feedback`, con valores vacíos para los registros históricos. No crea otro volumen ni reemplaza `/data/hooksage`.
+- Actualizar juntos `server/trial-fields.mjs`, `validation.mjs`, `database.mjs`, `app.mjs`, `notify.mjs`, `form-response.mjs` y los cambios de `scripts/database.mjs`; conservar las variables privadas existentes. Reiniciar el receptor para abrir el esquema v4 antes de activar el formulario nuevo.
+- Compilar la entrega pública con analítica habilitada (omitir `PUBLIC_ENABLE_ANALYTICS=false`). Copiar primero assets y reemplazar HTML de forma atómica, conservando assets anteriores.
+- Verificar salud, integridad y conteo sin imprimir datos de registros. Comprobar JSON y formulario nativo ES/EN: ambos guardan el enlace y la respuesta opcional. Los enlaces se almacenan; el receptor no descarga los clips. Revisar el aviso del equipo con datos de prueba y limpiar o marcar ese registro conforme al flujo autorizado.
+
+Para la revisión local se usa el puerto 8795, una base en `/private/tmp/hooksage-reddit-review/`, `RESEND_API_KEY` y `NOTIFY_EMAIL_TO` vacíos, y la compilación con `PUBLIC_ENABLE_ANALYTICS=false`. Ninguna de estas opciones locales reemplaza `.service.env`.

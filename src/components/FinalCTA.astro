@@ -16,8 +16,8 @@ const formHref = waitlistHref(Astro.url.pathname);
       loading="lazy"
     />
     <h2 class="heading-1" id="final-title">
-      {t("El próximo video de tu equipo")} <br />
-      {t("empieza con lo que tenés para contar.")}
+      {t("Mandanos un clip.")} <br />
+      {t("Veamos qué podemos hacer con él.")}
     </h2>
     <a
       class="hs-btn hs-btn--primary"
@@ -25,11 +25,13 @@ const formHref = waitlistHref(Astro.url.pathname);
       data-waitlist-cta
       data-cta-location="finalcta"
     >
-      {t("Quiero probar Hooksage")}
+      {t("Probar con mi video")}
       <Icon name="arrow" />
     </a>
     <p class="small muted">
-      {t("Te avisamos cuando puedas probar Hooksage. Sin tarjeta.")}
+      {t(
+        "Tu primera edición es gratis. Te escribimos para coordinar la prueba.",
+      )}
     </p>
   </div>
 </section>

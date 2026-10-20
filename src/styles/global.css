@@ -1700,3 +1700,41 @@ svg {
     padding-inline: 10px;
   }
 }
+
+/* Local review: clear footage-to-edit message and an optional trial brief. */
+.hero--showcase h1 .hero-title-line {
+  white-space: normal;
+}
+.hero--showcase h1 {
+  font-size: clamp(42px, 4.8vw, 66px);
+  max-width: 670px;
+}
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--ink);
+  padding: 12px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 22px;
+  resize: vertical;
+}
+.field textarea::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+}
+.field textarea:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 4px;
+}
+.field textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+@media (max-width: 650px) {
+  .hero--showcase h1 {
+    font-size: clamp(38px, 10vw, 52px);
+  }
+}

@@ -54,10 +54,10 @@ assert.equal(doc.documentElement.lang, "es-UY");
 assert.equal(doc.querySelectorAll("h1").length, 1);
 assert.equal(doc.querySelectorAll(".display-xl").length, 1);
 assert.ok(doc.title.length <= 60);
-assert.match(doc.title, /Edición de videos para startups y pymes/);
+assert.match(doc.title, /De tu video en crudo a un short editado/);
 assert.equal(
   doc.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
-  "Más videos. Menos horas editando.",
+  "De tu video en crudo a un short editado.",
 );
 assert.equal(schemaOffer(), undefined);
 function schemaOffer() {
@@ -339,11 +339,11 @@ ok(
   "Workflow has three editorial steps and the lower gallery uses four different photos",
 );
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
-assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 3);
+assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 6);
 for (const [name, price, quota] of [
-  ["Founder", "14,97", 15],
-  ["Pyme", "29,99", 40],
-  ["Marca Personal", "49,99", 80],
+  ["Founder", "14,99", 5],
+  ["Pyme", "34,99", 15],
+  ["Marca Personal", "59,99", 40],
 ]) {
   const card = [...doc.querySelectorAll(".pricing-grid .hs-price")].find(
     (item) => item.querySelector("h3").textContent.trim() === name,
@@ -368,32 +368,81 @@ for (const [name, price, quota] of [
 assert.doesNotMatch(planText, /Plan Base|próximamente/);
 assert.match(
   doc.querySelector(".reassurance").textContent,
-  /Primer video gratis al registrarse/,
+  /Primera edición gratis/,
 );
 assert.doesNotMatch(
   doc.querySelector(".reassurance").textContent,
   /Uruguay|Argentina/,
 );
 assert.match(planText, /15 videos exportados por semana/);
-assert.match(planText, /US\$\s*14,97\s*\/ mes/);
+assert.match(planText, /US\$\s*14,99\s*\/ mes/);
 assert.doesNotMatch(
   doc.body.textContent,
   /MXN|CDMX|IVA incluido|restaurantes|taquerías/i,
 );
 assert.doesNotMatch(
   doc.body.textContent,
-  /20 videos exportados|\b20 por semana|(?:15|20) videos (?:de 15 segundos )?al mes|0[.,]75 por video/,
+  /\b80 videos exportados por semana|\b15 videos (?:de 15 segundos )?al mes/,
 );
 assert.ok(
   faq.mainEntity.some(
     (item) =>
       /15 videos exportados por semana/.test(item.acceptedAnswer.text) &&
-      /US\$14,97 al mes/.test(item.acceptedAnswer.text),
+      /US\$14,99 al mes/.test(item.acceptedAnswer.text),
   ),
 );
 ok(
-  "The base plan states weekly exports while keeping the monthly billing price",
+  "One-off packs and weekly subscription quotas use consistent USD pricing and FAQ copy",
 );
+
+// Packs remain usable without JavaScript; the enhanced selector supports keyboard navigation.
+assert.equal(doc.querySelectorAll("[data-pricing-panel]").length, 2);
+const pricingPanels = [...doc.querySelectorAll("[data-pricing-panel]")];
+assert.equal(pricingPanels[0].hidden, false);
+assert.equal(pricingPanels[1].hidden, true);
+const pricingTabs = [...doc.querySelectorAll("[data-pricing-tabs] button")];
+pricingTabs[0].dispatchEvent(
+  new w.KeyboardEvent("keydown", { key: "End", bubbles: true }),
+);
+assert.equal(pricingPanels[1].hidden, false);
+assert.equal(pricingTabs[1].getAttribute("aria-selected"), "true");
+pricingTabs[1].dispatchEvent(
+  new w.KeyboardEvent("keydown", { key: "Home", bubbles: true }),
+);
+for (const [name, amount, quota] of [
+  ["Pack 5", "5,99", 5],
+  ["Pack 15", "14,99", 15],
+  ["Pack 40", "34,99", 40],
+]) {
+  const card = [...doc.querySelectorAll(".hs-price")].find(
+    (c) => c.querySelector("h3").textContent === name,
+  );
+  assert.ok(
+    card.querySelector(".hs-price__amount").textContent.includes(amount),
+  );
+  assert.equal(
+    Number(card.querySelector(".price-quota strong").textContent),
+    quota,
+  );
+  assert.match(card.textContent, /pago único/);
+}
+assert.equal(doc.querySelectorAll(".sample-changes").length, 3);
+assert.match(doc.querySelector(".sample-changes").textContent, /2,6 s/);
+assert.ok(doc.querySelector(".sample-brand-ad video"));
+assert.ok(!doc.querySelector(".sample-case .sample-film--promo"));
+const versionButtons = [...doc.querySelectorAll("[data-sample-version]")];
+versionButtons[0].click();
+assert.equal(
+  doc.querySelector("[data-video-samples]").dataset.version,
+  "original",
+);
+versionButtons[1].click();
+assert.equal(
+  doc.querySelector("[data-video-samples]").dataset.version,
+  "edited",
+);
+assert.equal(doc.querySelector("#footage-url").required, false);
+assert.equal(doc.querySelector("#editing-feedback").required, false);
 
 const fallback = await fixture(undefined, { noFetch: true });
 const fallbackForm = fallback.document.querySelector("form");
@@ -429,7 +478,7 @@ submit(w);
 assert.equal(doc.querySelectorAll('[aria-invalid="true"]').length, 6);
 assert.equal(
   doc.querySelectorAll("form input:not(#website):not([type=hidden])").length,
-  5,
+  6,
 );
 assert.equal(doc.querySelectorAll("form select").length, 2);
 fill(w);
@@ -499,6 +548,8 @@ assert.deepEqual(payload, {
   neighborhood: "",
   country: "UY",
   language: "es",
+  footageUrl: "",
+  editingFeedback: "",
 });
 assert.equal(successForm.hidden, true);
 assert.equal(success.document.querySelector("#form-success").hidden, false);
@@ -519,6 +570,37 @@ assert.equal(
 ok(
   "Successful submission normalizes data, prevents duplicates and offers email contact",
 );
+let trialPayload;
+const trial = await fixture(async (_, init) => {
+  trialPayload = JSON.parse(init.body);
+  return { ok: true, json: async () => ({ ok: true, created: true }) };
+});
+fill(trial);
+trial.document.querySelector("#footage-url").value = "javascript:alert(1)";
+submit(trial);
+assert.equal(trialPayload, undefined);
+assert.equal(
+  trial.document.querySelector("#footage-url").getAttribute("aria-invalid"),
+  "true",
+);
+trial.document.querySelector("#footage-url").value =
+  "https://drive.google.com/file/d/local-trial/view";
+trial.document.querySelector("#editing-feedback").value =
+  "Tuve que rehacer los subtítulos.\nTambién los cortes.";
+submit(trial);
+await new Promise((r) => setTimeout(r, 5));
+assert.equal(
+  trialPayload.footageUrl,
+  "https://drive.google.com/file/d/local-trial/view",
+);
+assert.match(trialPayload.editingFeedback, /subtítulos/);
+assert.equal(trial.document.querySelector("#form-success").hidden, false);
+assert.doesNotMatch(
+  JSON.stringify(trial.dataLayer),
+  /local-trial|rehacer los subtítulos/,
+);
+await trial.happyDOM.close();
+
 for (const result of [{ ok: true, created: false }, { ok: false }]) {
   const confirmation = await fixture(async () => ({
     ok: true,
@@ -748,7 +830,7 @@ assert.match(
 );
 assert.match(
   en.querySelector("#samples-title").textContent,
-  /From raw footage/,
+  /See what changed/,
 );
 assert.match(
   en.querySelectorAll(".sample-player")[0].getAttribute("aria-label"),
@@ -759,8 +841,8 @@ assert.match(
   /After:/,
 );
 assert.equal(en.documentElement.lang, "en");
-assert.match(en.querySelector("h1").textContent, /More videos./);
-assert.match(en.querySelector("h1").textContent, /Less time editing./);
+assert.match(en.querySelector("h1").textContent, /Turn raw footage/);
+assert.match(en.querySelector("h1").textContent, /into an edited short/);
 assert.equal(
   en.querySelector("link[rel=canonical]").href,
   "https://hooksage.com/en/",
@@ -796,9 +878,9 @@ assert.deepEqual(
   ["", "US", "GB", "UY", "AR"],
 );
 for (const [name, price, quota] of [
-  ["Founder", "14.97", 15],
-  ["Small Business", "29.99", 40],
-  ["Personal Brand", "49.99", 80],
+  ["Founder", "14.99", 5],
+  ["Small Business", "34.99", 15],
+  ["Personal Brand", "59.99", 40],
 ]) {
   const card = [...en.querySelectorAll(".hs-price")].find(
     (card) => card.querySelector("h3").textContent.trim() === name,
@@ -841,7 +923,7 @@ await new Promise((resolve) => setTimeout(resolve, 5));
 assert.equal(en.querySelector("#form-success").hidden, false);
 assert.match(
   en.querySelector("#form-success").textContent,
-  /You're on the list/,
+  /We received your request/,
 );
 assert.equal(
   englishWindow.dataLayer.filter((item) => item.event === "generate_lead")

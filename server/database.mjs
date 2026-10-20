@@ -18,7 +18,9 @@ const schema = `CREATE TABLE waitlist_entries (
   consent_version TEXT NOT NULL DEFAULT 'waitlist-v2',
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   country TEXT NOT NULL DEFAULT 'MX' CHECK(country IN ('UY','AR','MX','US','GB')),
-  language TEXT NOT NULL DEFAULT 'es' CHECK(language IN ('es','en'))
+  language TEXT NOT NULL DEFAULT 'es' CHECK(language IN ('es','en')),
+  footage_url TEXT NOT NULL DEFAULT '' CHECK(length(footage_url) <= 2048),
+  editing_feedback TEXT NOT NULL DEFAULT '' CHECK(length(editing_feedback) <= 1000)
 )`;
 
 export function openDatabase(filename) {
@@ -30,13 +32,13 @@ export function openDatabase(filename) {
       "PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL; PRAGMA busy_timeout = 5000;",
     );
     const version = db.prepare("PRAGMA user_version").get().user_version;
-    if (version > 3) throw new Error("Unsupported database schema version");
+    if (version > 4) throw new Error("Unsupported database schema version");
     const exists = db
       .prepare(
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name='waitlist_entries'",
       )
       .get();
-    if (exists && version < 3) {
+    if (exists && version < 4) {
       const common = [
         "id",
         "fingerprint",
@@ -64,32 +66,41 @@ export function openDatabase(filename) {
       );
       if (common.some((column) => !oldColumns.has(column)))
         throw new Error("Unsupported legacy database schema");
-      const select = [
-        ...common,
-        oldColumns.has("country") ? "country" : "'MX'",
-        "'es'",
-      ].join(",");
-      // Snapshot the original database on the same private volume before any schema change.
-      const snapshot = `${filename}.before-v3-${Date.now()}.sqlite`;
+      const snapshot = `${filename}.before-v4-${Date.now()}.sqlite`;
       db.exec(`VACUUM INTO '${snapshot.replaceAll("'", "''")}'`);
       chmodSync(snapshot, 0o600);
       db.exec("BEGIN IMMEDIATE");
       try {
-        db.exec(
-          "ALTER TABLE waitlist_entries RENAME TO waitlist_entries_legacy",
-        );
-        db.exec(schema);
-        db.exec(`INSERT INTO waitlist_entries SELECT ${select} FROM waitlist_entries_legacy;
-          DROP TABLE waitlist_entries_legacy;
-          CREATE INDEX waitlist_created_at ON waitlist_entries(created_at);
-          PRAGMA user_version = 3; COMMIT;`);
+        if (version < 3) {
+          const columns = [...common, "country", "language"];
+          const select = [
+            ...common,
+            oldColumns.has("country") ? "country" : "'MX'",
+            oldColumns.has("language") ? "language" : "'es'",
+          ];
+          db.exec(
+            "ALTER TABLE waitlist_entries RENAME TO waitlist_entries_legacy",
+          );
+          db.exec(schema);
+          db.exec(`INSERT INTO waitlist_entries (${columns.join(",")}) SELECT ${select.join(",")} FROM waitlist_entries_legacy;
+            DROP TABLE waitlist_entries_legacy;
+            CREATE INDEX waitlist_created_at ON waitlist_entries(created_at);`);
+        } else {
+          db.exec(
+            "ALTER TABLE waitlist_entries ADD COLUMN footage_url TEXT NOT NULL DEFAULT '' CHECK(length(footage_url) <= 2048)",
+          );
+          db.exec(
+            "ALTER TABLE waitlist_entries ADD COLUMN editing_feedback TEXT NOT NULL DEFAULT '' CHECK(length(editing_feedback) <= 1000)",
+          );
+        }
+        db.exec("PRAGMA user_version = 4; COMMIT;");
       } catch (error) {
         db.exec("ROLLBACK");
         throw error;
       }
     } else if (!exists) {
       db.exec(
-        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 3; COMMIT;`,
+        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 4; COMMIT;`,
       );
     }
     return db;
@@ -106,17 +117,19 @@ export function saveEntry(db, entry) {
     entry.businessName.toLocaleLowerCase("es"),
     entry.city.toLocaleLowerCase("es"),
   ];
-  // Keep the original fingerprint for legacy submissions so old browser tabs still deduplicate.
   if (country !== "MX") parts.push(country);
   const fingerprint = createHash("sha256")
     .update(parts.join("\0"))
     .digest("hex");
+  const footageUrl = entry.footageUrl || "";
+  const editingFeedback = entry.editingFeedback || "";
   const result = db
     .prepare(
       `INSERT INTO waitlist_entries (
     fingerprint, business_name, business_type, contact_name, email, whatsapp, city,
-    neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term, country, consent_version, language
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    neighborhood, landing_path, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+    country, consent_version, language, footage_url, editing_feedback
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(fingerprint) DO NOTHING`,
     )
     .run(
@@ -139,8 +152,47 @@ export function saveEntry(db, entry) {
       country,
       country === "MX" ? "waitlist-v1" : "waitlist-v2",
       entry.language || "es",
+      footageUrl,
+      editingFeedback,
     );
-  return { created: Number(result.changes) === 1 };
+  const created = Number(result.changes) === 1;
+  let detailsAdded = false;
+  // An existing subscriber can add a clip later. Retries never replace submitted details or create another lead.
+  if (!created && (footageUrl || editingFeedback)) {
+    const update = db
+      .prepare(
+        `UPDATE waitlist_entries SET
+      footage_url = CASE WHEN footage_url = '' THEN ? ELSE footage_url END,
+      editing_feedback = CASE WHEN editing_feedback = '' THEN ? ELSE editing_feedback END
+      WHERE fingerprint = ? AND ((footage_url = '' AND ? <> '') OR (editing_feedback = '' AND ? <> ''))
+    `,
+      )
+      .run(
+        footageUrl,
+        editingFeedback,
+        fingerprint,
+        footageUrl,
+        editingFeedback,
+      );
+    detailsAdded = Number(update.changes) === 1;
+  }
+  const stored = detailsAdded
+    ? db
+        .prepare(
+          "SELECT footage_url, editing_feedback FROM waitlist_entries WHERE fingerprint = ?",
+        )
+        .get(fingerprint)
+    : null;
+  return {
+    created,
+    detailsAdded,
+    notificationDetails: stored
+      ? {
+          footageUrl: stored.footage_url,
+          editingFeedback: stored.editing_feedback,
+        }
+      : null,
+  };
 }
 
 export async function backupDatabase(db, destination) {

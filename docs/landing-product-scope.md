@@ -21,7 +21,7 @@ Actualizado el 18 de octubre de 2026 a partir del README del producto entregado 
 
 ## Promesas y disponibilidad
 
-El producto se presenta como piloto en desarrollo. Registrarse guarda interés y permite recibir el aviso de acceso; no habilita de inmediato un editor público. La landing conserva el primer video gratis y los tres planes indicados por el equipo: Founder US$14,97 (15 exportaciones semanales), Pyme US$29,99 (40) y Marca Personal US$49,99 (80), con cobro mensual. La inscripción no inicia una suscripción.
+El producto se presenta como piloto en desarrollo. Registrarse guarda interés y permite recibir el aviso de acceso; no habilita de inmediato un editor público. La landing conserva el primer video gratis y los tres planes indicados por el equipo: Founder US$14,99 (5 exportaciones semanales), Pyme US$34,99 (15) y Marca Personal US$59,99 (40), además de packs de pago único de 5, 15 y 40 videos, en la propuesta local pendiente de evaluación, con cobro mensual. La inscripción no inicia una suscripción.
 
 La duración real de cada muestra se indica en su reproductor; no se promete una duración fija de 15 segundos para todos los resultados. Los acabados orientan la edición y no implican que cada video use todos los efectos. Las recomendaciones de referencias son aproximadas y no prometen ventas o viralidad. La generación de voz o SFX es opcional; no se afirma que servicios externos de IA o consumos estén incluidos en los planes.
 
@@ -29,4 +29,4 @@ Los detalles de instalación local, proveedores opcionales, credenciales y coman
 
 ## Cambios de esta entrega
 
-Texto y composición compartidos por ES/EN, páginas por público, FAQ y JSON-LD, metadatos e imágenes sociales. El receptor, el contrato del formulario, la medición, SQLite, notificaciones, precios, cuotas y archivos de video no cambian.
+Texto y composición compartidos por ES/EN, páginas por público, FAQ y JSON-LD, metadatos e imágenes sociales. En la revisión local del 20 de octubre de 2026, el formulario agrega el enlace opcional al clip y una pregunta de experiencia de edición. El receptor los valida y guarda con una migración v4 que preserva los campos existentes. Las notificaciones incluyen los datos nuevos y no cuentan un lead adicional si una persona ya registrada completa el clip. Los archivos de video conservan su contenido; los cambios visuales separan el anuncio de la comparación y muestran diferencias observables. El despliegue espera la evaluación del equipo.

@@ -9,6 +9,7 @@ import FunnelTracking from "../components/FunnelTracking.astro";
 import { contentFor, type faqs } from "../data/content";
 import { localeFromPath, translator, alternatePath } from "../lib/i18n";
 const lang = localeFromPath(Astro.url.pathname);
+const analyticsEnabled = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== "false";
 const t = translator(lang);
 const faqsForLanguage = contentFor(lang).faqs;
 const ogImage =
@@ -21,11 +22,11 @@ interface Props {
 }
 const {
   title = lang === "en"
-    ? "Short-form video editing for startups & teams | Hooksage"
-    : "Edición de videos para startups y pymes | Hooksage",
+    ? "Turn raw footage into an edited short | Hooksage"
+    : "De tu video en crudo a un short editado | Hooksage",
   description = lang === "en"
-    ? "Content ideas, scripts and short videos shaped by your brand. Use your footage or a voiceover, with motion and sound. Join the Hooksage waitlist."
-    : "Ideas, guiones y edición de videos cortos según tu marca. Grabaciones o voz en off, con texto, movimiento y sonido. Sumate al acceso anticipado.",
+    ? "Turn your phone footage into a vertical short with cuts, reframing and captions. Send a clip to try your first edit free. For startups and small teams."
+    : "Convertí tus grabaciones en un short vertical con cortes, encuadre y subtítulos. Mandanos un clip para probar tu primera edición gratis.",
   faqItems = faqsForLanguage,
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
@@ -154,48 +155,50 @@ const structuredData = {
       type="application/ld+json"
       set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
     />
-    <!-- Meta Pixel Code -->
-    <script is:inline>
-      !(function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js",
-      );
-      fbq("init", "1119851420489248");
-      fbq("track", "PageView");
-      // Only new waitlist entries count as a Lead; no personal data is sent.
-      window.addEventListener("hooksage:funnel", (event) => {
-        if (event.detail?.event === "generate_lead") fbq("track", "Lead");
-      });
-    </script>
-    <noscript>
-      <img
-        height="1"
-        width="1"
-        style="display:none"
-        alt=""
-        src="https://www.facebook.com/tr?id=1119851420489248&ev=PageView&noscript=1"
-      />
-    </noscript>
-    <!-- End Meta Pixel Code -->
+    {analyticsEnabled && (
+      <>
+        <script is:inline>
+          !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+              n.callMethod
+                ? n.callMethod.apply(n, arguments)
+                : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(
+            window,
+            document,
+            "script",
+            "https://connect.facebook.net/en_US/fbevents.js",
+          );
+          fbq("init", "1119851420489248");
+          fbq("track", "PageView");
+          // Only new waitlist entries count as a Lead; no personal data is sent.
+          window.addEventListener("hooksage:funnel", (event) => {
+            if (event.detail?.event === "generate_lead") fbq("track", "Lead");
+          });
+        </script>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style="display:none"
+            alt=""
+            src="https://www.facebook.com/tr?id=1119851420489248&ev=PageView&noscript=1"
+          />
+        </noscript>
+      </>
+    )}
   </head>
   <body>
     <a class="skip-link hs-btn hs-btn--primary" href="#contenido">

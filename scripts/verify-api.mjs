@@ -408,7 +408,7 @@ test("Native HTML forms save and deduplicate entries without exposing submitted 
       assert.match(response.headers.get("content-type"), /text\/html/);
       assert.equal(response.headers.get("cache-control"), "no-store");
       const html = await response.text();
-      assert.match(html, /Ya estás en la lista/);
+      assert.match(html, /Recibimos tu solicitud/);
       assert.doesNotMatch(
         html,
         /EXAMPLE@example.test|Tacos de prueba|5512345678/,
@@ -466,7 +466,7 @@ test("Native forms preserve validation, origin checks, limits and honest failure
       assert.match(html, /No pudimos completar/);
       assert.doesNotMatch(
         html,
-        /Ya estás en la lista|private-marker|EXAMPLE@example.test/,
+        /Recibimos tu solicitud|private-marker|EXAMPLE@example.test/,
       );
     }
     assert.equal(
@@ -476,7 +476,7 @@ test("Native forms preserve validation, origin checks, limits and honest failure
     f.db.close();
     const unavailable = await f.post(undefined, { headers, body: encode({}) });
     assert.equal(unavailable.status, 503);
-    assert.doesNotMatch(await unavailable.text(), /Ya estás en la lista/);
+    assert.doesNotMatch(await unavailable.text(), /Recibimos tu solicitud/);
   } finally {
     await f.close();
   }
@@ -540,15 +540,18 @@ test("Schema v1 migrates losslessly with a private snapshot and supports both co
     const original = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 3);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
     const migrated = db.prepare("SELECT * FROM waitlist_entries").get();
-    const { country, language, ...preserved } = migrated;
+    const { country, language, footage_url, editing_feedback, ...preserved } =
+      migrated;
+    assert.equal(footage_url, "");
+    assert.equal(editing_feedback, "");
     assert.equal(language, "es");
     assert.equal(country, "MX");
     assert.deepEqual(preserved, { ...original });
     assert.equal(saveEntry(db, legacy).created, false);
     const snapshots = (await fs.readdir(folder)).filter((name) =>
-      name.includes("before-v3"),
+      name.includes("before-v4"),
     );
     assert.equal(snapshots.length, 1);
     const snapshot = path.join(folder, snapshots[0]);
@@ -579,7 +582,7 @@ test("Schema v1 migrates losslessly with a private snapshot and supports both co
       3,
     );
     assert.equal(
-      (await fs.readdir(folder)).filter((name) => name.includes("before-v3"))
+      (await fs.readdir(folder)).filter((name) => name.includes("before-v4"))
         .length,
       1,
     );
@@ -762,8 +765,8 @@ test("Schema v2 migration preserves every existing field and country, adds Spani
     const original = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 3);
-    const { language, ...preserved } = db
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
+    const { language, footage_url, editing_feedback, ...preserved } = db
       .prepare("SELECT * FROM waitlist_entries")
       .get();
     assert.equal(language, "es");
@@ -780,7 +783,7 @@ test("Schema v2 migration preserves every existing field and country, adds Spani
       false,
     );
     const snapshots = (await fs.readdir(folder)).filter((name) =>
-      name.includes("before-v3"),
+      name.includes("before-v4"),
     );
     assert.equal(snapshots.length, 1);
     const snapshot = path.join(folder, snapshots[0]);
@@ -814,7 +817,7 @@ test("Schema v2 migration preserves every existing field and country, adds Spani
       3,
     );
     assert.equal(
-      (await fs.readdir(folder)).filter((name) => name.includes("before-v3"))
+      (await fs.readdir(folder)).filter((name) => name.includes("before-v4"))
         .length,
       1,
     );
@@ -862,7 +865,7 @@ test("US and UK submissions retain English contact preference, normalize phones 
         if (native) {
           const html = await response.text();
           assert.match(html, /<html lang="en">/);
-          assert.match(html, /You are on the list/);
+          assert.match(html, /We received your request/);
           assert.ok(html.includes('href="/en/"'));
           assert.doesNotMatch(html, /Ya estás|English US|example.test/);
         }
@@ -929,5 +932,179 @@ test("US and UK submissions retain English contact preference, normalize phones 
     assert.doesNotMatch(html, /Revisá|Ya estás/);
   } finally {
     await f.close();
+  }
+});
+
+test("Trial links and editing feedback survive JSON/native submission; existing leads can add them once without another lead", async () => {
+  const sent = [];
+  const f = await fixture({
+    notify: async (e) => {
+      sent.push(e);
+    },
+  });
+  try {
+    assert.equal((await f.post()).status, 201);
+    const detail = {
+      ...entry,
+      footageUrl: "https://drive.google.com/file/d/fixture/view",
+      editingFeedback: "Corregir subtítulos.\nRehacer los cortes.",
+    };
+    const res = await f.post(detail);
+    assert.equal(res.status, 200);
+    assert.deepEqual(await res.json(), { ok: true, created: false });
+    assert.equal((await f.post(detail)).status, 200);
+    const row = f.db.prepare("SELECT * FROM waitlist_entries").get();
+    assert.equal(row.footage_url, detail.footageUrl);
+    assert.equal(row.editing_feedback, detail.editingFeedback);
+    assert.equal(row.contact_name, "Persona de prueba");
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      1,
+    );
+    assert.equal(sent.length, 2);
+    assert.equal(sent[1].requestUpdate, true);
+    assert.equal(sent[1].footageUrl, detail.footageUrl);
+    const changed = {
+      ...detail,
+      footageUrl: "https://example.test/replacement",
+      contactName: "Do not replace",
+    };
+    assert.equal((await f.post(changed)).status, 200);
+    assert.equal(sent.length, 2);
+    assert.equal(
+      f.db.prepare("SELECT footage_url FROM waitlist_entries").get()
+        .footage_url,
+      detail.footageUrl,
+    );
+    const native = {
+      ...detail,
+      businessName: "Native trial",
+      language: "en",
+      landing_path: "/en/",
+      attribution: "",
+    };
+    const nativeRes = await f.post(undefined, {
+      headers: {
+        Origin: origin,
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "text/html",
+      },
+      body: new URLSearchParams(native).toString(),
+    });
+    assert.equal(nativeRes.status, 201);
+    const nativeHtml = await nativeRes.text();
+    assert.match(nativeHtml, /We received your request/);
+    assert.doesNotMatch(nativeHtml, /drive.google.com|Corregir subtítulos/);
+    const copy = f.db
+      .prepare(
+        "SELECT footage_url, editing_feedback FROM waitlist_entries WHERE business_name=?",
+      )
+      .get("Native trial");
+    assert.equal(copy.footage_url, detail.footageUrl);
+    assert.equal(copy.editing_feedback, detail.editingFeedback);
+    const emails = [];
+    const notifier = createNotifier({
+      apiKey: "re_mock",
+      to: "team@example.test",
+      fetch: async (url, init) => {
+        emails.push({ url, body: JSON.parse(init.body) });
+        return { ok: true };
+      },
+    });
+    await notifier(validateEntry(detail));
+    assert.equal(emails[0].url, "https://api.resend.com/emails");
+    assert.match(emails[0].body.text, /drive.google.com/);
+    assert.match(emails[0].body.text, /Rehacer los cortes/);
+  } finally {
+    await f.close();
+  }
+});
+
+test("Trial fields reject unsafe protocols, credentials, controls and excessive text without saving", async () => {
+  const f = await fixture();
+  try {
+    for (const patch of [
+      { footageUrl: "javascript:alert(1)" },
+      { footageUrl: "http://example.test/clip" },
+      { footageUrl: "https://user:password@example.test/clip" },
+      { footageUrl: "https://example.test/" + "x".repeat(2048) },
+      { footageUrl: 42 },
+      { editingFeedback: "x".repeat(1001) },
+      { editingFeedback: "hidden\u0000text" },
+      { editingFeedback: [] },
+    ])
+      assert.equal((await f.post({ ...entry, ...patch })).status, 400);
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      0,
+    );
+  } finally {
+    await f.close();
+  }
+});
+
+test("Schema v3 upgrades to v4 with a private snapshot, preserving every existing field and language", async () => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(), "hooksage-v3-trial-"));
+  const filename = path.join(folder, "waitlist.sqlite");
+  let db;
+  try {
+    db = new DatabaseSync(filename);
+    const v3Fixture = (
+      await fs.readFile(
+        new URL("./fixtures/waitlist-v2.sql", import.meta.url),
+        "utf8",
+      )
+    ).replace("('UY','AR','MX')", "('UY','AR','MX','US','GB')");
+    db.exec(v3Fixture);
+    db.exec(
+      "ALTER TABLE waitlist_entries ADD COLUMN language TEXT NOT NULL DEFAULT 'es'; PRAGMA user_version=3;",
+    );
+    db.prepare(
+      "INSERT INTO waitlist_entries (fingerprint,business_name,business_type,contact_name,email,whatsapp,city,neighborhood,landing_path,country,language) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+    ).run(
+      "v3-fixture",
+      "Existing team",
+      "Startup",
+      "Existing person",
+      "old@example.test",
+      "",
+      "London",
+      "",
+      "/en/",
+      "GB",
+      "en",
+    );
+    const before = db.prepare("SELECT * FROM waitlist_entries").get();
+    db.close();
+    db = openDatabase(filename);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
+    const { footage_url, editing_feedback, ...preserved } = db
+      .prepare("SELECT * FROM waitlist_entries")
+      .get();
+    assert.deepEqual(preserved, { ...before });
+    assert.equal(footage_url, "");
+    assert.equal(editing_feedback, "");
+    assert.equal(
+      db.prepare("PRAGMA integrity_check").get().integrity_check,
+      "ok",
+    );
+    db.close();
+    db = openDatabase(filename);
+    const snapshots = (await fs.readdir(folder)).filter((n) =>
+      n.includes("before-v4"),
+    );
+    assert.equal(snapshots.length, 1);
+    const snapshot = path.join(folder, snapshots[0]);
+    assert.equal((await fs.stat(snapshot)).mode & 0o777, 0o600);
+    const copy = new DatabaseSync(snapshot, { readOnly: true });
+    assert.equal(copy.prepare("PRAGMA user_version").get().user_version, 3);
+    assert.deepEqual(
+      copy.prepare("SELECT * FROM waitlist_entries").get(),
+      before,
+    );
+    copy.close();
+  } finally {
+    db?.close();
+    await fs.rm(folder, { recursive: true, force: true });
   }
 });

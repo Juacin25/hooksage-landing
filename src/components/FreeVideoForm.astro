@@ -34,7 +34,9 @@ const messages = Object.fromEntries(
     sending: "Enviando…",
     requestFailed:
       "No pudimos enviar tus datos. Revisá tu conexión e intentá de nuevo.",
-    submit: "Quiero estar en la lista",
+    footage: "Usá un enlace HTTPS válido, sin usuario ni contraseña.",
+    feedback: "Contanos tu experiencia en un máximo de 1000 caracteres.",
+    submit: "Solicitar mi edición gratis",
   }).map(([key, source]) => [key, t(source)]),
 );
 ---
@@ -44,13 +46,13 @@ const messages = Object.fromEntries(
     <div class="form-intro">
       <span class="hs-badge hs-badge--accent">{t("Primer video gratis")}</span>
       <h2 class="heading-1" id="form-title">
-        {t("El próximo video de tu equipo")}
+        {t("Probemos con un video tuyo.")}
         <br />
-        <span>{t("puede salir de acá.")}</span>
+        <span>{t("La primera edición es gratis.")}</span>
       </h2>
       <p class="body-l muted">
         {t(
-          "Contanos qué estás construyendo. Te avisamos por email cuando puedas probar Hooksage.",
+          "Dejanos un enlace al clip y contanos qué querés mejorar. Una persona del equipo te escribe para coordinar la prueba. Si todavía no tenés el video, podés dejar el enlace para después.",
         )}
       </p>
       <ul class="form-benefits body">
@@ -104,10 +106,10 @@ const messages = Object.fromEntries(
             autocomplete="off"
           />
         </div>
-        <h3 class="heading-3">{t("Sé de los primeros en probarlo.")}</h3>
+        <h3 class="heading-3">{t("Solicitá tu primera edición.")}</h3>
         <p class="small muted form-subtitle">
           {t(
-            "Te avisamos del acceso por email. Los campos con * son obligatorios.",
+            "Coordinamos la prueba por email. El enlace y la pregunta de edición son opcionales; los campos con * son obligatorios.",
           )}
         </p>
         <div class="field">
@@ -240,13 +242,55 @@ const messages = Object.fromEntries(
           />
           <span class="field-error small" id="city-error"></span>
         </div>
+        <div class="field">
+          <label class="label" for="footage-url">
+            {t("Enlace a tu video")}{" "}
+            <span class="optional">{t("(opcional)")}</span>
+          </label>
+          <input
+            id="footage-url"
+            name="footageUrl"
+            type="url"
+            maxlength="2048"
+            pattern="https://.+"
+            placeholder="https://drive.google.com/…"
+            autocomplete="off"
+            aria-describedby="footage-url-help footage-url-error"
+          />
+          <span class="small muted field-help" id="footage-url-help">
+            {t(
+              "Drive, Dropbox o similar. Revisá que el enlace permita ver el clip. También podés mandarlo después por email.",
+            )}
+          </span>
+          <span class="field-error small" id="footage-url-error"></span>
+        </div>
+        <div class="field">
+          <label class="label" for="editing-feedback">
+            {t("¿Qué tuviste que rehacer en tu último video?")}{" "}
+            <span class="optional">{t("(opcional)")}</span>
+          </label>
+          <textarea
+            id="editing-feedback"
+            name="editingFeedback"
+            rows="3"
+            maxlength="1000"
+            placeholder={t(
+              "Por ejemplo: corregir subtítulos, sacar pausas o volver a hacer los cortes.",
+            )}
+            aria-describedby="editing-feedback-help editing-feedback-error"
+          ></textarea>
+          <span class="small muted field-help" id="editing-feedback-help">
+            {t("Si probaste un editor con IA, contanos qué no funcionó.")}
+          </span>
+          <span class="field-error small" id="editing-feedback-error"></span>
+        </div>
         <p class="small muted form-consent">
           {t(
-            "Usaremos estos datos para coordinar las primeras pruebas y avisarte del acceso.",
+            "Usaremos tus datos y el enlace que compartas para coordinar la prueba y avisarte del acceso. Registrarte no abre una cuenta ni activa una suscripción.",
           )}
         </p>
         <button class="hs-btn hs-btn--primary" type="submit">
-          <span data-submit-label>{t("Quiero estar en la lista")}</span>
+          <span data-submit-label>{t("Solicitar mi edición gratis")}</span>
           <Icon name="arrow" />
         </button>
         <p
@@ -267,9 +311,11 @@ const messages = Object.fromEntries(
         <div class="success-icon">
           <Icon name="check" size={32} />
         </div>
-        <h3 class="heading-2">{t("¡Listo! Ya estás en la lista.")}</h3>
+        <h3 class="heading-2">{t("Recibimos tu solicitud.")}</h3>
         <p class="body muted">
-          {t("Te avisaremos por email cuando puedas probar Hooksage.")}
+          {t(
+            "Te escribimos por email para coordinar la prueba. Si todavía no compartiste el clip, podés responder con el enlace cuando te contactemos.",
+          )}
         </p>
         <a
           class="hs-btn hs-btn--primary"
@@ -284,6 +330,10 @@ const messages = Object.fromEntries(
 </section>
 <script>
   import { normalizePhone } from "../../server/phone.mjs";
+  import {
+    normalizeFootageUrl,
+    normalizeEditingFeedback,
+  } from "../../server/trial-fields.mjs";
   const form = document.querySelector<HTMLFormElement>("#free-video-form");
   if (
     form &&
@@ -306,6 +356,8 @@ const messages = Object.fromEntries(
       phone: form.querySelector<HTMLInputElement>("#whatsapp")!,
       city: form.querySelector<HTMLInputElement>("#city")!,
       country: form.querySelector<HTMLSelectElement>("#country")!,
+      footage: form.querySelector<HTMLInputElement>("#footage-url")!,
+      feedback: form.querySelector<HTMLTextAreaElement>("#editing-feedback")!,
     };
     fields.country.addEventListener("change", () => {
       const examples: Record<string, string> = {
@@ -342,7 +394,9 @@ const messages = Object.fromEntries(
       fields.type.value = businessTypes[selectedBusiness];
     const phoneNumber = () =>
       normalizePhone(fields.phone.value, fields.country.value);
-    function validate(field: HTMLInputElement | HTMLSelectElement) {
+    function validate(
+      field: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
+    ) {
       let message = "";
       if (field === fields.name && field.value.trim().length < 2)
         message = messages.businessName;
@@ -376,6 +430,13 @@ const messages = Object.fromEntries(
         field.value.trim().length > 100
       )
         message = messages.length;
+      if (field === fields.footage && normalizeFootageUrl(field.value) === null)
+        message = messages.footage;
+      if (
+        field === fields.feedback &&
+        normalizeEditingFeedback(field.value) === null
+      )
+        message = messages.feedback;
       field.setAttribute("aria-invalid", String(Boolean(message)));
       document.getElementById(`${field.id}-error`)!.textContent = message;
       return !message;
@@ -425,6 +486,9 @@ const messages = Object.fromEntries(
           language: form.dataset.language || "es",
           city: fields.city.value.trim(),
           neighborhood: "",
+          footageUrl: normalizeFootageUrl(fields.footage.value) || "",
+          editingFeedback:
+            normalizeEditingFeedback(fields.feedback.value) || "",
           intent: "waitlist",
           website: form.querySelector<HTMLInputElement>("#website")!.value,
           attribution: window.HooksageFunnel?.getAttribution() || {

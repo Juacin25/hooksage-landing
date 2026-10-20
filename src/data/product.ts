@@ -76,12 +76,12 @@ export function productFor(language: Language) {
     workflow: {
       eyebrow: text("Cómo funciona el piloto", "How the pilot works"),
       title: text(
-        "De una idea o grabación a un video que podés revisar.",
-        "From an idea or recording to a video you can review.",
+        "Vos grabás. Nosotros hacemos el primer corte.",
+        "You film. We make the first edit.",
       ),
       intro: text(
-        "Partí de una propuesta para tu marca o traé material propio. Después elegís la dirección de la edición y revisás el resultado.",
-        "Start with a suggestion for your brand or bring your own footage. Choose the direction of the edit, then review the result.",
+        "Una idea a cámara, una demo o algo que pasó en tu negocio. Traé ese material y contanos qué querés decir.",
+        "A thought to camera, a demo or something happening at your business. Bring that footage and tell us what you want to say.",
       ),
       caption: text(
         "Tu mensaje, con una revisión antes de publicar.",
@@ -90,32 +90,32 @@ export function productFor(language: Language) {
       steps: [
         {
           title: text(
-            "Traé una grabación o armá un guion.",
-            "Bring a recording or start with a script.",
+            "Pasá la grabación que ya tenés.",
+            "Bring the recording you already have.",
           ),
           text: text(
-            "Editá tu video conservando tu voz original. O creá con voz en off: un guion, un video principal y hasta dos clips o imágenes de apoyo.",
-            "Edit your video while keeping your original voice. Or build a voiceover video with a script, one main video and up to two supporting clips or images.",
+            "Podemos trabajar con tu voz original. Si partís de una idea, también hay una opción con voz en off, un video principal y hasta dos clips o imágenes de apoyo.",
+            "We can work with your original voice. If you start with an idea, there is also a voiceover option with one main video and up to two supporting clips or images.",
           ),
         },
         {
           title: text(
-            "Elegí el acabado y una referencia.",
-            "Choose a finish and a reference.",
+            "Mostranos cómo querés contarlo.",
+            "Show us how you want to tell it.",
           ),
           text: text(
-            "Natural, Dinámico o Impacto. Ajustá ritmo, texto, gráficos y sonido, y sumá un video de referencia para orientar la dirección visual.",
-            "Choose Natural, Dynamic or Impact. Adjust pacing, text, graphics and sound, and add a reference video to guide the visual direction.",
+            "Natural, Dinámico o Impacto. Podés sumar un video de referencia para orientar el ritmo, los textos y el sonido.",
+            "Choose Natural, Dynamic or Impact. Add a reference video to show the pacing, text and sound you have in mind.",
           ),
         },
         {
           title: text(
-            "Revisá y guardá una nueva versión.",
-            "Review and save a new version.",
+            "Mirá el corte. Pedí los ajustes.",
+            "Watch the edit. Ask for changes.",
           ),
           text: text(
-            "Mirás el resultado, pedís ajustes y exportás un MP4 vertical. La biblioteca conserva originales y versiones anteriores. La duración acompaña el montaje y la voz.",
-            "Watch the result, request changes and export a vertical MP4. The library keeps originals and earlier versions. Length follows the edit and the voice.",
+            "Revisá los subtítulos, los cortes y el encuadre. Después exportás el MP4 vertical. La biblioteca conserva cada versión y la duración depende de lo que haya que contar.",
+            "Check the captions, cuts and framing. Then export a vertical MP4. The library keeps each version, and the length depends on what you need to say.",
           ),
         },
       ],

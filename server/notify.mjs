@@ -27,7 +27,7 @@ export function createNotifier({
         from,
         to: [to],
         reply_to: entry.email,
-        subject: `Nuevo registro: ${entry.businessName} (${entry.city})`,
+        subject: `${entry.footageUrl ? "Prueba de video" : entry.requestUpdate ? "Datos para prueba" : "Nuevo registro"}: ${entry.businessName} (${entry.city})`,
         text: [
           `Negocio: ${entry.businessName}`,
           `Tipo: ${entry.businessType}`,
@@ -37,6 +37,8 @@ export function createNotifier({
           `País: ${{ UY: "Uruguay", AR: "Argentina", MX: "México", US: "Estados Unidos", GB: "Reino Unido" }[entry.country || "MX"]}`,
           `Ciudad: ${entry.city}`,
           `Barrio: ${entry.neighborhood || "-"}`,
+          `Video para la prueba: ${entry.footageUrl || "Todavía no compartido"}`,
+          `Qué tuvo que rehacer al editar:\n${entry.editingFeedback || "No indicado"}`,
           `Landing: ${a.landing_path}`,
           "Idioma: " + (entry.language === "en" ? "English" : "Español"),
           ...utm,
