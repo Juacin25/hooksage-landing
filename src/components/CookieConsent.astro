@@ -1,0 +1,356 @@
+---
+import { localeFromPath } from "../lib/i18n";
+
+interface Props {
+  enabled: boolean;
+}
+const { enabled } = Astro.props;
+const english = localeFromPath(Astro.url.pathname) === "en";
+const copy = english
+  ? {
+      title: "Optional cookies",
+      description:
+        "With your permission, we use Meta Pixel to measure visits and completed trial requests, and improve our ads. The trial form works if you reject these cookies.",
+      privacy: "Privacy policy",
+      accept: "Accept",
+      reject: "Reject",
+      close: "Close settings",
+      accepted: "Your current choice: accepted.",
+      rejected: "Your current choice: rejected.",
+      gpc: "Your browser sends a Global Privacy Control signal. We respect it and keep advertising measurement off.",
+      dnt: "Your browser asks not to be tracked. Advertising measurement stays off unless you explicitly accept.",
+      disabled: "Advertising measurement is disabled on this site.",
+    }
+  : {
+      title: "Cookies opcionales",
+      description:
+        "Con tu permiso, usamos Meta Pixel para medir visitas y solicitudes de prueba completadas, y mejorar nuestros anuncios. El formulario de prueba funciona aunque rechaces estas cookies.",
+      privacy: "Política de privacidad",
+      accept: "Aceptar",
+      reject: "Rechazar",
+      close: "Cerrar ajustes",
+      accepted: "Tu elección actual: aceptadas.",
+      rejected: "Tu elección actual: rechazadas.",
+      gpc: "Tu navegador envía una señal Global Privacy Control. La respetamos y mantenemos desactivada la medición publicitaria.",
+      dnt: "Tu navegador solicita no ser rastreado. La medición publicitaria sigue desactivada salvo que aceptes expresamente.",
+      disabled: "La medición publicitaria está deshabilitada en este sitio.",
+    };
+---
+
+<section
+  class="cookie-consent"
+  id="cookie-consent"
+  role="region"
+  aria-labelledby="cookie-consent-title"
+  data-enabled={String(enabled)}
+  data-copy={JSON.stringify(copy)}
+  hidden
+>
+  <div class="cookie-consent__copy">
+    <h2 id="cookie-consent-title" tabindex="-1">
+      {copy.title}
+    </h2>
+    <p data-cookie-description>{copy.description}</p>
+    <p data-cookie-signal hidden></p>
+    <p class="cookie-consent__status" data-cookie-status hidden></p>
+    <a href={english ? "/en/privacy/" : "/privacidad/"}>{copy.privacy}</a>
+  </div>
+  <div class="cookie-consent__actions">
+    <button class="hs-btn hs-btn--secondary" type="button" data-cookie-accept>
+      {copy.accept}
+    </button>
+    <button class="hs-btn hs-btn--secondary" type="button" data-cookie-reject>
+      {copy.reject}
+    </button>
+    <button
+      class="cookie-consent__close"
+      type="button"
+      data-cookie-close
+      hidden
+    >
+      {copy.close}
+    </button>
+  </div>
+</section>
+
+<style>
+  .cookie-consent {
+    position: fixed;
+    z-index: 100;
+    inset: auto 20px 20px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    max-width: 1050px;
+    max-height: calc(100vh - 40px);
+    margin-inline: auto;
+    overflow: auto;
+    padding: 24px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    background: var(--surface-raised);
+    color: var(--ink);
+    box-shadow: 0 12px 48px rgb(0 0 0 / 20%);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .cookie-consent[hidden],
+  .cookie-consent [hidden] {
+    display: none;
+  }
+  .cookie-consent__copy {
+    flex: 1;
+  }
+  .cookie-consent h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .cookie-consent p {
+    margin: 0 0 8px;
+  }
+  .cookie-consent a,
+  .cookie-consent__close {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cookie-consent__status {
+    font-weight: 500;
+  }
+  .cookie-consent__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    min-width: 250px;
+  }
+  .cookie-consent__actions .hs-btn {
+    padding-inline: 18px;
+  }
+  .cookie-consent__actions .hs-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .cookie-consent__close {
+    grid-column: 1 / -1;
+    justify-self: center;
+    border: 0;
+    padding: 4px;
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+  }
+  @media (max-width: 700px) {
+    .cookie-consent {
+      inset: auto 12px 12px;
+      display: block;
+      max-height: calc(100dvh - 24px);
+      padding: 20px;
+    }
+    .cookie-consent__actions {
+      margin-top: 16px;
+      min-width: 0;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const panel = document.getElementById("cookie-consent");
+    if (!panel) return;
+    const enabled = panel.dataset.enabled === "true";
+    const copy = JSON.parse(panel.dataset.copy);
+    const accept = panel.querySelector("[data-cookie-accept]");
+    const reject = panel.querySelector("[data-cookie-reject]");
+    const close = panel.querySelector("[data-cookie-close]");
+    const description = panel.querySelector("[data-cookie-description]");
+    const signal = panel.querySelector("[data-cookie-signal]");
+    const status = panel.querySelector("[data-cookie-status]");
+    const storageKey = "hooksage:privacy-choice";
+    const version = 1;
+    const maxAge = 180 * 24 * 60 * 60 * 1000;
+    const pixelId = "1119851420489248";
+    let providerStarted = false;
+    let providerGranted = false;
+    let pageViewSent = false;
+    let returnFocus = null;
+    const gpc = () => navigator.globalPrivacyControl === true;
+    const dnt = () =>
+      [navigator.doNotTrack, window.doNotTrack].some(
+        (value) => value === "1" || value === "yes",
+      );
+    const validChoice = (value) =>
+      value &&
+      value.version === version &&
+      ["accepted", "rejected"].includes(value.choice) &&
+      typeof value.savedAt === "number" &&
+      value.savedAt <= Date.now() &&
+      Date.now() - value.savedAt < maxAge
+        ? { version, choice: value.choice, savedAt: value.savedAt }
+        : null;
+    const readChoice = () => {
+      try {
+        const stored = localStorage.getItem(storageKey);
+        const choice = validChoice(JSON.parse(stored));
+        if (stored && !choice) localStorage.removeItem(storageKey);
+        return choice;
+      } catch {
+        return null;
+      }
+    };
+    let preference = readChoice();
+    const allowsMarketing = () =>
+      enabled && !gpc() && validChoice(preference)?.choice === "accepted";
+
+    function clearMetaCookies() {
+      const hostParts = location.hostname.split(".");
+      const domains = [""];
+      for (let index = 0; index < hostParts.length - 1; index++) {
+        const domain = hostParts.slice(index).join(".");
+        domains.push(domain, "." + domain);
+      }
+      for (const name of ["_fbp", "_fbc"])
+        for (const domain of domains)
+          document.cookie =
+            name +
+            "=; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/; SameSite=Lax" +
+            (domain ? "; Domain=" + domain : "");
+    }
+
+    function stopProvider() {
+      // Revoke blocks future pixel events. Already sent requests cannot be recalled.
+      if (providerStarted && providerGranted && window.fbq) {
+        // A slow provider script may still have events queued when consent is revoked.
+        if (!window.fbq.callMethod && Array.isArray(window.fbq.queue))
+          window.fbq.queue = window.fbq.queue.filter(
+            (command) => command[0] !== "track" && command[0] !== "trackCustom",
+          );
+        window.fbq("consent", "revoke");
+      }
+      providerGranted = false;
+      clearMetaCookies();
+    }
+
+    function startProvider() {
+      if (!allowsMarketing()) return;
+      if (!providerStarted) {
+        providerStarted = true;
+        if (!window.fbq) {
+          const fbq = function () {
+            fbq.callMethod
+              ? fbq.callMethod.apply(fbq, arguments)
+              : fbq.queue.push(arguments);
+          };
+          fbq.push = fbq;
+          fbq.loaded = true;
+          fbq.version = "2.0";
+          fbq.queue = [];
+          window.fbq = fbq;
+          window._fbq = fbq;
+        }
+        // Disable automatic event configuration; supply no advanced matching data.
+        window.fbq("set", "autoConfig", false, pixelId);
+        window.fbq("consent", "grant");
+        window.fbq("init", pixelId);
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://connect.facebook.net/en_US/fbevents.js";
+        script.dataset.hooksagePixel = "true";
+        document.head.appendChild(script);
+      } else if (!providerGranted) window.fbq("consent", "grant");
+      providerGranted = true;
+      if (!pageViewSent && allowsMarketing()) {
+        window.fbq("track", "PageView");
+        pageViewSent = true;
+      }
+    }
+
+    function updatePanel() {
+      const hasChoice = Boolean(validChoice(preference));
+      accept.hidden = reject.hidden = !enabled;
+      accept.disabled = gpc();
+      close.hidden = enabled && !hasChoice && !gpc();
+      description.textContent = enabled ? copy.description : copy.disabled;
+      const signalText = enabled
+        ? gpc()
+          ? copy.gpc
+          : dnt()
+            ? copy.dnt
+            : ""
+        : "";
+      signal.textContent = signalText;
+      signal.hidden = !signalText;
+      status.hidden = !enabled || !hasChoice || gpc();
+      status.textContent = hasChoice
+        ? copy[preference.choice === "accepted" ? "accepted" : "rejected"]
+        : "";
+    }
+
+    function synchronize() {
+      if (!validChoice(preference)) preference = null;
+      allowsMarketing() ? startProvider() : stopProvider();
+      updatePanel();
+      window.dispatchEvent(
+        new CustomEvent("hooksage:consent-changed", {
+          detail: { marketing: allowsMarketing() },
+        }),
+      );
+    }
+
+    function dismiss() {
+      panel.hidden = true;
+      if (returnFocus?.isConnected) returnFocus.focus();
+      returnFocus = null;
+    }
+
+    function choose(choice) {
+      if (choice === "accepted" && gpc()) return;
+      preference = { version, choice, savedAt: Date.now() };
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(preference));
+      } catch {
+        // The choice still applies to this page when browser storage is unavailable.
+      }
+      synchronize();
+      dismiss();
+    }
+
+    accept.addEventListener("click", () => choose("accepted"));
+    reject.addEventListener("click", () => choose("rejected"));
+    close.addEventListener("click", dismiss);
+    document.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest("[data-cookie-settings]");
+      if (!button) return;
+      event.preventDefault();
+      returnFocus = button;
+      synchronize();
+      panel.hidden = false;
+      document.getElementById("cookie-consent-title").focus();
+    });
+    window.addEventListener("storage", (event) => {
+      if (event.key !== storageKey && event.key !== null) return;
+      preference = readChoice();
+      synchronize();
+      if (enabled && !preference && !gpc()) panel.hidden = false;
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState !== "visible") return;
+      synchronize();
+      if (enabled && !preference && !gpc()) panel.hidden = false;
+    });
+    window.addEventListener("hooksage:funnel", (event) => {
+      if (!allowsMarketing()) {
+        stopProvider();
+        return;
+      }
+      if (event.detail?.event === "generate_lead") window.fbq("track", "Lead");
+    });
+    window.HooksageConsent = { allowsMarketing };
+    document.querySelectorAll("[data-cookie-settings]").forEach((button) => {
+      button.hidden = false;
+    });
+    synchronize();
+    panel.hidden = !enabled || Boolean(preference) || gpc();
+  })();
+</script>

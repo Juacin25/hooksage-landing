@@ -1,5 +1,6 @@
 import { englishFaqs, englishBusinesses } from "./content.en";
 import { plans, packs } from "./plan";
+import { paidPlansAvailable } from "../lib/config";
 const planSummary = plans
   .map(
     (plan) =>
@@ -20,12 +21,12 @@ export const faqs = [
   {
     question: "¿Cómo usa mi marca para sugerir contenido?",
     answer:
-      "Creás un perfil editable o importás información desde un texto o PDF. Con ese contexto, el piloto propone hooks, guiones y listas de tomas. También permite descubrir referencias de Shorts por categoría y afinidad aproximada con la marca; no garantiza ventas ni viralidad.",
+      "En la aplicación creás un perfil editable o importás información desde un texto o PDF. Con ese contexto, Hooksage propone hooks, guiones y listas de tomas. También podés explorar referencias de Shorts por categoría y afinidad aproximada con tu marca. Las sugerencias no garantizan ventas ni viralidad.",
   },
   {
     question: "¿Tengo que llegar con un video grabado?",
     answer:
-      "Podés editar una grabación y conservar tu voz original, o crear una pieza con guion y voz en off. Ese segundo camino admite un video principal y hasta dos clips o imágenes de apoyo. La generación de voz y sonidos nuevos es opcional y depende de los servicios configurados en el piloto.",
+      "Podés editar una grabación y conservar tu voz original, o partir de un guion y una voz en off. Ese segundo camino admite un video principal y hasta dos clips o imágenes de apoyo. La generación de voz y sonidos es opcional; revisá su disponibilidad y las condiciones de tu compra en la aplicación.",
   },
   {
     question: "¿Qué cambia entre Natural, Dinámico e Impacto?",
@@ -48,9 +49,11 @@ export const faqs = [
       "Sí. La biblioteca guarda originales y versiones automáticamente. Cada revisión crea un trabajo nuevo y conserva el resultado anterior, para poder retomarlo y compararlo. Revisá cada exportación antes de publicarla.",
   },
   {
-    question: "¿Cuándo lo puedo probar y cuánto cuesta?",
+    question: "¿Cómo contrato Hooksage y cuánto cuesta?",
     answer:
-      "El piloto está en desarrollo y hoy funciona de forma local; el servicio público multiusuario todavía está en preparación. No hay una fecha de acceso confirmada. Sumarte a la lista es gratis y no requiere tarjeta. Al registrarte quedás en la lista para tu primer video gratis. " +
+      (paidPlansAvailable
+        ? "El registro y la contratación se realizan en la aplicación de Hooksage. Antes de confirmar un pago se informa el importe total y sus condiciones. Estos son los planes: "
+        : "Podés crear una cuenta gratis en la aplicación de Hooksage. Los pagos de planes y packs todavía no están habilitados; el registro no activa cobros ni suscripciones. La oferta comercial publicada es la siguiente: ") +
       planSummary +
       ". Los precios son mensuales en dólares y las exportaciones se renuevan cada semana. También hay packs de pago único: " +
       packs
@@ -61,12 +64,12 @@ export const faqs = [
   {
     question: "¿Qué pasa cuando completo el formulario?",
     answer:
-      "Guardamos tu solicitud. Podés compartir un enlace al clip y contarnos qué tuviste que rehacer en tu última edición; ambos son opcionales. Una persona del equipo te escribe por email para coordinar una primera edición gratis. El editor público sigue en desarrollo y completar el formulario no abre una cuenta ni activa una suscripción. WhatsApp es opcional.",
+      "Recibimos tu solicitud y una persona del equipo te escribe por email para coordinar una primera edición gratis. Podés compartir un enlace al clip y contarnos qué tuviste que rehacer en tu última edición; ambos son opcionales, al igual que WhatsApp. Completar este formulario no crea una cuenta en la aplicación, no realiza una compra ni activa una suscripción.",
   },
   {
-    question: "¿Puedo conectarlo con un asistente?",
+    question: "¿Cómo funciona la edición y la entrega?",
     answer:
-      "El piloto incluye un MCP local para consultar proyectos y solicitar trabajos a la misma API. El acceso MCP remoto público todavía está pendiente. Es una opción para quien configura el piloto local, no un servicio público activo desde esta landing.",
+      "Hooksage es una plataforma de edición automática con inteligencia artificial. En la aplicación cargás tu material, indicás el mensaje y el acabado, revisás el resultado y descargás el MP4. El servicio y la entrega son digitales; los planes y packs corresponden al uso de la plataforma. La primera prueba gratuita de este sitio se coordina por email.",
   },
 ];
 export const businesses = [
@@ -89,7 +92,7 @@ export const businesses = [
     sample: "Tu producto, bien explicado.",
     metaTitle: "Videos para startups | Hooksage",
     metaDescription:
-      "Edición de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
+      "Edición automática de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis, coordinada por email.",
   },
   {
     slug: "pymes",
@@ -110,7 +113,7 @@ export const businesses = [
     sample: "Lo que hacés, bien contado.",
     metaTitle: "Videos para pymes | Hooksage",
     metaDescription:
-      "Edición de videos cortos para pymes. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
+      "Edición automática de videos cortos para pymes. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis, coordinada por email.",
   },
   {
     slug: "marca-personal",
@@ -131,7 +134,7 @@ export const businesses = [
     sample: "Una idea clara. Tu forma de contarla.",
     metaTitle: "Videos para marca personal | Hooksage",
     metaDescription:
-      "Edición de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
+      "Edición automática de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis por email.",
   },
   {
     slug: "equipos-de-marketing",
@@ -152,7 +155,7 @@ export const businesses = [
     sample: "Seguí el ritmo de tu equipo.",
     metaTitle: "Videos para equipos de marketing | Hooksage",
     metaDescription:
-      "Edición de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Sumate al acceso anticipado en Uruguay y Argentina.",
+      "Edición automática de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis por email.",
   },
 ];
 export function contentFor(language: "es" | "en") {

@@ -3,11 +3,15 @@ import "../styles/tokens.css";
 import "../styles/components.css";
 import "../styles/global.css";
 import "../styles/showcase.css";
+import "../styles/story-landing.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FunnelTracking from "../components/FunnelTracking.astro";
+import CookieConsent from "../components/CookieConsent.astro";
 import { contentFor, type faqs } from "../data/content";
 import { localeFromPath, translator, alternatePath } from "../lib/i18n";
+import { business } from "../data/business";
+import { contactEmail } from "../lib/config";
 const lang = localeFromPath(Astro.url.pathname);
 const analyticsEnabled = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== "false";
 const t = translator(lang);
@@ -19,6 +23,7 @@ interface Props {
   title?: string;
   description?: string;
   faqItems?: typeof faqs;
+  variant?: "default" | "story";
 }
 const {
   title = lang === "en"
@@ -28,6 +33,7 @@ const {
     ? "Turn your phone footage into a vertical short with cuts, reframing and captions. Send a clip to try your first edit free. For startups and small teams."
     : "Convertí tus grabaciones en un short vertical con cortes, encuadre y subtítulos. Mandanos un clip para probar tu primera edición gratis.",
   faqItems = faqsForLanguage,
+  variant = "default",
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
 const structuredData = {
@@ -36,7 +42,11 @@ const structuredData = {
     {
       "@type": "Organization",
       "@id": "https://hooksage.com/#organization",
-      name: "Hooksage",
+      name: business.brand,
+      legalName: business.legalName,
+      taxID: business.taxId,
+      email: contactEmail,
+      address: business.legalAddress,
       url: "https://hooksage.com/",
       logo: "https://hooksage.com/logos/hooksage-lockup.svg",
     },
@@ -58,24 +68,34 @@ const structuredData = {
         { "@type": "Country", name: "Argentina" },
       ],
     },
-    {
-      "@type": "FAQPage",
-      mainEntity: faqItems.map(({ question, answer }) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: { "@type": "Answer", text: answer },
-      })),
-    },
+    ...(faqItems.length
+      ? [
+          {
+            "@type": "FAQPage",
+            mainEntity: faqItems.map(({ question, answer }) => ({
+              "@type": "Question",
+              name: question,
+              acceptedAnswer: { "@type": "Answer", text: answer },
+            })),
+          },
+        ]
+      : []),
   ],
 };
 ---
 
 <!doctype html>
-<html lang={lang === "en" ? "en" : "es-UY"}>
+<html
+  lang={lang === "en" ? "en" : "es-UY"}
+  data-theme={variant === "story" ? "dark" : undefined}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="color-scheme"
+      content={variant === "story" ? "dark" : "light dark"}
+    />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -155,60 +175,17 @@ const structuredData = {
       type="application/ld+json"
       set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
     />
-    {analyticsEnabled && (
-      <>
-        <script is:inline>
-          !(function (f, b, e, v, n, t, s) {
-            if (f.fbq) return;
-            n = f.fbq = function () {
-              n.callMethod
-                ? n.callMethod.apply(n, arguments)
-                : n.queue.push(arguments);
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = !0;
-            n.version = "2.0";
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = !0;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s);
-          })(
-            window,
-            document,
-            "script",
-            "https://connect.facebook.net/en_US/fbevents.js",
-          );
-          fbq("init", "1119851420489248");
-          fbq("track", "PageView");
-          // Only new waitlist entries count as a Lead; no personal data is sent.
-          window.addEventListener("hooksage:funnel", (event) => {
-            if (event.detail?.event === "generate_lead") fbq("track", "Lead");
-          });
-        </script>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style="display:none"
-            alt=""
-            src="https://www.facebook.com/tr?id=1119851420489248&ev=PageView&noscript=1"
-          />
-        </noscript>
-      </>
-    )}
   </head>
-  <body>
+  <body class:list={{ "landing--story": variant === "story" }}>
     <a class="skip-link hs-btn hs-btn--primary" href="#contenido">
       {t("Saltar al contenido")}
     </a>
-    <Header />
+    <Header story={variant === "story"} />
     <main id="contenido">
       <slot />
     </main>
     <Footer />
+    <CookieConsent enabled={analyticsEnabled} />
     <FunnelTracking />
   </body>
 </html>

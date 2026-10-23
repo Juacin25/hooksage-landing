@@ -1,8 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "./Hero.astro";
+import StoryMotion from "./StoryMotion.astro";
 import ProductCapabilities from "./ProductCapabilities.astro";
-import HowItWorks from "./HowItWorks.astro";
+import ScrollWorkflow from "./ScrollWorkflow.astro";
+import VideoSamples from "./VideoSamples.astro";
 import ToneSelector from "./ToneSelector.astro";
 import Examples from "./Examples.astro";
 import Stats from "./Stats.astro";
@@ -10,12 +12,27 @@ import Pricing from "./Pricing.astro";
 import FreeVideoForm from "./FreeVideoForm.astro";
 import FAQ from "./FAQ.astro";
 import FinalCTA from "./FinalCTA.astro";
+import { localeFromPath } from "../lib/i18n";
+const en = localeFromPath(Astro.url.pathname) === "en";
 ---
 
-<Layout>
+<Layout
+  variant="story"
+  title={
+    en
+      ? "Your video, ready for your next post | Hooksage"
+      : "Tu video, listo para tu próxima publicación | Hooksage"
+  }
+>
+  <StoryMotion />
   <Hero />
+  <ScrollWorkflow />
+  <section class="story-proof section">
+    <div class="container">
+      <VideoSamples />
+    </div>
+  </section>
   <ProductCapabilities />
-  <HowItWorks />
   <ToneSelector />
   <Examples />
   <Stats />

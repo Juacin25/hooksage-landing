@@ -1,0 +1,285 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { legalDocument } from "../data/legal";
+import { business } from "../data/business";
+import { contactEmail, contactUrl } from "../lib/config";
+import { homePath, legalPath, localeFromPath } from "../lib/i18n";
+interface Props {
+  kind: "terms" | "privacy";
+}
+const { kind } = Astro.props;
+const lang = localeFromPath(Astro.url.pathname);
+const english = lang === "en";
+const document = legalDocument(kind, lang);
+const sectionTitle = (title: string) => title.replace(/^\d+\.\s*/, "");
+const description =
+  kind === "terms"
+    ? english
+      ? "Hooksage service, plans, digital delivery, cancellation and refund terms. Operated by CANARY CODE SAS, Uruguay."
+      : "Servicio, planes, entrega digital, cancelaciones y devoluciones de Hooksage. Un servicio de CANARY CODE SAS, Uruguay."
+    : english
+      ? "How CANARY CODE SAS handles contact details, video material, AI providers and optional cookies for Hooksage."
+      : "Cómo trata CANARY CODE SAS los datos de contacto, videos, proveedores de IA y cookies opcionales de Hooksage.";
+---
+
+<Layout
+  title={`${document.title} | Hooksage`}
+  description={description}
+  faqItems={[]}
+>
+  <article class="legal-page container">
+    <header class="legal-header">
+      <a class="legal-back" href={homePath(lang)}>
+        ← {english ? "Back to Hooksage" : "Volver a Hooksage"}
+      </a>
+      <p class="overline eyebrow">
+        {english ? "Legal information" : "Información legal"}
+      </p>
+      <h1>{document.title}</h1>
+      <p class="legal-intro">{document.intro}</p>
+      <p class="legal-updated">
+        {english ? "Last updated:" : "Última actualización:"} {document.updated}
+      </p>
+    </header>
+    <div class="legal-grid">
+      <aside class="legal-aside">
+        <nav aria-label={english ? "On this page" : "En esta página"}>
+          <p class="legal-nav-title">
+            {english ? "On this page" : "En esta página"}
+          </p>
+          <ol>
+            {document.sections.map((section) => (
+              <li>
+                <a href={`#${section.id}`}>{sectionTitle(section.title)}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+      <div class="legal-body">
+        <div class="legal-operator">
+          <p class="legal-operator-label">
+            {english ? "Service operator" : "Empresa responsable"}
+          </p>
+          <p>
+            <strong>{business.legalName}</strong> · RUT {business.taxId}
+          </p>
+          <p>{business.legalAddress}</p>
+          <a href={contactUrl}>{contactEmail}</a>
+        </div>
+        {document.sections.map((section, index) => (
+          <section
+            id={section.id}
+            class="legal-section"
+            aria-labelledby={`heading-${section.id}`}
+          >
+            <h2 id={`heading-${section.id}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>{" "}
+              {sectionTitle(section.title)}
+            </h2>
+            {section.paragraphs?.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+            {section.items && (
+              <ul>
+                {section.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+            {section.links && (
+              <ul class="legal-links">
+                {section.links.map((link) => (
+                  <li>
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+        <nav
+          class="legal-related"
+          aria-label={
+            english ? "Related legal document" : "Otro documento legal"
+          }
+        >
+          <a href={legalPath(kind === "terms" ? "privacy" : "terms", lang)}>
+            {kind === "terms"
+              ? english
+                ? "Read the privacy policy"
+                : "Leer la política de privacidad"
+              : english
+                ? "Read the terms and conditions"
+                : "Leer los términos y condiciones"}{" "}
+            →
+          </a>
+        </nav>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .legal-page {
+    padding-block: 56px 96px;
+  }
+  .legal-header {
+    max-width: 900px;
+    padding-bottom: 44px;
+  }
+  .legal-back {
+    display: inline-block;
+    color: var(--ink-muted);
+    margin-bottom: 36px;
+    text-underline-offset: 4px;
+  }
+  .legal-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    max-width: 850px;
+    margin-top: 14px;
+  }
+  .legal-intro {
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.65;
+    margin-top: 24px;
+    color: var(--ink-muted);
+  }
+  .legal-updated {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-top: 20px;
+  }
+  .legal-grid {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 780px);
+    gap: 64px;
+    align-items: start;
+  }
+  .legal-aside {
+    position: sticky;
+    top: 106px;
+  }
+  .legal-nav-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .legal-aside ol {
+    padding-left: 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+  .legal-aside li {
+    padding-block: 5px;
+  }
+  .legal-aside a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+  .legal-body {
+    min-width: 0;
+    line-height: 1.75;
+  }
+  .legal-operator {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface-sunken);
+    margin-bottom: 40px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+  .legal-operator-label {
+    color: var(--ink-muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .legal-body a {
+    color: var(--primary);
+    text-underline-offset: 4px;
+  }
+  .legal-section {
+    scroll-margin-top: 110px;
+    margin-block: 38px;
+  }
+  .legal-section h2 {
+    font-family: var(--font-display);
+    font-size: 25px;
+    line-height: 1.25;
+    margin-bottom: 18px;
+    letter-spacing: -0.015em;
+  }
+  .legal-section h2 span {
+    color: var(--ink-muted);
+    font-size: 14px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .legal-section p + p {
+    margin-top: 16px;
+  }
+  .legal-section ul {
+    padding-left: 22px;
+    margin-top: 16px;
+  }
+  .legal-section li {
+    padding-left: 3px;
+    margin-block: 9px;
+  }
+  .legal-links {
+    font-size: 14px;
+  }
+  .legal-related {
+    padding-top: 30px;
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 900px) {
+    .legal-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+    }
+    .legal-aside {
+      position: static;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .legal-aside ol {
+      columns: 2;
+      column-gap: 30px;
+    }
+    .legal-aside li {
+      break-inside: avoid;
+    }
+  }
+  @media (max-width: 560px) {
+    .legal-page {
+      padding-block: 32px 64px;
+    }
+    .legal-header {
+      padding-bottom: 28px;
+    }
+    .legal-back {
+      margin-bottom: 28px;
+    }
+    .legal-aside ol {
+      columns: 1;
+    }
+    .legal-intro {
+      font-size: 16px;
+    }
+    .legal-section h2 {
+      font-size: 23px;
+    }
+    .legal-operator {
+      padding: 20px;
+    }
+  }
+</style>

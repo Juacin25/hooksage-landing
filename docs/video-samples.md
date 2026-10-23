@@ -14,7 +14,7 @@ Los siete archivos fueron aportados por el usuario para publicarlos en la landin
 
 Las copias web están en `public/videos/`. Conservan el audio y la duración de cada muestra: aproximadamente 8,4 s, 5,8 s y 15 s. No se alargaron los clips de la comparación para que coincidan con la duración anunciada del producto.
 
-El segundo par dura aproximadamente 13,6 s y 11,2 s. El crudo de iPhone estaba en HEVC de 10 bits y HLG/HDR, con orientación vertical indicada por una matriz de rotación. Se normalizó a video vertical H.264 SDR BT.709 con tone mapping Hable para reproducirlo en navegadores sin soporte de HDR, sin incorporar ubicación, sensores u otros streams de metadatos del MOV.
+El segundo par dura aproximadamente 13,6 s y 11,1 s. El crudo de iPhone estaba en HEVC de 10 bits y HLG/HDR, con orientación vertical indicada por una matriz de rotación. Se normalizó a video vertical H.264 SDR BT.709 con tone mapping Hable para reproducirlo en navegadores sin soporte de HDR, sin incorporar ubicación, sensores u otros streams de metadatos del MOV.
 
 El tercer par muestra el anuncio a cámara: 10,6 s de material sin textos y 9,7 s de versión editada con textos y animaciones. El crudo conserva 576×1024 píxeles; la copia editada se reduce de 1080×1920 a 720×1280. Ambos usan AAC de 96 kbps, posters propios y el editado incluye una pista inglesa que traduce sus textos.
 

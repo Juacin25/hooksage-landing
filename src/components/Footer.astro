@@ -1,7 +1,8 @@
 ---
-import { localeFromPath, translator, homePath } from "../lib/i18n";
+import { localeFromPath, translator, homePath, legalPath } from "../lib/i18n";
 import Logo from "./Logo.astro";
 import { contactEmail, contactUrl } from "../lib/config";
+import { business } from "../data/business";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 ---
@@ -19,13 +20,53 @@ const t = translator(lang);
         <a href={homePath(lang) + "#precio"}>{t("Precio")}</a>
         <a href={homePath(lang) + "#preguntas"}>{t("Preguntas")}</a>
         <a href={contactUrl}>{contactEmail}</a>
+        <a href={legalPath("terms", lang)}>
+          {lang === "en" ? "Terms and conditions" : "Términos y condiciones"}
+        </a>
+        <a href={legalPath("privacy", lang)}>
+          {lang === "en" ? "Privacy policy" : "Política de privacidad"}
+        </a>
+        <button
+          type="button"
+          class="footer-privacy-settings"
+          data-cookie-settings
+          hidden
+        >
+          {lang === "en" ? "Cookie settings" : "Preferencias de cookies"}
+        </button>
       </nav>
     </div>
     <div class="footer-bottom small">
-      <span>{t("© 2026 Hooksage.")}</span>
+      <span>
+        © {new Date().getFullYear()} {business.brand}.{" "}
+        {lang === "en" ? "Operated by" : "Un servicio de"}{" "}
+        <strong>{business.legalName}</strong> · RUT {business.taxId}
+      </span>
       <span>
         {t("Edición de videos para equipos chicos. Uruguay y Argentina.")}
       </span>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-privacy-settings {
+    padding: 0;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .footer-privacy-settings:hover {
+    color: var(--primary);
+  }
+  .footer-privacy-settings:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
+</style>

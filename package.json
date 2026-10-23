@@ -15,6 +15,7 @@
     "start": "node server/index.mjs",
     "api:dev": "node --watch server/index.mjs",
     "test:api": "node --test scripts/verify-api.mjs",
+    "test:consent": "node scripts/verify-consent.mjs",
     "db:count": "node scripts/database.mjs count",
     "db:backup": "node scripts/database.mjs backup",
     "db:export": "node scripts/database.mjs export"

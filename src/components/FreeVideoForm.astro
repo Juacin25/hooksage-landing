@@ -4,6 +4,8 @@ import Icon from "./Icon.astro";
 import { formEndpoint, contactUrl } from "../lib/config";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
+const privacyHref = lang === "en" ? "/en/privacy/" : "/privacidad/";
+const termsHref = lang === "en" ? "/en/terms/" : "/terminos/";
 const countries =
   lang === "en"
     ? [
@@ -94,6 +96,11 @@ const messages = Object.fromEntries(
         data-messages={JSON.stringify(messages)}
       >
         <input type="hidden" name="intent" value="waitlist" />
+        <input
+          type="hidden"
+          name="noticeVersion"
+          value="trial-notice-2026-10-23"
+        />
         <input type="hidden" name="language" value={lang} />
         <input type="hidden" name="landing_path" value={Astro.url.pathname} />
         <div class="form-trap" aria-hidden="true">
@@ -286,8 +293,11 @@ const messages = Object.fromEntries(
         </div>
         <p class="small muted form-consent">
           {t(
-            "Usaremos tus datos y el enlace que compartas para coordinar la prueba y avisarte del acceso. Registrarte no abre una cuenta ni activa una suscripción.",
-          )}
+            "Usaremos tus datos y el enlace que compartas para responder a tu solicitud y coordinar la prueba. Enviar este formulario no crea una cuenta, no realiza una compra ni activa una suscripción.",
+          )}{" "}
+          <a href={privacyHref}>{t("Política de privacidad")}</a>
+          {" · "}
+          <a href={termsHref}>{t("Términos y condiciones")}</a>
         </p>
         <button class="hs-btn hs-btn--primary" type="submit">
           <span data-submit-label>{t("Solicitar mi edición gratis")}</span>
@@ -490,6 +500,9 @@ const messages = Object.fromEntries(
           editingFeedback:
             normalizeEditingFeedback(fields.feedback.value) || "",
           intent: "waitlist",
+          noticeVersion: form.querySelector<HTMLInputElement>(
+            '[name="noticeVersion"]',
+          )!.value,
           website: form.querySelector<HTMLInputElement>("#website")!.value,
           attribution: window.HooksageFunnel?.getAttribution() || {
             landing_path: window.location.pathname,

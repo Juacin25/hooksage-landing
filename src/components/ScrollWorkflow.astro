@@ -1,0 +1,2358 @@
+---
+import { localeFromPath } from "../lib/i18n";
+import { applicationUrl } from "../lib/config";
+import Icon from "./Icon.astro";
+
+const en = localeFromPath(Astro.url.pathname) === "en";
+const text = (es: string, english: string) => (en ? english : es);
+const waveform = [
+  24, 46, 32, 65, 84, 49, 72, 42, 93, 61, 38, 78, 100, 59, 34, 71, 48, 86, 58,
+  31, 64, 43, 77, 50, 29, 56, 37, 21,
+];
+const steps = [
+  {
+    label: text("Tu material", "Your footage"),
+    title: text("Subí lo que ya grabaste.", "Start with what you filmed."),
+    description: text(
+      "Una idea a cámara, una demo o algo que pasa en tu negocio. Cargá el video en la aplicación y contá qué querés comunicar.",
+      "A thought to camera, a demo or something happening at your business. Upload your footage in the app and say what you want to communicate.",
+    ),
+    note: text(
+      "Tu voz. Tu contenido. El punto de partida es tuyo.",
+      "Your voice. Your footage. Your starting point.",
+    ),
+    version: "original",
+    duration: text("13,6 s", "13.6 sec"),
+    filename: "drivo-original.mp4",
+  },
+  {
+    label: text("Primer corte", "First edit"),
+    title: text("Recibí el primer corte.", "Get the first edit."),
+    description: text(
+      "Hooksage prepara una edición vertical con cortes, encuadre y subtítulos. El mismo mensaje, con otra forma de contarlo.",
+      "Hooksage prepares a vertical edit with cuts, framing and captions. The same message, with a new way to tell it.",
+    ),
+    note: text(
+      "En este ejemplo: de 13,6 a 11,1 segundos.",
+      "In this example: from 13.6 to 11.1 seconds.",
+    ),
+    version: "edited",
+    duration: text("11,1 s", "11.1 sec"),
+    filename: "drivo-edited.mp4",
+  },
+  {
+    label: text("Tus ajustes", "Your refinements"),
+    title: text("Que quede a tu manera.", "Make it yours."),
+    description: text(
+      "Mirá el resultado, revisá los textos y pedí cambios desde la aplicación. Cada ajuste parte del corte anterior.",
+      "Watch the result, check the text and request changes in the app. Each refinement starts from the previous edit.",
+    ),
+    note: text(
+      "Vos decidís cuándo está listo.",
+      "You decide when it is ready.",
+    ),
+    version: "edited",
+    duration: text("11,1 s", "11.1 sec"),
+    filename: "drivo-edited.mp4",
+  },
+  {
+    label: text("Listo para compartir", "Ready to share"),
+    title: text(
+      "Descargalo. Subilo a tus redes.",
+      "Download it. Post it to your channels.",
+    ),
+    description: text(
+      "Descargá el MP4 vertical y publicalo en Reels, TikTok o Shorts. La última revisión y el momento de compartirlo son tuyos.",
+      "Download your vertical MP4 and post it to Reels, TikTok or Shorts. The final review and when to share it are up to you.",
+    ),
+    note: text(
+      "MP4 vertical · 720 × 1280 · 30 fps",
+      "Vertical MP4 · 720 × 1280 · 30 fps",
+    ),
+    version: "edited",
+    duration: text("11,1 s", "11.1 sec"),
+    filename: "drivo-edited.mp4",
+  },
+];
+---
+
+<section
+  class="scroll-workflow section"
+  id="como-funciona"
+  aria-labelledby="scroll-workflow-title"
+  data-scroll-workflow
+>
+  <div class="container">
+    <div class="scroll-heading">
+      <p class="overline scroll-eyebrow">
+        {text("De la grabación a la publicación", "From recording to posting")}
+      </p>
+      <h2 id="scroll-workflow-title">
+        {text("Mirá cómo cambia tu video.", "See your video take shape.")}
+      </h2>
+      <p>
+        {text(
+          "Seguí una misma pieza, desde el original hasta el archivo que compartís.",
+          "Follow one video, from the original footage to the file you share.",
+        )}
+      </p>
+    </div>
+
+    <nav
+      class="scroll-chapter-nav"
+      data-story-nav
+      aria-label={text("Pasos de la edición", "Editing steps")}
+      hidden
+    >
+      {steps.map((step, index) => (
+        <button
+          type="button"
+          data-story-jump={index}
+          aria-controls={`workflow-step-${index + 1}`}
+          aria-current={index === 0 ? "step" : undefined}
+        >
+          <span class="scroll-nav-number">0{index + 1}</span>
+          <span>{step.label}</span>
+        </button>
+      ))}
+    </nav>
+
+    <div class="scroll-story-track" data-story-track>
+      <div class="scroll-chapters">
+        {steps.map((step, index) => (
+          <article
+            class="scroll-chapter"
+            id={`workflow-step-${index + 1}`}
+            data-story-step={index}
+            aria-labelledby={`workflow-heading-${index + 1}`}
+          >
+            <div class="scroll-chapter-copy">
+              <p class="scroll-step-label">
+                <span>0{index + 1}</span>
+                {step.label}
+              </p>
+              <h3 id={`workflow-heading-${index + 1}`}>{step.title}</h3>
+              <p
+                class="scroll-step-description"
+                id={`workflow-description-${index + 1}`}
+              >
+                {step.description}
+              </p>
+              <p class="scroll-step-note">
+                <Icon name="check" size={17} />
+                {step.note}
+              </p>
+            </div>
+
+            <div
+              class:list={["scroll-editor", `scroll-editor--${index + 1}`]}
+              data-story-scene={index}
+              tabindex="-1"
+              role="group"
+              aria-describedby={`workflow-description-${index + 1}`}
+              aria-label={`${text("Recorrido de ejemplo", "Example walkthrough")} · ${step.label}`}
+            >
+              <div class="scroll-editor-topbar">
+                <div class="scroll-editor-brand">
+                  <span class="scroll-editor-mark" aria-hidden="true">
+                    h.
+                  </span>
+                  <strong>Hooksage</strong>
+                  <span class="scroll-editor-divider" aria-hidden="true"></span>
+                  <span>Drivo</span>
+                </div>
+                <span class="scroll-editor-step">0{index + 1} / 04</span>
+              </div>
+              <div class="scroll-editor-demo-label">
+                <span class="scroll-demo-dot" aria-hidden="true"></span>
+                {text(
+                  "Recorrido de ejemplo · video real",
+                  "Example walkthrough · real video",
+                )}
+                <span class="scroll-build-cue">
+                  <span>
+                    {text(
+                      "Seguí bajando para armar la edición",
+                      "Scroll to put the edit together",
+                    )}
+                  </span>
+                  <i aria-hidden="true"></i>
+                </span>
+              </div>
+
+              <div class="scroll-editor-body">
+                <div class="scroll-editor-preview">
+                  <div class="scroll-preview-heading">
+                    <span>
+                      {index === 0
+                        ? text("Material original", "Original footage")
+                        : text("Corte editado", "Edited cut")}
+                    </span>
+                    <span>{step.duration}</span>
+                  </div>
+                  <div class="scroll-preview-media">
+                    <video
+                      class="scroll-video"
+                      controls
+                      playsinline
+                      preload="none"
+                      poster={`/videos/drivo-${step.version}-poster.webp`}
+                      width="720"
+                      height="1280"
+                      aria-label={text(
+                        `Pitch de Drivo · ${index === 0 ? "material original" : "versión editada"}`,
+                        `Drivo pitch · ${index === 0 ? "original footage" : "edited version"}`,
+                      )}
+                    >
+                      <source
+                        src={`/videos/drivo-${step.version}.mp4`}
+                        type="video/mp4"
+                      />
+                      {index !== 0 && (
+                        <track
+                          kind="subtitles"
+                          srclang="en"
+                          label="English"
+                          src="/videos/drivo-edited.en.vtt"
+                        />
+                      )}
+                      <a href={`/videos/drivo-${step.version}.mp4`}>
+                        {text("Abrir video", "Open video")}
+                      </a>
+                    </video>
+                    <div class="scroll-preview-fragments" aria-hidden="true">
+                      {[1, 2, 3].map((slice) => (
+                        <div
+                          class={`scroll-video-fragment scroll-video-fragment--${slice}`}
+                          style={`background-image: url(/videos/drivo-${step.version}-poster.webp);`}
+                        ></div>
+                      ))}
+                    </div>
+                    {index === 1 && (
+                      <div class="scroll-before-layer" aria-hidden="true">
+                        <span class="scroll-edit-sweep"></span>
+                      </div>
+                    )}
+                  </div>
+                  <p class="scroll-preview-caption">
+                    {text(
+                      "Poné play para ver y escuchar.",
+                      "Press play to watch and listen.",
+                    )}
+                  </p>
+                </div>
+
+                <div class="scroll-editor-sidebar">
+                  {index === 0 && (
+                    <>
+                      <p class="scroll-panel-eyebrow">
+                        {text("El punto de partida", "The starting point")}
+                      </p>
+                      <h4>
+                        {text("Un video. Una idea.", "One video. One idea.")}
+                      </h4>
+                      <div class="scroll-file-card">
+                        <span class="scroll-file-icon">
+                          <Icon name="play" size={19} />
+                        </span>
+                        <div>
+                          <strong>{step.filename}</strong>
+                          <span>MP4 · {step.duration}</span>
+                        </div>
+                        <Icon name="check" size={16} />
+                      </div>
+                      <div class="scroll-intent-card">
+                        <span>
+                          {text("Qué querés contar", "What you want to say")}
+                        </span>
+                        <p>
+                          {text(
+                            "Presentar Drivo y mostrar cómo funciona.",
+                            "Introduce Drivo and show how it works.",
+                          )}
+                        </p>
+                      </div>
+                      <p class="scroll-panel-footnote">
+                        {text(
+                          "Este recorrido usa un archivo de ejemplo. Subís el tuyo en la aplicación.",
+                          "This walkthrough uses a sample file. Upload your own in the app.",
+                        )}
+                      </p>
+                    </>
+                  )}
+                  {index === 1 && (
+                    <>
+                      <p class="scroll-panel-eyebrow">
+                        {text("La primera versión", "The first version")}
+                      </p>
+                      <h4>
+                        {text(
+                          "El mensaje toma forma.",
+                          "The message takes shape.",
+                        )}
+                      </h4>
+                      <ul class="scroll-edit-list">
+                        <li>
+                          <span class="scroll-edit-icon">Aa</span>
+                          <span>
+                            <strong>{text("Subtítulos", "Captions")}</strong>
+                            <small>
+                              {text(
+                                "Texto que acompaña la voz",
+                                "Text that follows the voice",
+                              )}
+                            </small>
+                          </span>
+                          <Icon name="check" size={16} />
+                        </li>
+                        <li>
+                          <span class="scroll-edit-icon">
+                            <Icon name="phone" size={18} />
+                          </span>
+                          <span>
+                            <strong>
+                              {text("Encuadre vertical", "Vertical framing")}
+                            </strong>
+                            <small>9:16</small>
+                          </span>
+                          <Icon name="check" size={16} />
+                        </li>
+                        <li>
+                          <span class="scroll-edit-icon">
+                            <Icon name="clock" size={18} />
+                          </span>
+                          <span>
+                            <strong>
+                              {text("Un corte más corto", "A shorter cut")}
+                            </strong>
+                            <small>
+                              {text("13,6 s → 11,1 s", "13.6 sec → 11.1 sec")}
+                            </small>
+                          </span>
+                          <Icon name="check" size={16} />
+                        </li>
+                      </ul>
+                      <p class="scroll-panel-footnote">
+                        {text(
+                          "Compará este resultado con el original del primer paso.",
+                          "Compare this result with the original in step one.",
+                        )}
+                      </p>
+                    </>
+                  )}
+                  {index === 2 && (
+                    <>
+                      <p class="scroll-panel-eyebrow">
+                        {text("Revisión de la edición", "Review the edit")}
+                      </p>
+                      <h4>
+                        {text(
+                          "La última palabra es tuya.",
+                          "You have the final say.",
+                        )}
+                      </h4>
+                      <div class="scroll-revision-card">
+                        <span class="scroll-revision-avatar" aria-hidden="true">
+                          {text("Vos", "You")}
+                        </span>
+                        <div>
+                          <span class="scroll-example-label">
+                            {text("Pedido de ejemplo", "Example request")}
+                          </span>
+                          <p>
+                            “
+                            {text(
+                              "Mové el título más abajo.",
+                              "Move the title lower.",
+                            )}
+                            ”
+                          </p>
+                        </div>
+                      </div>
+                      <div class="scroll-revision-detail">
+                        <span class="scroll-edit-icon">
+                          <Icon name="sparkles" size={18} />
+                        </span>
+                        <p>
+                          {text(
+                            "Indicá qué querés ajustar y solicitá una nueva versión desde la aplicación.",
+                            "Describe what you want to refine and request a new version in the app.",
+                          )}
+                        </p>
+                      </div>
+                      <p class="scroll-panel-footnote">
+                        {text(
+                          "La vista previa muestra el corte existente; este pedido ilustra la revisión.",
+                          "The preview shows the existing edit; this request illustrates the review step.",
+                        )}
+                      </p>
+                    </>
+                  )}
+                  {index === 3 && (
+                    <>
+                      <p class="scroll-panel-eyebrow">
+                        {text("Tu archivo final", "Your finished file")}
+                      </p>
+                      <h4>
+                        {text(
+                          "Del editor a tus redes.",
+                          "From the editor to your channels.",
+                        )}
+                      </h4>
+                      <div class="scroll-export-card">
+                        <span class="scroll-export-icon">
+                          <Icon name="check" size={23} />
+                        </span>
+                        <strong>{step.filename}</strong>
+                        <span>MP4 · 720 × 1280 · 30 fps</span>
+                      </div>
+                      <a
+                        class="scroll-download"
+                        href="/videos/drivo-edited.mp4"
+                        download="hooksage-drivo-ejemplo.mp4"
+                      >
+                        {" "}
+                        <Icon name="upload" size={17} />
+                        <span>
+                          {text("Descargar ejemplo", "Download sample")}
+                        </span>
+                      </a>
+                      <div class="scroll-destinations">
+                        <span>Reels</span>
+                        <span>TikTok</span>
+                        <span>Shorts</span>
+                      </div>
+                      <p class="scroll-panel-footnote">
+                        {text(
+                          "Descargás el archivo. Elegís dónde y cuándo publicarlo.",
+                          "Download the file. Choose where and when to post it.",
+                        )}
+                      </p>
+                      <a
+                        class="hs-btn hs-btn--primary scroll-primary-cta"
+                        href={applicationUrl}
+                        data-cta-location="scroll-workflow"
+                        data-application-cta
+                      >
+                        {text("Probar con mi video", "Try it with my video")}
+                        <Icon name="arrow" size={16} />
+                      </a>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div class="scroll-editor-bottom">
+                <span class="scroll-timeline-label">
+                  {index === 0
+                    ? text("Original", "Original")
+                    : text("Edición", "Edit")}
+                </span>
+                <div
+                  class:list={[
+                    "scroll-mini-timeline",
+                    { "scroll-mini-timeline--original": index === 0 },
+                  ]}
+                  aria-hidden="true"
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <div class="scroll-timeline-wave">
+                    {waveform.map((height, bar) => (
+                      <b
+                        style={`--bar-height: ${height}%; --bar-delay: ${bar * 18}ms;`}
+                      ></b>
+                    ))}
+                  </div>
+                  <i></i>
+                </div>
+                <span>{step.duration}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div
+        class="scroll-sticky-stage"
+        data-story-stage
+        aria-label={text("Vista de la edición", "Editing preview")}
+      ></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-scroll-workflow]")
+    .forEach((root) => {
+      const track = root.querySelector<HTMLElement>("[data-story-track]");
+      const stage = root.querySelector<HTMLElement>("[data-story-stage]");
+      const nav = root.querySelector<HTMLElement>("[data-story-nav]");
+      const chapters = [
+        ...root.querySelectorAll<HTMLElement>("[data-story-step]"),
+      ];
+      const scenes = [
+        ...root.querySelectorAll<HTMLElement>("[data-story-scene]"),
+      ];
+      const copies = chapters.map((chapter) =>
+        chapter.querySelector<HTMLElement>(".scroll-chapter-copy")!,
+      );
+      const buttons = [
+        ...root.querySelectorAll<HTMLButtonElement>("[data-story-jump]"),
+      ];
+      if (
+        !track ||
+        !stage ||
+        !nav ||
+        chapters.length !== 4 ||
+        scenes.length !== 4
+      )
+        return;
+
+      const desktop = window.matchMedia(
+        "(min-width: 700px) and (min-height: 650px)",
+      );
+      const compact = window.matchMedia("(max-width: 999px)");
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+      let enhanced = false;
+      let compactMode = false;
+      let current = 0;
+      let scheduled = false;
+      let keyboardInteraction = false;
+      const clamp = (value: number) => Math.min(1, Math.max(0, value));
+      const phases = [
+        ["shell", 0, 0.45],
+        ["slice-1", 0.2, 0.5],
+        ["slice-2", 0.34, 0.67],
+        ["slice-3", 0.46, 0.8],
+        ["video", 0.78, 0.92],
+        ["edit", 0.3, 0.85],
+        ["panel-1", 0.36, 0.68],
+        ["panel-2", 0.45, 0.78],
+        ["panel-3", 0.55, 0.86],
+        ["panel-4", 0.65, 0.94],
+        ["wave", 0.5, 0.92],
+        ["final", 0.72, 1],
+      ] as const;
+      const lastBuild = scenes.map(() => -1);
+      const renderBuild = (index: number, value: number) => {
+        if (!enhanced) return;
+        const progress = clamp(value);
+        if (Math.abs(lastBuild[index] - progress) < 0.001) return;
+        lastBuild[index] = progress;
+        const scene = scenes[index];
+        scene.style.setProperty("--build-progress", progress.toFixed(4));
+        phases.forEach(([name, start, end]) => {
+          const part = clamp((progress - start) / (end - start));
+          // Keep the assembled video through the first edit, review and export.
+          // Only the initial upload uses separate pieces; the first edit is a
+          // continuous original-to-result reveal inside the same video frame.
+          const carriedLayer =
+            (index > 0 && name === "shell") ||
+            (index > 0 && (name === "video" || name.startsWith("slice-")));
+          const eased = carriedLayer ? 1 : part * part * (3 - 2 * part);
+          scene.style.setProperty(`--build-${name}`, eased.toFixed(4));
+        });
+        scene.dataset.buildProgress = progress.toFixed(4);
+      };
+      const pauseAll = () =>
+        scenes.forEach((scene) =>
+          scene.querySelectorAll("video").forEach((video) => video.pause()),
+        );
+      const select = (index: number) => {
+        const followSceneFocus =
+          enhanced &&
+          index !== current &&
+          document.activeElement === scenes[current];
+        if (index !== current) pauseAll();
+        current = index;
+        chapters.forEach((chapter, i) =>
+          chapter.classList.toggle("is-current", i === index),
+        );
+        buttons.forEach((button, i) => {
+          if (i === index) button.setAttribute("aria-current", "step");
+          else button.removeAttribute("aria-current");
+        });
+        scenes.forEach((scene, i) => {
+          scene.hidden = enhanced && i !== index;
+        });
+        copies.forEach((copy, i) => {
+          copy.hidden = compactMode && i !== index;
+        });
+        stage.dataset.activeStep = String(index + 1);
+        // A chapter jump focuses its scene wrapper. Keep that focus visible as
+        // scrolling advances, without pinning the walkthrough to that chapter.
+        if (followSceneFocus) scenes[index].focus({ preventScroll: true });
+      };
+      const update = () => {
+        scheduled = false;
+        const bounds = track.getBoundingClientRect();
+        if (enhanced && (bounds.bottom < 0 || bounds.top > innerHeight)) return;
+        const anchor = window.innerHeight * 0.5;
+        let nearest = 0;
+        let distance = Infinity;
+        // Read the chapter positions together, before changing any layer styles.
+        const rects = chapters.map((chapter) =>
+          chapter.getBoundingClientRect(),
+        );
+        rects.forEach((rect, index) => {
+          const value = Math.abs(rect.top + rect.height * 0.5 - anchor);
+          if (value < distance) {
+            distance = value;
+            nearest = index;
+          }
+        });
+        if (enhanced && nearest !== current) {
+          const active = document.activeElement;
+          const scene = scenes[current];
+          if (
+            active instanceof HTMLElement &&
+            active !== scene &&
+            scene.contains(active)
+          ) {
+            // Keep keyboard-operated controls available. A wheel, touch gesture
+            // or pointer interaction signals that the person is moving on.
+            if (keyboardInteraction) {
+              renderBuild(current, 1);
+              return;
+            }
+            active.blur();
+          }
+        }
+        select(nearest);
+        if (enhanced) {
+          const scene = scenes[nearest];
+          const active = document.activeElement;
+          const player = scene.querySelector("video");
+          const usingControls = active !== scene && scene.contains(active);
+          const rect = rects[nearest];
+          // A chapter is fully assembled when its center reaches the viewport
+          // center. The exact same scroll position produces the same layers in
+          // either direction; no animation clock or video scrubbing is involved.
+          const progress =
+            (innerHeight * 0.72 - rect.top) /
+            (rect.height * 0.5 + innerHeight * 0.22);
+          renderBuild(
+            nearest,
+            usingControls || (player && !player.paused) ? 1 : progress,
+          );
+        }
+      };
+      const schedule = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(update);
+      };
+      const configure = () => {
+        const next = desktop.matches && !reducedMotion.matches;
+        const nextCompact = next && compact.matches;
+        if (next === enhanced && nextCompact === compactMode) {
+          schedule();
+          return;
+        }
+        pauseAll();
+        enhanced = next;
+        compactMode = nextCompact;
+        scenes.forEach((scene, index) => {
+          scene.hidden = false;
+          const copy = copies[index];
+          copy.hidden = false;
+          if (compactMode) {
+            stage.append(copy, scene);
+          } else {
+            chapters[index].prepend(copy);
+            (enhanced ? stage : chapters[index]).appendChild(scene);
+          }
+        });
+        track.toggleAttribute("data-enhanced", enhanced);
+        track.toggleAttribute("data-scrub", enhanced);
+        track.toggleAttribute("data-compact", compactMode);
+        lastBuild.fill(-1);
+        scenes.forEach((scene) => {
+          delete scene.dataset.buildProgress;
+          scene.style.removeProperty("--build-progress");
+          phases.forEach(([name]) =>
+            scene.style.removeProperty(`--build-${name}`),
+          );
+        });
+        select(current);
+        renderBuild(current, 0);
+        schedule();
+      };
+
+      nav.hidden = false;
+      buttons.forEach((button, index) =>
+        button.addEventListener("click", () => {
+          select(index);
+          chapters[index].scrollIntoView({
+            behavior: "instant",
+            block: "center",
+          });
+          renderBuild(index, 1);
+          scenes[index].focus({ preventScroll: true });
+        }),
+      );
+      stage.addEventListener("focusout", () => requestAnimationFrame(schedule));
+      scenes.forEach((scene, index) => {
+        scene.addEventListener("focusin", (event) => {
+          if (event.target !== scene) renderBuild(index, 1);
+        });
+      });
+      // The walkthrough and the comparisons share the page: keep one audio
+      // source at a time when someone moves from one example to another.
+      document.addEventListener(
+        "play",
+        (event) => {
+          if (!(event.target instanceof HTMLVideoElement)) return;
+          const player = event.target;
+          document
+            .querySelectorAll<HTMLVideoElement>("video")
+            .forEach((other) => {
+              if (other !== player && !other.paused) other.pause();
+            });
+        },
+        true,
+      );
+      const observer = new IntersectionObserver(schedule, {
+        rootMargin: "-15% 0px -15% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      });
+      chapters.forEach((chapter) => observer.observe(chapter));
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("resize", schedule, { passive: true });
+      window.addEventListener("keydown", (event) => {
+        if (!["Shift", "Control", "Alt", "Meta"].includes(event.key))
+          keyboardInteraction = true;
+      });
+      window.addEventListener(
+        "pointerdown",
+        () => {
+          keyboardInteraction = false;
+        },
+        { passive: true },
+      );
+      const pointerScroll = () => {
+        keyboardInteraction = false;
+        schedule();
+      };
+      window.addEventListener("wheel", pointerScroll, { passive: true });
+      window.addEventListener("touchmove", pointerScroll, { passive: true });
+      desktop.addEventListener("change", configure);
+      compact.addEventListener("change", configure);
+      reducedMotion.addEventListener("change", configure);
+      configure();
+    });
+</script>
+
+<style>
+  .scroll-workflow {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background:
+      radial-gradient(
+        ellipse at 92% 19%,
+        rgba(66, 111, 81, 0.075),
+        transparent 43%
+      ),
+      var(--surface);
+    border-top: 1px solid var(--border);
+    padding-block: 100px 72px;
+  }
+  .scroll-workflow > .container {
+    position: relative;
+  }
+  .scroll-heading {
+    max-width: 760px;
+    margin-bottom: 34px;
+  }
+  .scroll-eyebrow {
+    color: var(--primary);
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    margin-bottom: 20px;
+  }
+  .scroll-heading h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 4.7vw, 64px);
+    letter-spacing: -0.045em;
+    line-height: 1.04;
+    max-width: 700px;
+  }
+  .scroll-heading > p:last-child {
+    margin: 22px 0 0;
+    color: var(--ink-muted);
+    max-width: 530px;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .scroll-chapter-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .scroll-chapter-nav[hidden] {
+    display: none;
+  }
+  .scroll-chapter-nav button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.015);
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: 12px;
+    padding: 8px 14px 8px 9px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      color 200ms,
+      border-color 200ms,
+      background-color 200ms,
+      box-shadow 200ms;
+  }
+  .scroll-chapter-nav button:hover {
+    color: var(--ink);
+    border-color: var(--border-strong);
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .scroll-nav-number {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    font-size: 10px;
+    border: 1px solid var(--border);
+  }
+  .scroll-chapter-nav button[aria-current="step"] {
+    color: var(--primary);
+    background: linear-gradient(
+      135deg,
+      rgba(179, 237, 155, 0.1),
+      rgba(179, 237, 155, 0.025)
+    );
+    border-color: rgba(179, 237, 155, 0.24);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.045),
+      0 3px 18px rgba(0, 0, 0, 0.12);
+  }
+  .scroll-chapter-nav button[aria-current="step"] .scroll-nav-number {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+  }
+  .scroll-chapter-nav button:focus-visible,
+  .scroll-download:focus-visible,
+  .scroll-video:focus-visible,
+  .scroll-editor:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
+  }
+  .scroll-story-track {
+    position: relative;
+  }
+  .scroll-chapter {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    align-items: center;
+    gap: 64px;
+    padding-block: 40px;
+    scroll-margin-top: 110px;
+  }
+  .scroll-chapter-copy {
+    position: relative;
+    padding-right: 16px;
+  }
+  .scroll-step-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .scroll-step-label > span {
+    letter-spacing: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid rgba(179, 237, 155, 0.24);
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba(179, 237, 155, 0.11),
+      rgba(179, 237, 155, 0.025)
+    );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+  .scroll-chapter h3 {
+    font: 600 clamp(32px, 3vw, 44px)/1.08 var(--font-display);
+    letter-spacing: -0.035em;
+    max-width: 390px;
+    margin: 0;
+  }
+  .scroll-step-description {
+    max-width: 385px;
+    color: var(--ink-muted);
+    font-size: 16px;
+    line-height: 1.75;
+    margin: 24px 0 0;
+  }
+  .scroll-step-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--ink-muted);
+    font-size: 11px;
+    line-height: 1.65;
+    margin: 24px 0 0;
+  }
+  .scroll-step-note :global(svg) {
+    flex-shrink: 0;
+    color: var(--primary);
+    margin-top: 1px;
+  }
+  .scroll-primary-cta {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 14px;
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+  .scroll-sticky-stage {
+    display: none;
+  }
+  .scroll-editor {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    height: 590px;
+    isolation: isolate;
+    border: 1px solid rgba(200, 225, 208, 0.2);
+    border-radius: 18px;
+    background: linear-gradient(148deg, #18211e 0%, #101916 37%, #0d1412 100%);
+    box-shadow:
+      0 34px 80px -26px rgba(0, 0, 0, 0.62),
+      0 0 50px -26px rgba(148, 213, 133, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.045);
+    overflow: hidden;
+  }
+  .scroll-editor::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+      radial-gradient(
+        ellipse at 17% 35%,
+        rgba(116, 173, 112, 0.07),
+        transparent 47%
+      ),
+      radial-gradient(
+        ellipse at 100% 0%,
+        rgba(183, 224, 166, 0.045),
+        transparent 48%
+      );
+  }
+  .scroll-editor::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    inset-inline: 12%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(204, 245, 187, 0.65),
+      transparent
+    );
+    opacity: 0.65;
+  }
+  .scroll-editor[hidden] {
+    display: none;
+  }
+  .scroll-editor-topbar {
+    height: 49px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.015);
+  }
+  .scroll-editor-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .scroll-editor-brand strong {
+    font-size: 13px;
+    letter-spacing: -0.03em;
+  }
+  .scroll-editor-brand > span:last-child {
+    color: var(--ink-muted);
+    font-size: 11px;
+  }
+  .scroll-editor-mark {
+    color: var(--primary);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.1em;
+  }
+  .scroll-editor-divider {
+    width: 1px;
+    height: 13px;
+    background: var(--border);
+    margin-inline: 4px;
+  }
+  .scroll-editor-step {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.12em;
+  }
+  .scroll-editor-demo-label {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--ink-muted);
+    font-size: 9px;
+    padding: 12px 20px 0;
+  }
+  .scroll-editor-demo-label > .scroll-demo-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 9px rgba(179, 237, 155, 0.45);
+  }
+  .scroll-build-cue {
+    display: none;
+  }
+  .scroll-editor-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    gap: 22px;
+    padding: 16px 22px;
+    min-height: 0;
+    flex: 1;
+  }
+  .scroll-editor-preview {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .scroll-editor-preview::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    inset: 14% -8% 10%;
+    background: radial-gradient(
+      ellipse,
+      rgba(93, 157, 97, 0.12),
+      transparent 68%
+    );
+  }
+  .scroll-preview-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+    font-size: 9px;
+    color: var(--ink-muted);
+    margin-bottom: 10px;
+  }
+  .scroll-preview-media {
+    position: relative;
+    isolation: isolate;
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: calc(100% - 52px);
+    min-height: 0;
+    aspect-ratio: 9 / 16;
+  }
+  .scroll-preview-fragments {
+    display: none;
+  }
+  .scroll-video {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+    aspect-ratio: 9 / 16;
+    background: #080d0b;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 9px;
+    box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.65);
+  }
+  .scroll-preview-caption {
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+    margin: 10px 0 0;
+    text-align: center;
+  }
+  .scroll-editor-sidebar {
+    align-self: center;
+    min-width: 0;
+    padding-bottom: 8px;
+  }
+  .scroll-panel-eyebrow {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin: 0 0 11px;
+  }
+  .scroll-editor-sidebar h4 {
+    font: 600 clamp(20px, 2vw, 28px)/1.12 var(--font-display);
+    letter-spacing: -0.035em;
+    margin: 0 0 22px;
+  }
+  .scroll-file-card,
+  .scroll-intent-card,
+  .scroll-revision-card,
+  .scroll-export-card {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  }
+  .scroll-file-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.005)
+    );
+  }
+  .scroll-file-card > :global(svg) {
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+  .scroll-file-card > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .scroll-file-card strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .scroll-file-card div > span {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 9px;
+    margin-top: 3px;
+  }
+  .scroll-file-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 35px;
+    background: linear-gradient(
+      135deg,
+      rgba(179, 237, 155, 0.12),
+      rgba(179, 237, 155, 0.025)
+    );
+    border: 1px solid rgba(179, 237, 155, 0.14);
+    border-radius: 5px;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+  .scroll-intent-card {
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 12px;
+    background: rgba(4, 11, 7, 0.14);
+  }
+  .scroll-intent-card > span {
+    font-size: 9px;
+    color: var(--ink-muted);
+  }
+  .scroll-intent-card p {
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 7px 0 0;
+  }
+  .scroll-panel-footnote {
+    font-size: 11px;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    margin: 16px 0 0;
+  }
+  .scroll-edit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .scroll-edit-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-block: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .scroll-edit-list li > span:nth-child(2) {
+    min-width: 0;
+    flex: 1;
+  }
+  .scroll-edit-list li > :global(svg) {
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+  .scroll-edit-list strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .scroll-edit-list small {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 9px;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .scroll-edit-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: linear-gradient(
+      140deg,
+      rgba(179, 237, 155, 0.08),
+      rgba(179, 237, 155, 0.015)
+    );
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+  .scroll-revision-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border: 1px solid rgba(179, 237, 155, 0.17);
+    border-radius: 9px;
+    padding: 14px 12px;
+    background: linear-gradient(
+      140deg,
+      rgba(179, 237, 155, 0.05),
+      rgba(179, 237, 155, 0.012)
+    );
+  }
+  .scroll-revision-avatar {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(179, 237, 155, 0.12);
+    background: linear-gradient(140deg, #2f4930, #1a2e20);
+    color: var(--primary);
+    flex-shrink: 0;
+    font-size: 8px;
+    font-weight: 600;
+  }
+  .scroll-example-label {
+    display: block;
+    color: var(--ink-muted);
+    font-size: 10px;
+    margin: 1px 0 7px;
+  }
+  .scroll-revision-card p {
+    font-size: 12px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .scroll-revision-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: 18px;
+  }
+  .scroll-revision-detail p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .scroll-export-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    background: linear-gradient(
+      150deg,
+      rgba(179, 237, 155, 0.065),
+      rgba(179, 237, 155, 0.008)
+    );
+    border: 1px solid rgba(179, 237, 155, 0.19);
+    border-radius: 10px;
+    padding: 14px 10px;
+  }
+  .scroll-export-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(179, 237, 155, 0.09);
+    border: 1px solid rgba(179, 237, 155, 0.2);
+    color: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 22px -9px rgba(179, 237, 155, 0.4);
+  }
+  .scroll-export-card strong {
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .scroll-export-card > span:last-child {
+    color: var(--ink-muted);
+    font-size: 8px;
+  }
+  .scroll-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    background: linear-gradient(135deg, #c2f2a9, #a8df92);
+    color: var(--on-primary);
+    border-radius: 7px;
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(221, 255, 201, 0.25);
+    box-shadow:
+      0 5px 18px -8px rgba(179, 237, 155, 0.23),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transition:
+      transform 200ms,
+      box-shadow 200ms,
+      filter 200ms;
+  }
+  .scroll-download:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    box-shadow:
+      0 7px 22px -8px rgba(179, 237, 155, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  .scroll-download :global(svg) {
+    transform: rotate(180deg);
+  }
+  .scroll-destinations {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 9px;
+    color: var(--ink-muted);
+    margin-top: 16px;
+  }
+  .scroll-destinations > span {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 4px 6px;
+    background: rgba(255, 255, 255, 0.015);
+  }
+  .scroll-editor-bottom {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    font-size: 8px;
+    color: var(--ink-muted);
+    background: rgba(3, 8, 5, 0.18);
+  }
+  .scroll-timeline-label {
+    min-width: 40px;
+  }
+  .scroll-mini-timeline {
+    position: relative;
+    flex: 1;
+    height: 24px;
+    display: flex;
+    gap: 4px;
+  }
+  .scroll-mini-timeline > span {
+    border-radius: 3px;
+    background: rgba(179, 237, 155, 0.055);
+    border: 1px solid rgba(179, 237, 155, 0.18);
+    flex: 1;
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0 6px,
+      rgba(179, 237, 155, 0.025) 6px 8px
+    );
+  }
+  .scroll-mini-timeline > span:nth-child(2) {
+    flex: 1.35;
+  }
+  .scroll-mini-timeline--original {
+    gap: 0;
+  }
+  .scroll-mini-timeline--original > span {
+    border-radius: 0;
+    border-inline-width: 0;
+  }
+  .scroll-timeline-wave {
+    position: absolute;
+    pointer-events: none;
+    inset: 5px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+    opacity: 0.45;
+    overflow: hidden;
+  }
+  .scroll-timeline-wave > b {
+    display: block;
+    height: var(--bar-height);
+    min-height: 2px;
+    width: 2px;
+    flex-shrink: 0;
+    border-radius: 1px;
+    background: #b3ed9b;
+  }
+  .scroll-mini-timeline > i {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    left: 17%;
+    width: 1px;
+    background: var(--primary);
+    box-shadow: 0 0 8px rgba(179, 237, 155, 0.4);
+  }
+  .scroll-mini-timeline > i::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: var(--primary);
+    top: 0;
+    left: -2px;
+    border-radius: 1px;
+  }
+  .scroll-editor--2 .scroll-mini-timeline > i {
+    left: 43%;
+  }
+  .scroll-editor--3 .scroll-mini-timeline > i {
+    left: 67%;
+  }
+  .scroll-editor--4 .scroll-mini-timeline > i {
+    left: 92%;
+  }
+  @media (min-width: 1000px) and (min-height: 650px) {
+    .scroll-story-track[data-enhanced] {
+      display: grid;
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+      gap: 64px;
+      align-items: start;
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapters {
+      padding-bottom: max(100px, 15svh);
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapter-copy {
+      opacity: 0.4;
+      transform: translateY(12px);
+      transition:
+        opacity 500ms ease,
+        transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapter-copy::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        rgba(179, 237, 155, 0.7),
+        rgba(179, 237, 155, 0.12),
+        transparent
+      );
+      opacity: 0;
+      transform: scaleY(0.6);
+      transform-origin: top;
+      transition:
+        opacity 400ms,
+        transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-story-track[data-enhanced]
+      .scroll-chapter.is-current
+      .scroll-chapter-copy {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .scroll-story-track[data-enhanced]
+      .scroll-chapter.is-current
+      .scroll-chapter-copy::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapter {
+      display: flex;
+      /* Give each build enough scroll distance, followed by a complete hold. */
+      min-height: 150vh;
+      min-height: 150svh;
+      padding-block: 55px;
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapter:first-child {
+      padding-top: 0;
+    }
+    .scroll-story-track[data-enhanced] .scroll-chapter:last-child {
+      padding-bottom: 0;
+    }
+    .scroll-story-track[data-enhanced] .scroll-sticky-stage {
+      display: block;
+      position: sticky;
+      isolation: isolate;
+      top: 108px;
+      height: min(620px, calc(100svh - 136px));
+    }
+    .scroll-story-track[data-enhanced] .scroll-sticky-stage::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      z-index: -1;
+      inset: 9% -9%;
+      background: radial-gradient(
+        ellipse,
+        rgba(106, 175, 99, 0.12),
+        transparent 68%
+      );
+      filter: blur(22px);
+    }
+    .scroll-story-track[data-enhanced] .scroll-editor {
+      height: 100%;
+    }
+  }
+  /* Every assembly value below is derived from scroll position. There are no
+     time-based entrances: moving upward separates the same pieces again. */
+  .scroll-before-layer {
+    display: none;
+  }
+  @media (min-width: 700px) and (min-height: 650px) and (prefers-reduced-motion: no-preference) {
+    .scroll-story-track[data-scrub] .scroll-editor {
+      opacity: calc(0.65 + var(--build-shell, 1) * 0.35);
+      transform: perspective(1200px)
+        translateY(calc((1 - var(--build-shell, 1)) * 22px))
+        rotateX(calc((1 - var(--build-shell, 1)) * 2deg))
+        scale(calc(0.97 + var(--build-shell, 1) * 0.03));
+      transition: none;
+      animation: none;
+    }
+    .scroll-story-track[data-scrub] .scroll-chapter-copy,
+    .scroll-story-track[data-scrub] .scroll-chapter-copy::before {
+      transition: none;
+    }
+    .scroll-story-track[data-scrub] .scroll-chapter-copy {
+      transform: none;
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-topbar {
+      opacity: var(--build-shell, 1);
+      transform: translateY(calc((1 - var(--build-shell, 1)) * -22px));
+    }
+    .scroll-story-track[data-scrub] .scroll-preview-heading,
+    .scroll-story-track[data-scrub] .scroll-preview-caption {
+      opacity: var(--build-video, 1);
+      transform: translateY(calc((1 - var(--build-video, 1)) * 8px));
+    }
+    .scroll-story-track[data-scrub] .scroll-build-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      font-size: 9px;
+      color: var(--ink-muted);
+    }
+    .scroll-build-cue > i {
+      position: relative;
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: rgba(179, 237, 155, 0.13);
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .scroll-build-cue > i::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--primary);
+      transform: scaleX(var(--build-progress, 1));
+      transform-origin: left;
+    }
+    .scroll-story-track[data-scrub] .scroll-preview-media {
+      perspective: 900px;
+    }
+    .scroll-story-track[data-scrub] .scroll-video {
+      opacity: var(--build-video, 1);
+      transition: none;
+    }
+    .scroll-story-track[data-scrub] .scroll-before-layer {
+      display: block;
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      overflow: hidden;
+      border-radius: 9px;
+      background: url("/videos/drivo-original-poster.webp") center / cover;
+      clip-path: inset(0 0 0 calc(var(--build-edit, 1) * 100%));
+      pointer-events: none;
+    }
+    .scroll-edit-sweep {
+      position: absolute;
+      inset: 0;
+      border-left: 1px solid rgb(208 241 188 / 85%);
+      transform: translateX(calc(var(--build-edit, 1) * 100%));
+      opacity: calc(4 * var(--build-edit, 1) * (1 - var(--build-edit, 1)));
+    }
+    .scroll-preview-media:focus-within .scroll-before-layer {
+      visibility: hidden;
+    }
+    .scroll-story-track[data-scrub] .scroll-preview-fragments {
+      display: block;
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      pointer-events: none;
+      opacity: calc(1 - var(--build-video, 1));
+    }
+    .scroll-video-fragment {
+      position: absolute;
+      inset: 0;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      border-radius: 9px;
+      backface-visibility: hidden;
+    }
+    .scroll-video-fragment--1 {
+      clip-path: inset(0 0 66.666% 0);
+      opacity: calc(0.3 + var(--build-slice-1, 1) * 0.7);
+      transform: translate3d(
+          calc((1 - var(--build-slice-1, 1)) * -52px),
+          calc((1 - var(--build-slice-1, 1)) * -30px),
+          0
+        )
+        rotate(calc((1 - var(--build-slice-1, 1)) * -4deg));
+    }
+    .scroll-video-fragment--2 {
+      clip-path: inset(33.333% 0 33.333% 0);
+      opacity: calc(0.3 + var(--build-slice-2, 1) * 0.7);
+      transform: translate3d(
+          calc((1 - var(--build-slice-2, 1)) * 60px),
+          calc((1 - var(--build-slice-2, 1)) * 8px),
+          0
+        )
+        rotate(calc((1 - var(--build-slice-2, 1)) * 3deg));
+    }
+    .scroll-video-fragment--3 {
+      clip-path: inset(66.666% 0 0 0);
+      opacity: calc(0.3 + var(--build-slice-3, 1) * 0.7);
+      transform: translate3d(
+          calc((1 - var(--build-slice-3, 1)) * -32px),
+          calc((1 - var(--build-slice-3, 1)) * 58px),
+          0
+        )
+        rotate(calc((1 - var(--build-slice-3, 1)) * -4deg));
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-sidebar > :nth-child(1) {
+      opacity: var(--build-panel-1, 1);
+      transform: translate3d(calc((1 - var(--build-panel-1, 1)) * 34px), 0, 0);
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-sidebar > :nth-child(2) {
+      opacity: var(--build-panel-2, 1);
+      transform: translate3d(
+        calc((1 - var(--build-panel-2, 1)) * 42px),
+        calc((1 - var(--build-panel-2, 1)) * 8px),
+        0
+      );
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-sidebar > :nth-child(3) {
+      opacity: var(--build-panel-3, 1);
+      transform: translate3d(
+        calc((1 - var(--build-panel-3, 1)) * 52px),
+        calc((1 - var(--build-panel-3, 1)) * 12px),
+        0
+      );
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-sidebar > :nth-child(n + 4) {
+      opacity: var(--build-panel-4, 1);
+      transform: translate3d(
+        calc((1 - var(--build-panel-4, 1)) * 58px),
+        calc((1 - var(--build-panel-4, 1)) * 16px),
+        0
+      );
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-bottom {
+      opacity: calc(0.15 + var(--build-wave, 1) * 0.85);
+      transform: translateY(calc((1 - var(--build-wave, 1)) * 26px));
+    }
+    .scroll-story-track[data-scrub] .scroll-mini-timeline > span:nth-child(1) {
+      transform: translateX(calc((1 - var(--build-wave, 1)) * -24px));
+    }
+    .scroll-story-track[data-scrub] .scroll-mini-timeline > span:nth-child(2) {
+      transform: translateY(calc((1 - var(--build-wave, 1)) * 18px));
+    }
+    .scroll-story-track[data-scrub] .scroll-mini-timeline > span:nth-child(3) {
+      transform: translateX(calc((1 - var(--build-wave, 1)) * 26px));
+    }
+    .scroll-story-track[data-scrub] .scroll-timeline-wave {
+      opacity: calc(var(--build-wave, 1) * 0.45);
+      transform: scaleX(var(--build-wave, 1));
+      transform-origin: left;
+    }
+    .scroll-story-track[data-scrub] .scroll-timeline-wave > b {
+      transform: scaleY(calc(0.1 + var(--build-wave, 1) * 0.9));
+    }
+    .scroll-story-track[data-scrub] .scroll-mini-timeline > i {
+      opacity: var(--build-final, 1);
+      transform: translateY(calc((1 - var(--build-final, 1)) * -8px));
+    }
+    .scroll-story-track[data-scrub] .scroll-export-icon {
+      opacity: var(--build-final, 1);
+      transform: scale(calc(0.6 + var(--build-final, 1) * 0.4));
+    }
+    .scroll-story-track[data-scrub] .scroll-editor-topbar,
+    .scroll-story-track[data-scrub] .scroll-editor-preview,
+    .scroll-story-track[data-scrub] .scroll-editor-sidebar > *,
+    .scroll-story-track[data-scrub] .scroll-editor-bottom,
+    .scroll-story-track[data-scrub] .scroll-mini-timeline > *,
+    .scroll-story-track[data-scrub] .scroll-export-icon {
+      animation: none;
+      transition: none;
+    }
+    .scroll-story-track[data-scrub]
+      .scroll-preview-media:focus-within
+      .scroll-video {
+      opacity: 1;
+    }
+    .scroll-story-track[data-scrub]
+      .scroll-preview-media:focus-within
+      .scroll-preview-fragments {
+      opacity: 0;
+    }
+  }
+  @media (min-width: 1000px) and (min-height: 650px) and (max-height: 750px) {
+    .scroll-editor--4 .scroll-panel-eyebrow,
+    .scroll-editor--4 .scroll-destinations {
+      display: none;
+    }
+    .scroll-editor--4 .scroll-editor-sidebar h4 {
+      font-size: 23px;
+      margin-bottom: 14px;
+    }
+    .scroll-editor--4 .scroll-export-card {
+      padding-block: 10px;
+      gap: 6px;
+    }
+    .scroll-editor--4 .scroll-export-icon {
+      width: 28px;
+      height: 28px;
+    }
+    .scroll-editor--4 .scroll-panel-footnote {
+      margin-top: 12px;
+    }
+    .scroll-editor--4 .scroll-primary-cta {
+      margin-top: 10px;
+    }
+  }
+  @media (max-width: 1200px) {
+    .scroll-story-track[data-enhanced],
+    .scroll-chapter {
+      gap: 35px;
+    }
+    .scroll-editor-body {
+      gap: 16px;
+      padding-inline: 16px;
+    }
+  }
+  @media (max-width: 999px), (max-height: 649px) {
+    .scroll-workflow {
+      padding-block: 64px;
+    }
+    .scroll-heading {
+      margin-bottom: 24px;
+    }
+    .scroll-heading h2 {
+      max-width: 650px;
+    }
+    .scroll-chapter-nav {
+      margin-bottom: 16px;
+      gap: 4px;
+    }
+    .scroll-chapter-nav button {
+      font-size: 10px;
+      gap: 7px;
+      padding-inline: 8px;
+    }
+    .scroll-chapter {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding-block: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .scroll-chapter-copy {
+      padding-right: 0;
+    }
+    .scroll-chapter h3,
+    .scroll-step-description {
+      max-width: 600px;
+    }
+    .scroll-step-label {
+      margin-bottom: 18px;
+    }
+    .scroll-step-description {
+      margin-top: 18px;
+    }
+    .scroll-step-note {
+      margin-top: 16px;
+    }
+    .scroll-editor {
+      max-width: 700px;
+      height: 530px;
+    }
+    .scroll-editor-body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 28px;
+      padding-inline: 24px;
+    }
+    .scroll-editor-sidebar h4 {
+      font-size: 28px;
+    }
+    .scroll-panel-footnote {
+      font-size: 11px;
+    }
+    .scroll-file-card strong,
+    .scroll-file-card div > span,
+    .scroll-intent-card > span,
+    .scroll-panel-eyebrow,
+    .scroll-example-label {
+      font-size: 10px;
+    }
+    .scroll-intent-card p,
+    .scroll-edit-list strong,
+    .scroll-revision-detail p,
+    .scroll-export-card strong,
+    .scroll-download {
+      font-size: 12px;
+    }
+    .scroll-edit-list small,
+    .scroll-export-card > span:last-child,
+    .scroll-destinations {
+      font-size: 10px;
+    }
+  }
+  @media (min-width: 700px) and (max-width: 999px) and (min-height: 650px) {
+    .scroll-story-track[data-compact] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      align-items: start;
+      isolation: isolate;
+    }
+    .scroll-story-track[data-compact] .scroll-chapters {
+      grid-area: 1 / 1;
+      width: 100%;
+      min-width: 0;
+      padding-bottom: max(100px, 15svh);
+    }
+    .scroll-story-track[data-compact] .scroll-chapter {
+      display: block;
+      min-height: 150vh;
+      min-height: 150svh;
+      padding-block: 55px;
+      border-top: 0;
+    }
+    .scroll-story-track[data-compact] .scroll-sticky-stage {
+      display: flex;
+      position: sticky;
+      grid-area: 1 / 1;
+      align-self: start;
+      flex-direction: column;
+      gap: 16px;
+      top: 92px;
+      width: 100%;
+      min-width: 0;
+      height: min(650px, calc(100svh - 120px));
+      z-index: 1;
+      isolation: isolate;
+    }
+    .scroll-story-track[data-compact] .scroll-sticky-stage::before {
+      content: "";
+      pointer-events: none;
+      position: absolute;
+      z-index: -1;
+      inset: 15% -6% 0;
+      background: radial-gradient(
+        ellipse,
+        rgba(106, 175, 99, 0.1),
+        transparent 68%
+      );
+      filter: blur(20px);
+    }
+    .scroll-story-track[data-compact]
+      .scroll-sticky-stage
+      > .scroll-chapter-copy {
+      flex: 0 0 auto;
+      width: 100%;
+      padding: 0;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .scroll-story-track[data-compact]
+      .scroll-sticky-stage
+      > .scroll-chapter-copy[hidden] {
+      display: none;
+    }
+    .scroll-story-track[data-compact] .scroll-chapter-copy::before {
+      display: none;
+    }
+    .scroll-story-track[data-compact] .scroll-step-label {
+      gap: 8px;
+      font-size: 9px;
+      margin-bottom: 6px;
+    }
+    .scroll-story-track[data-compact] .scroll-step-label > span {
+      width: 24px;
+      height: 24px;
+    }
+    .scroll-story-track[data-compact] .scroll-chapter-copy h3 {
+      max-width: none;
+      margin: 0;
+      font: 600 28px/1.08 var(--font-display);
+      letter-spacing: -0.035em;
+    }
+    .scroll-story-track[data-compact] .scroll-step-description {
+      max-width: 720px;
+      margin: 10px 0 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .scroll-story-track[data-compact] .scroll-step-note {
+      display: none;
+    }
+    .scroll-story-track[data-compact] .scroll-editor {
+      flex: 1 1 0;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      min-height: 0;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-topbar {
+      height: 42px;
+      padding-inline: 16px;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-demo-label {
+      padding: 10px 16px 0;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+      padding: 12px 16px;
+      min-height: 0;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-preview {
+      height: 100%;
+      min-height: 0;
+    }
+    .scroll-story-track[data-compact] .scroll-preview-media {
+      height: calc(100% - 52px);
+      max-height: none;
+      min-height: 0;
+      width: auto;
+    }
+    .scroll-story-track[data-compact] .scroll-video {
+      height: 100%;
+      min-height: 0;
+      width: 100%;
+      max-height: none;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-sidebar {
+      align-self: center;
+      max-height: 100%;
+      min-height: 0;
+      overflow: visible;
+      padding-bottom: 2px;
+    }
+    .scroll-story-track[data-compact] .scroll-panel-eyebrow {
+      font-size: 9px;
+      margin-bottom: 8px;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-sidebar h4 {
+      font-size: 20px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .scroll-story-track[data-compact] .scroll-file-card {
+      padding: 10px;
+    }
+    .scroll-story-track[data-compact] .scroll-file-card strong,
+    .scroll-story-track[data-compact] .scroll-file-card div > span,
+    .scroll-story-track[data-compact] .scroll-intent-card > span,
+    .scroll-story-track[data-compact] .scroll-edit-list small {
+      font-size: 9px;
+    }
+    .scroll-story-track[data-compact] .scroll-intent-card {
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .scroll-story-track[data-compact] .scroll-intent-card p,
+    .scroll-story-track[data-compact] .scroll-edit-list strong,
+    .scroll-story-track[data-compact] .scroll-export-card strong {
+      font-size: 11px;
+    }
+    .scroll-story-track[data-compact] .scroll-panel-footnote,
+    .scroll-story-track[data-compact] .scroll-revision-detail p {
+      font-size: 10px;
+      line-height: 1.5;
+    }
+    .scroll-story-track[data-compact] .scroll-panel-footnote {
+      margin-top: 10px;
+    }
+    .scroll-story-track[data-compact] .scroll-edit-list li {
+      gap: 8px;
+      padding-block: 9px;
+    }
+    .scroll-story-track[data-compact] .scroll-revision-card {
+      padding: 12px 10px;
+    }
+    .scroll-story-track[data-compact] .scroll-revision-card p {
+      font-size: 12px;
+    }
+    .scroll-story-track[data-compact] .scroll-revision-detail {
+      margin-top: 12px;
+    }
+    .scroll-story-track[data-compact] .scroll-export-card {
+      gap: 6px;
+      padding: 10px;
+    }
+    .scroll-story-track[data-compact] .scroll-export-icon {
+      width: 28px;
+      height: 28px;
+    }
+    .scroll-story-track[data-compact] .scroll-export-card > span:last-child {
+      font-size: 9px;
+    }
+    .scroll-story-track[data-compact] .scroll-download,
+    .scroll-story-track[data-compact] .scroll-primary-cta {
+      min-height: 40px;
+      margin-top: 8px;
+      font-size: 11px;
+    }
+    .scroll-story-track[data-compact] .scroll-destinations {
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 9px;
+    }
+    .scroll-story-track[data-compact] .scroll-editor-bottom {
+      padding: 12px 16px;
+    }
+  }
+  @media (min-width: 700px) and (max-width: 999px) and (min-height: 650px) and (max-height: 700px) {
+    .scroll-story-track[data-compact] .scroll-sticky-stage {
+      gap: 12px;
+    }
+    .scroll-story-track[data-compact] .scroll-editor--4 .scroll-panel-eyebrow,
+    .scroll-story-track[data-compact] .scroll-editor--4 .scroll-destinations,
+    .scroll-story-track[data-compact] .scroll-editor--4 .scroll-export-icon {
+      display: none;
+    }
+    .scroll-story-track[data-compact]
+      .scroll-editor--4
+      .scroll-editor-sidebar
+      h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .scroll-story-track[data-compact] .scroll-editor--4 .scroll-export-card {
+      padding: 8px;
+      gap: 4px;
+    }
+  }
+  @media (max-width: 600px) {
+    .scroll-workflow {
+      padding-block: 48px;
+    }
+    .scroll-heading h2 {
+      font-size: clamp(36px, 10vw, 48px);
+    }
+    .scroll-heading > p:last-child {
+      font-size: 15px;
+      margin-top: 18px;
+    }
+    .scroll-chapter-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+    .scroll-chapter-nav button {
+      justify-content: flex-start;
+      font-size: 11px;
+    }
+    .scroll-nav-number {
+      font-size: 11px;
+    }
+    .scroll-chapter {
+      padding-block: 32px;
+      gap: 24px;
+    }
+    .scroll-chapter h3 {
+      font-size: 34px;
+    }
+    .scroll-step-description {
+      font-size: 15px;
+    }
+    .scroll-editor {
+      height: auto;
+      min-height: 0;
+      border-radius: 12px;
+    }
+    .scroll-editor-topbar {
+      height: 44px;
+      padding-inline: 15px;
+    }
+    .scroll-editor-demo-label {
+      padding-left: 15px;
+      font-size: 9px;
+    }
+    .scroll-editor-body {
+      padding: 16px 15px 20px;
+      gap: 24px;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .scroll-editor-preview {
+      align-self: start;
+    }
+    .scroll-preview-media {
+      width: min(100%, 202.5px);
+      height: auto;
+      max-height: 360px;
+      flex: none;
+    }
+    .scroll-video {
+      width: 100%;
+      height: auto;
+      max-height: 360px;
+    }
+    .scroll-preview-heading {
+      font-size: 11px;
+      flex-wrap: wrap;
+    }
+    .scroll-preview-caption {
+      font-size: 11px;
+    }
+    .scroll-editor-sidebar {
+      align-self: start;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .scroll-panel-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .scroll-editor-sidebar h4 {
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+    .scroll-file-card {
+      flex-wrap: wrap;
+      padding: 10px 9px;
+      gap: 7px;
+    }
+    .scroll-file-card .scroll-file-icon {
+      width: 25px;
+      height: 29px;
+    }
+    .scroll-file-card > :global(svg) {
+      display: none;
+    }
+    .scroll-file-card strong,
+    .scroll-file-card div > span {
+      font-size: 11px;
+    }
+    .scroll-intent-card {
+      padding: 10px;
+      margin-top: 9px;
+    }
+    .scroll-intent-card > span {
+      font-size: 11px;
+    }
+    .scroll-intent-card p {
+      font-size: 13px;
+    }
+    .scroll-panel-footnote {
+      font-size: 11px;
+      margin-top: 12px;
+      line-height: 1.65;
+    }
+    .scroll-edit-list li {
+      gap: 7px;
+      padding-block: 9px;
+    }
+    .scroll-edit-list strong {
+      font-size: 13px;
+    }
+    .scroll-edit-list small {
+      font-size: 11px;
+    }
+    .scroll-edit-list li > :global(svg) {
+      display: none;
+    }
+    .scroll-edit-icon {
+      width: 24px;
+      height: 27px;
+      font-size: 11px;
+    }
+    .scroll-revision-card {
+      padding: 14px 12px;
+      gap: 10px;
+    }
+    .scroll-revision-avatar {
+      width: 28px;
+      height: 28px;
+      font-size: 11px;
+    }
+    .scroll-example-label {
+      font-size: 11px;
+    }
+    .scroll-revision-card p {
+      font-size: 14px;
+    }
+    .scroll-revision-detail {
+      gap: 7px;
+      margin-top: 12px;
+    }
+    .scroll-revision-detail .scroll-edit-icon {
+      display: none;
+    }
+    .scroll-revision-detail p {
+      font-size: 12px;
+    }
+    .scroll-export-card {
+      padding: 14px 7px;
+      gap: 8px;
+    }
+    .scroll-export-icon {
+      width: 32px;
+      height: 32px;
+      margin: 0;
+    }
+    .scroll-export-card strong {
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+    .scroll-export-card > span:last-child {
+      font-size: 11px;
+    }
+    .scroll-download {
+      padding-inline: 10px;
+      font-size: 13px;
+      gap: 8px;
+    }
+    .scroll-download :global(svg) {
+      width: 14px;
+    }
+    .scroll-destinations {
+      gap: 12px;
+      font-size: 11px;
+      margin-top: 12px;
+    }
+    .scroll-editor-demo-label,
+    .scroll-editor-step {
+      font-size: 11px;
+    }
+    .scroll-editor-bottom {
+      padding: 13px 15px;
+      font-size: 11px;
+      gap: 10px;
+    }
+    .scroll-primary-cta {
+      font-size: 13px;
+    }
+  }
+  @media (max-width: 359px) {
+    .scroll-editor-body {
+      grid-template-columns: 1fr;
+    }
+    .scroll-video {
+      width: auto;
+      max-height: 360px;
+    }
+    .scroll-editor-preview {
+      width: 100%;
+    }
+    .scroll-editor-sidebar {
+      padding-top: 0;
+    }
+    .scroll-panel-footnote,
+    .scroll-revision-detail p,
+    .scroll-intent-card p {
+      font-size: 11px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-workflow *,
+    .scroll-workflow *::before,
+    .scroll-workflow *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .scroll-download:hover {
+      transform: none;
+    }
+    .scroll-chapter {
+      scroll-margin-top: 90px;
+    }
+  }
+</style>

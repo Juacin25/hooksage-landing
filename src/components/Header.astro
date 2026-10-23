@@ -10,15 +10,25 @@ import {
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 const home = homePath(lang);
+interface Props {
+  story?: boolean;
+}
+const { story = false } = Astro.props;
 ---
 
-<header class="site-header">
+<header class:list={["site-header", { "site-header--story": story }]}>
   <div class="container header-inner">
     <Logo />
     <nav aria-label={t("Navegación principal")}>
-      <a href={home + "#marca"}>{t("Marca e ideas")}</a>
+      {!story && <a href={home + "#marca"}>{t("Marca e ideas")}</a>}
       <a href={home + "#como-funciona"}>{t("Cómo funciona")}</a>
-      <a href={home + "#tonos"}>{t("Acabados")}</a>
+      {story ? (
+        <a href={home + "#ver-edicion"}>
+          {lang === "en" ? "Real results" : "Resultados reales"}
+        </a>
+      ) : (
+        <a href={home + "#tonos"}>{t("Acabados")}</a>
+      )}
       <a href={home + "#precio"}>{t("Precio")}</a>
       <a href={home + "#preguntas"}>{t("Preguntas")}</a>
     </nav>

@@ -150,7 +150,7 @@ export function saveEntry(db, entry) {
         "utm_term",
       ].map((key) => entry.attribution[key] || null),
       country,
-      country === "MX" ? "waitlist-v1" : "waitlist-v2",
+      entry.noticeVersion || "waitlist-v2",
       entry.language || "es",
       footageUrl,
       editingFeedback,

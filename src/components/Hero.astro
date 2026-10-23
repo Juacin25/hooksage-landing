@@ -1,69 +1,110 @@
 ---
-import { localeFromPath, translator } from "../lib/i18n";
+import { localeFromPath } from "../lib/i18n";
+import { applicationUrl } from "../lib/config";
 import Icon from "./Icon.astro";
-import VideoSamples from "./VideoSamples.astro";
 const lang = localeFromPath(Astro.url.pathname);
-const t = translator(lang);
+const en = lang === "en";
 ---
 
-<section class="hero hero--showcase section" aria-labelledby="hero-title">
+<section
+  class="story-hero section"
+  aria-labelledby="hero-title"
+  data-story-hero
+>
+  <div class="story-hero-atmosphere" aria-hidden="true">
+    <div class="story-light story-light--one"></div>
+    <div class="story-light story-light--two"></div>
+    <div class="story-hero-grid"></div>
+  </div>
   <div class="container">
-    <div class="hero-intro">
-      <div class="hero-titlebox">
-        <span class="hs-badge hs-badge--accent">
-          <span class="hs-badge__dot" aria-hidden="true"></span>
-          {t("Piloto en desarrollo")}
-        </span>
-        <h1 class="display-xl" id="hero-title">
-          <span class="hero-title-line">{t("De tu video en crudo")}</span>{" "}
-          <span>{t("a un short editado.")}</span>
-        </h1>
-      </div>
-      <div class="hero-pitch">
-        <p class="body-l muted">
-          {t(
-            "Nos pasás lo que grabaste con el celular. Te devolvemos un video vertical con cortes, encuadre y subtítulos para Reels, TikTok o Shorts.",
-          )}
+    <p class="story-kicker">
+      <span aria-hidden="true"></span>
+      {en
+        ? "YOUR FOOTAGE. YOUR POINT OF VIEW."
+        : "TU MATERIAL. TU FORMA DE CONTARLO."}
+    </p>
+    <h1 id="hero-title">
+      <span>{en ? "From your recording" : "De tu grabación"}</span>{" "}
+      <span>{en ? "to your next post." : "a tu próxima publicación."}</span>
+    </h1>
+    <div class="story-hero-bottom">
+      <div class="story-hero-pitch">
+        <p>
+          {en
+            ? "Upload your video. Get a first edit with AI. Make it yours, then take it to Reels, TikTok or Shorts."
+            : "Subí tu video. Recibí una primera edición con IA. Dale tu toque y llevalo a Reels, TikTok o Shorts."}
         </p>
-        <div class="hero-actions">
+        <div class="story-hero-actions">
           <a
             class="hs-btn hs-btn--primary"
-            href="#empezar"
-            data-waitlist-cta
-            data-cta-location="hero"
+            href={applicationUrl}
+            data-application-cta
           >
-            {t("Probar con mi video")}
-            <Icon name="arrow" />
+            {en ? "Edit my video" : "Editar mi video"}
+            <Icon name="arrow" size={18} />
           </a>
-          <a class="text-link" href="#ver-edicion">
-            {t("Ver el antes y después")}
+          <a class="text-link" href="#como-funciona">
+            {en ? "See the process" : "Mirá cómo funciona"}
             <Icon name="arrow" size={18} />
           </a>
         </div>
-        <p class="small reassurance">
-          <Icon name="check" size={16} />
-          {t("Primera edición gratis. Coordinamos por email.")}
-        </p>
+        <a
+          class="story-trial-link"
+          href="#empezar"
+          data-waitlist-cta
+          data-cta-location="hero"
+        >
+          {en
+            ? "Or request a free edit by email"
+            : "O pedí una edición gratis por email"}
+          <span aria-hidden="true"> ↗</span>
+        </a>
       </div>
-    </div>
-    <VideoSamples />
-    <div class="hero-footnote">
-      <span class="overline">{t("Del material al contenido")}</span>
-      <span>
-        {t("TikTok")}
-        <span class="dot-separator" aria-hidden="true">
-          ·
-        </span>
-        {t("Instagram Reels")}
-        <span class="dot-separator" aria-hidden="true">
-          ·
-        </span>
-        {t("YouTube Shorts")}
-      </span>
-      <span class="small">
-        <Icon name="location" size={18} />
-        {t("Hecho en el Río de la Plata")}
-      </span>
+      <div class="story-hero-aside">
+        <div class="story-hero-visual" aria-hidden="true">
+          <div class="story-film-orbit"></div>
+          <div class="story-film-frame story-film-frame--source">
+            <img
+              src="/videos/drivo-original-poster.webp"
+              alt=""
+              width="720"
+              height="1280"
+            />
+            <span>
+              {en ? "Your footage" : "Tu material"}
+              <i>01</i>
+            </span>
+          </div>
+          <div class="story-film-frame story-film-frame--edit">
+            <img
+              src="/videos/drivo-edited-poster.webp"
+              alt=""
+              width="720"
+              height="1280"
+            />
+            <span>
+              {en ? "Your edit" : "Tu edición"}
+              <i>02</i>
+            </span>
+          </div>
+          <div class="story-film-signal">
+            <Icon name="sparkles" size={18} />
+          </div>
+          <div class="story-film-dots">
+            {Array.from({ length: 21 }, (_, i) => (
+              <span style={`--dot:${i}`}></span>
+            ))}
+          </div>
+        </div>
+        <a class="story-scroll-cue" href="#como-funciona">
+          <span>
+            {en ? "ONE VIDEO. FOUR STEPS." : "UN VIDEO. CUATRO PASOS."}
+          </span>
+          <span class="story-scroll-arrow" aria-hidden="true">
+            ↓
+          </span>
+        </a>
+      </div>
     </div>
   </div>
 </section>

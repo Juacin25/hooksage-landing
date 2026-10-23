@@ -2,8 +2,17 @@
 import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import { plansFor, packsFor } from "../data/plan";
+import { applicationUrl, contactUrl, paidPlansAvailable } from "../lib/config";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
+const purchaseHref = applicationUrl || contactUrl;
+const purchaseLabel = applicationUrl
+  ? paidPlansAvailable
+    ? t("Ir a la aplicación")
+    : lang === "en"
+      ? "Create a free account"
+      : "Crear cuenta gratis"
+  : t("Consultar acceso");
 const panels = [
   {
     id: "packs",
@@ -48,7 +57,7 @@ const features = [
       </h2>
       <p class="body muted">
         {t(
-          "Comprá un pack puntual o pagá menos por video con una suscripción.",
+          "Elegí un pack de pago único o una suscripción mensual para editar en la aplicación de Hooksage.",
         )}
       </p>
     </div>
@@ -144,7 +153,7 @@ const features = [
               <p class="small muted">
                 {t(
                   panel.recurring
-                    ? "Cobro mensual. Cancelá cuando quieras."
+                    ? "Cobro mensual. Consultá las condiciones de cancelación."
                     : "Un solo pago. Sin renovación automática.",
                 )}
               </p>
@@ -153,11 +162,9 @@ const features = [
                   "hs-btn",
                   index === 1 ? "hs-btn--primary" : "hs-btn--secondary",
                 ]}
-                href="#empezar"
-                data-waitlist-cta
-                data-cta-location="pricing"
+                href={purchaseHref}
               >
-                {t("Probar con mi video")}
+                {purchaseLabel}
                 <Icon name="arrow" />
               </a>
             </article>
@@ -167,10 +174,23 @@ const features = [
     ))}
     <p class="small muted pricing-note">
       {t(
-        "Precios en dólares. Cobro mensual, cupos de videos que se renuevan cada semana.",
+        "Precios en dólares. Los packs son de pago único. Las suscripciones se cobran por mes y sus cupos se renuevan cada semana.",
       )}
       <br />
-      {t("Sumarte a la prueba no activa un plan. Sin pago ni tarjeta.")}
+      {paidPlansAvailable
+        ? t(
+            "El registro de cuenta y la compra se realizan en la aplicación, separada de este sitio.",
+          )
+        : lang === "en"
+          ? "Paid plans and packs are not enabled yet. You can create a free account in the app; registration does not activate a subscription or a charge."
+          : "Los planes y packs de pago todavía no están habilitados. Podés crear una cuenta gratis en la aplicación; registrarte no activa una suscripción ni un cobro."}
+      <br />
+      {t("Sumarte a la prueba no activa un plan. Sin pago ni tarjeta.")}{" "}
+      <a href="#empezar">{t("Solicitar mi edición gratis")}</a>
+      {" · "}
+      <a href={lang === "en" ? "/en/terms/" : "/terminos/"}>
+        {t("Términos y condiciones")}
+      </a>
     </p>
   </div>
 </section>

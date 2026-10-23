@@ -45,9 +45,15 @@ export function validateEntry(input) {
   if (!["UY", "AR", "MX", "US", "GB"].includes(country)) return null;
   const language = input.language === undefined ? "es" : input.language;
   if (!["es", "en"].includes(language)) return null;
+  const noticeVersion =
+    input.noticeVersion === undefined ? "waitlist-v2" : input.noticeVersion;
+  if (!["trial-notice-2026-10-23", "waitlist-v2"].includes(noticeVersion))
+    return null;
   const entry = {
     language,
     country,
+    // Version of the trial-request notice, not consent to advertising or terms.
+    noticeVersion,
     businessName: text(input.businessName, 2, 100),
     businessType: types.has(input.businessType) ? input.businessType : null,
     contactName: text(input.contactName, 2, 100),

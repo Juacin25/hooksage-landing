@@ -35,8 +35,24 @@ export function audienceFromPath(path: string) {
   );
 }
 export function alternatePath(path: string, language: Language) {
+  const normalized = path.replace(/\/$/, "");
+  if (["/terminos", "/en/terms"].includes(normalized)) {
+    return legalPath("terms", language);
+  }
+  if (["/privacidad", "/en/privacy"].includes(normalized)) {
+    return legalPath("privacy", language);
+  }
   const slug = audienceFromPath(path);
   return slug ? businessPath(slug, language) : homePath(language);
+}
+export function legalPath(document: "terms" | "privacy", language: Language) {
+  return language === "en"
+    ? document === "terms"
+      ? "/en/terms/"
+      : "/en/privacy/"
+    : document === "terms"
+      ? "/terminos/"
+      : "/privacidad/";
 }
 export function waitlistHref(path: string) {
   const slug = audienceFromPath(path);

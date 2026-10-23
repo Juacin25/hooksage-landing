@@ -6,8 +6,8 @@ export function productFor(language: Language) {
       eyebrow: text("Marca e ideas", "Brand & ideas"),
       title: text("Primero, qué contar.", "First, something worth saying."),
       intro: text(
-        "Tu marca le da contexto a las propuestas. Contá qué hacés, a quién le hablás y cómo querés comunicar. Podés editar el perfil o partir de un texto o PDF.",
-        "Your brand gives the suggestions context. Describe what you do, who you want to reach and how you want to sound. Edit your profile or start from text or a PDF.",
+        "En la aplicación, tu marca le da contexto a las propuestas. Contá qué hacés, a quién le hablás y cómo querés comunicar. Podés editar el perfil o partir de un texto o PDF.",
+        "In the app, your brand gives suggestions context. Describe what you do, who you want to reach and how you want to sound. Edit your profile or start from text or a PDF.",
       ),
       ideas: text(
         "Recibí propuestas con un hook, un guion y una lista de tomas. También podés explorar referencias de Shorts por categoría, orientadas al perfil de tu marca.",
@@ -74,14 +74,14 @@ export function productFor(language: Language) {
       ),
     },
     workflow: {
-      eyebrow: text("Cómo funciona el piloto", "How the pilot works"),
+      eyebrow: text("Cómo funciona Hooksage", "How Hooksage works"),
       title: text(
-        "Vos grabás. Nosotros hacemos el primer corte.",
-        "You film. We make the first edit.",
+        "Vos grabás. Hooksage hace el primer corte.",
+        "You film. Hooksage makes the first edit.",
       ),
       intro: text(
-        "Una idea a cámara, una demo o algo que pasó en tu negocio. Traé ese material y contanos qué querés decir.",
-        "A thought to camera, a demo or something happening at your business. Bring that footage and tell us what you want to say.",
+        "Una idea a cámara, una demo o algo que pasó en tu negocio. En la aplicación cargás tu material e indicás qué querés decir. Hooksage prepara la edición de forma automática.",
+        "A thought to camera, a demo or something happening at your business. Upload your footage in the app and describe what you want to say. Hooksage prepares the edit automatically.",
       ),
       caption: text(
         "Tu mensaje, con una revisión antes de publicar.",
@@ -90,18 +90,18 @@ export function productFor(language: Language) {
       steps: [
         {
           title: text(
-            "Pasá la grabación que ya tenés.",
-            "Bring the recording you already have.",
+            "Subí la grabación que ya tenés.",
+            "Upload the recording you already have.",
           ),
           text: text(
-            "Podemos trabajar con tu voz original. Si partís de una idea, también hay una opción con voz en off, un video principal y hasta dos clips o imágenes de apoyo.",
-            "We can work with your original voice. If you start with an idea, there is also a voiceover option with one main video and up to two supporting clips or images.",
+            "Conservá tu voz original o partí de una idea con voz en off. Este segundo camino admite un video principal y hasta dos clips o imágenes de apoyo.",
+            "Keep your original voice or start with an idea and voiceover. The second route supports one main video and up to two supporting clips or images.",
           ),
         },
         {
           title: text(
-            "Mostranos cómo querés contarlo.",
-            "Show us how you want to tell it.",
+            "Elegí cómo querés contarlo.",
+            "Choose how you want to tell it.",
           ),
           text: text(
             "Natural, Dinámico o Impacto. Podés sumar un video de referencia para orientar el ritmo, los textos y el sonido.",
@@ -110,12 +110,12 @@ export function productFor(language: Language) {
         },
         {
           title: text(
-            "Mirá el corte. Pedí los ajustes.",
-            "Watch the edit. Ask for changes.",
+            "Revisá el corte. Ajustá y exportá.",
+            "Review the edit. Refine and export.",
           ),
           text: text(
-            "Revisá los subtítulos, los cortes y el encuadre. Después exportás el MP4 vertical. La biblioteca conserva cada versión y la duración depende de lo que haya que contar.",
-            "Check the captions, cuts and framing. Then export a vertical MP4. The library keeps each version, and the length depends on what you need to say.",
+            "Revisá los subtítulos, los cortes y el encuadre, y solicitá ajustes desde la aplicación. Descargá el MP4 vertical cuando esté listo; su duración depende del material y la voz. La biblioteca conserva las versiones.",
+            "Check captions, cuts and framing, and request adjustments in the app. Download the vertical MP4 when it is ready; its length depends on the footage and voice. The library keeps your versions.",
           ),
         },
       ],

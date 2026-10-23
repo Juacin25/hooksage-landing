@@ -165,7 +165,7 @@ test("A real HTTP submission commits all seven fields and attribution; retries d
       "utm_term",
     ])
       assert.equal(row[key], entry.attribution[key]);
-    assert.equal(row.consent_version, "waitlist-v1");
+    assert.equal(row.consent_version, "waitlist-v2");
     assert.ok(Number.isFinite(Date.parse(row.created_at)));
     const retries = await Promise.all(
       Array.from({ length: 8 }, () =>
@@ -185,6 +185,99 @@ test("A real HTTP submission commits all seven fields and attribution; retries d
     );
     assert.equal((await fs.stat(f.filename)).mode & 0o777, 0o600);
     assert.ok(!(await res.text().catch(() => "")).includes(entry.email));
+  } finally {
+    await f.close();
+  }
+});
+
+test("JSON and native trial requests record only recognized notice versions; old tabs stay legacy and retries preserve the original notice", async () => {
+  const f = await fixture();
+  try {
+    let legacyTrial;
+    for (const native of [false, true]) {
+      for (const noticeVersion of [
+        "trial-notice-2026-10-23",
+        "waitlist-v2",
+        undefined,
+      ]) {
+        const trial = {
+          ...entry,
+          businessName: `Notice ${native} ${noticeVersion || "old tab"}`,
+          country: "UY",
+          whatsapp: "",
+          noticeVersion,
+        };
+        if (noticeVersion === undefined) delete trial.noticeVersion;
+        const { attribution, ...fields } = trial;
+        const response = native
+          ? await f.post(undefined, {
+              headers: {
+                Origin: origin,
+                "Content-Type": "application/x-www-form-urlencoded",
+                Accept: "text/html",
+              },
+              body: new URLSearchParams({
+                ...fields,
+                landing_path: attribution.landing_path,
+              }).toString(),
+            })
+          : await f.post(trial);
+        assert.equal(response.status, 201);
+        const row = f.db
+          .prepare(
+            "SELECT consent_version FROM waitlist_entries WHERE business_name = ?",
+          )
+          .get(trial.businessName);
+        assert.equal(row.consent_version, noticeVersion || "waitlist-v2");
+        if (!native && noticeVersion === undefined) legacyTrial = trial;
+      }
+    }
+    // Seeing a new notice on a later submission does not relabel an old record.
+    const retry = await f.post({
+      ...legacyTrial,
+      noticeVersion: "trial-notice-2026-10-23",
+      editingFeedback: "Later details from the new form",
+    });
+    assert.deepEqual(await retry.json(), { ok: true, created: false });
+    assert.equal(
+      f.db
+        .prepare(
+          "SELECT consent_version FROM waitlist_entries WHERE business_name = ?",
+        )
+        .get(legacyTrial.businessName).consent_version,
+      "waitlist-v2",
+    );
+    for (const noticeVersion of [
+      "",
+      "waitlist-v1",
+      "arbitrary-notice",
+      "trial-notice-2026-10-22",
+      null,
+      true,
+      1,
+      { version: "trial-notice-2026-10-23" },
+    ]) {
+      const invalid = { ...entry, noticeVersion };
+      assert.equal((await f.post(invalid)).status, 400);
+      const { attribution, ...fields } = invalid;
+      const native = await f.post(undefined, {
+        headers: {
+          Origin: origin,
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "text/html",
+        },
+        body: new URLSearchParams({
+          ...fields,
+          landing_path: attribution.landing_path,
+        }).toString(),
+      });
+      assert.equal(native.status, 400);
+    }
+    assert.equal(
+      f.db.prepare("SELECT count(*) AS n FROM waitlist_entries").get().n,
+      6,
+    );
+    assert.deepEqual(f.errors, []);
   } finally {
     await f.close();
   }

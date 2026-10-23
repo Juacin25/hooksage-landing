@@ -15,13 +15,30 @@ const ok = (label) => {
 async function fixture(fetcher, options = {}) {
   const window = new Window({
     url: options.url || "http://localhost:4321/",
+    width: options.width,
+    height: options.height,
     settings: {
       enableJavaScriptEvaluation: true,
       disableCSSFileLoading: true,
       disableJavaScriptFileLoading: true,
+      device: {
+        prefersReducedMotion: options.reducedMotion
+          ? "reduce"
+          : "no-preference",
+      },
     },
   });
   window.dataLayer = [];
+  // These funnel tests exercise the opted-in path. Default/rejected behaviour
+  // is covered separately by verify-consent.mjs without contacting Meta.
+  window.localStorage.setItem(
+    "hooksage:privacy-choice",
+    JSON.stringify({
+      version: 1,
+      choice: "accepted",
+      savedAt: Date.now(),
+    }),
+  );
   if (options.saved)
     window.sessionStorage.setItem("hooksage:campaign", options.saved);
   if (options.blockStorage)
@@ -52,12 +69,12 @@ const w = await fixture();
 const doc = w.document;
 assert.equal(doc.documentElement.lang, "es-UY");
 assert.equal(doc.querySelectorAll("h1").length, 1);
-assert.equal(doc.querySelectorAll(".display-xl").length, 1);
+assert.equal(doc.querySelectorAll(".story-hero h1").length, 1);
 assert.ok(doc.title.length <= 60);
-assert.match(doc.title, /De tu video en crudo a un short editado/);
+assert.match(doc.title, /Tu video, listo para tu próxima publicación/);
 assert.equal(
   doc.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
-  "De tu video en crudo a un short editado.",
+  "De tu grabación a tu próxima publicación.",
 );
 assert.equal(schemaOffer(), undefined);
 function schemaOffer() {
@@ -157,14 +174,417 @@ assert.deepEqual(
 );
 const workflowText = doc.querySelector("#como-funciona").textContent;
 for (const pattern of [
-  /voz original/,
-  /voz en off/,
-  /hasta dos clips o imágenes/,
-  /Natural, Dinámico o Impacto/,
-  /biblioteca/,
-  /duración/,
+  /aplicación/,
+  /subtítulos/,
+  /pedí cambios/,
+  /MP4/,
+  /Reels, TikTok o Shorts/,
 ])
   assert.match(workflowText, pattern);
+function verifyWalkthrough(page, { interactive, language }) {
+  const story = page.querySelector("[data-scroll-workflow]");
+  assert.ok(story, "The tutorial is available on the page");
+  assert.ok(page.getElementById(story.getAttribute("aria-labelledby")));
+  const chapters = [...story.querySelectorAll("[data-story-step]")];
+  const scenes = [...story.querySelectorAll("[data-story-scene]")];
+  const buttons = [...story.querySelectorAll("[data-story-jump]")];
+  const nav = story.querySelector("[data-story-nav]");
+  const enhanced = story
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-enhanced");
+  assert.equal(chapters.length, 4);
+  assert.equal(scenes.length, 4);
+  assert.equal(buttons.length, 4);
+  assert.equal(nav.hidden, !interactive);
+  assert.equal(
+    scenes.filter((scene) => !scene.hidden).length,
+    enhanced ? 1 : 4,
+  );
+  if (!interactive) assert.equal(enhanced, false);
+  if (enhanced) {
+    const selected = buttons.findIndex(
+      (button) => button.getAttribute("aria-current") === "step",
+    );
+    assert.ok(selected >= 0);
+    assert.equal(scenes[selected].hidden, false);
+  }
+  for (const chapter of chapters) {
+    const heading = page.getElementById(
+      chapter.getAttribute("aria-labelledby"),
+    );
+    assert.ok(heading && chapter.contains(heading));
+    assert.ok(heading.textContent.trim());
+  }
+  for (const [index, scene] of scenes.entries()) {
+    const player = scene.querySelector("video");
+    const beforeLayer = scene.querySelector(".scroll-before-layer");
+    assert.equal(Boolean(beforeLayer), index === 1);
+    if (beforeLayer) {
+      assert.equal(beforeLayer.getAttribute("aria-hidden"), "true");
+      assert.equal(beforeLayer.querySelectorAll("video, source").length, 0);
+    }
+    const version = index === 0 ? "original" : "edited";
+    assert.ok(scene.getAttribute("aria-label")?.trim());
+    assert.ok(player.getAttribute("aria-label")?.trim());
+    assert.equal(
+      player.querySelector("source").getAttribute("src"),
+      `/videos/drivo-${version}.mp4`,
+    );
+    assert.equal(
+      player.getAttribute("poster"),
+      `/videos/drivo-${version}-poster.webp`,
+    );
+    assert.equal(player.getAttribute("preload"), "none");
+    assert.ok(player.hasAttribute("controls"));
+    assert.ok(player.hasAttribute("playsinline"));
+    assert.ok(!player.hasAttribute("autoplay"));
+    assert.ok(!player.hasAttribute("muted"));
+  }
+  assert.match(
+    scenes[2].textContent,
+    language === "en"
+      ? /preview shows the existing edit; this request illustrates the review step/i
+      : /vista previa muestra el corte existente; este pedido ilustra la revisión/i,
+  );
+  const download = scenes[3].querySelector("a[download]");
+  assert.equal(download.getAttribute("href"), "/videos/drivo-edited.mp4");
+  assert.ok(download.textContent.trim());
+  for (const [index, button] of buttons.entries()) {
+    assert.equal(button.type, "button");
+    assert.equal(button.getAttribute("aria-controls"), chapters[index].id);
+    if (!interactive) continue;
+    button.click();
+    assert.equal(button.getAttribute("aria-current"), "step");
+    assert.equal(
+      buttons.filter((item) => item.hasAttribute("aria-current")).length,
+      1,
+    );
+    assert.equal(scenes[index].hidden, false);
+    assert.equal(
+      scenes.filter((scene) => !scene.hidden).length,
+      enhanced ? 1 : 4,
+    );
+    assert.ok(!page.activeElement.closest("[hidden]"));
+  }
+}
+verifyWalkthrough(doc, { interactive: true, language: "es" });
+// The editor is assembled by scroll position, rather than by a timer started
+// when a chapter becomes active. Exercise a fresh desktop instance so previous
+// keyboard chapter jumps cannot leave focus inside this walkthrough.
+const scrubStory = await fixture(undefined, { width: 1280, height: 900 });
+const scrubDocument = scrubStory.document;
+const scrubTrack = scrubDocument.querySelector("[data-story-track]");
+const scrubChapters = [...scrubDocument.querySelectorAll("[data-story-step]")];
+const scrubScenes = [...scrubDocument.querySelectorAll("[data-story-scene]")];
+const scrubStage = scrubDocument.querySelector("[data-story-stage]");
+let chapterTop = 570;
+const chapterHeight = 800;
+const rectangle = (top, height) => ({
+  x: 0,
+  y: top,
+  top,
+  right: 800,
+  bottom: top + height,
+  left: 0,
+  width: 800,
+  height,
+});
+scrubTrack.getBoundingClientRect = () =>
+  rectangle(chapterTop, chapterHeight * scrubChapters.length);
+scrubChapters.forEach((chapter, index) => {
+  chapter.getBoundingClientRect = () =>
+    rectangle(chapterTop + chapterHeight * index, chapterHeight);
+});
+const buildProperties = [
+  "--build-shell",
+  "--build-slice-1",
+  "--build-slice-2",
+  "--build-slice-3",
+  "--build-video",
+  "--build-panel-1",
+  "--build-panel-2",
+  "--build-panel-3",
+  "--build-panel-4",
+  "--build-wave",
+  "--build-final",
+  "--build-edit",
+];
+const snapshotBuild = (scene = scrubScenes[0]) => ({
+  progress: scene.dataset.buildProgress,
+  layers: buildProperties.map((property) =>
+    scene.style.getPropertyValue(property),
+  ),
+});
+const settleScrub = async (top) => {
+  chapterTop = top;
+  scrubStory.dispatchEvent(new scrubStory.Event("scroll"));
+  await new Promise((resolve) =>
+    scrubStory.requestAnimationFrame(() =>
+      scrubStory.requestAnimationFrame(resolve),
+    ),
+  );
+  return snapshotBuild();
+};
+assert.equal(scrubTrack.hasAttribute("data-scrub"), true);
+const buildingStates = [];
+for (const top of [570, 390, 220, 50]) {
+  const state = await settleScrub(top);
+  const expectedProgress = Math.min(
+    1,
+    Math.max(0, (900 * 0.72 - top) / (chapterHeight * 0.5 + 900 * 0.22)),
+  );
+  assert.ok(
+    Math.abs(Number(state.progress) - expectedProgress) < 0.0001,
+    "Construction follows the chapter's position in the viewport",
+  );
+  assert.equal(scrubStage.dataset.activeStep, "1");
+  assert.ok(state.layers.every((value) => value !== ""));
+  buildingStates.push(state);
+}
+for (let index = 1; index < buildingStates.length; index++) {
+  assert.ok(
+    Number(buildingStates[index].progress) >
+      Number(buildingStates[index - 1].progress),
+  );
+  buildingStates[index].layers.forEach((value, layer) => {
+    assert.ok(
+      Number(value) >= Number(buildingStates[index - 1].layers[layer]),
+      "Each construction layer advances monotonically as the chapter scrolls up",
+    );
+  });
+}
+assert.ok(
+  Number(buildingStates[1].layers[1]) > Number(buildingStates[1].layers[2]),
+  "The video pieces assemble in sequence rather than revealing together",
+);
+assert.ok(
+  Number(buildingStates[2].layers[3]) > Number(buildingStates[2].layers[4]),
+  "The native video takes over after its construction pieces",
+);
+assert.ok(buildingStates[3].layers.every((value) => Number(value) === 1));
+assert.deepEqual(
+  await settleScrub(390),
+  buildingStates[1],
+  "Scrolling backwards restores exactly the same progress and layers",
+);
+const workingVideo = scrubScenes[0].querySelector("video");
+workingVideo.focus();
+assert.equal(scrubDocument.activeElement, workingVideo);
+assert.equal(scrubScenes[0].dataset.buildProgress, "1.0000");
+assert.ok(snapshotBuild().layers.every((value) => Number(value) === 1));
+scrubStory.dispatchEvent(
+  new scrubStory.KeyboardEvent("keydown", { key: "Tab", bubbles: true }),
+);
+await settleScrub(-650);
+assert.equal(scrubStage.dataset.activeStep, "1");
+assert.equal(scrubScenes[0].hidden, false);
+assert.equal(scrubScenes[1].hidden, true);
+assert.equal(scrubDocument.activeElement, workingVideo);
+assert.ok(
+  snapshotBuild().layers.every((value) => Number(value) === 1),
+  "Keyboard-operated video controls remain fully assembled and available",
+);
+workingVideo.blur();
+assert.deepEqual(
+  await settleScrub(390),
+  buildingStates[1],
+  "Leaving the controls restores position-driven construction",
+);
+await settleScrub(-650);
+assert.equal(scrubStage.dataset.activeStep, "2");
+assert.equal(scrubScenes[0].hidden, true);
+assert.equal(scrubScenes[1].hidden, false);
+assert.deepEqual(
+  await settleScrub(390),
+  buildingStates[1],
+  "Returning from a later chapter restores the earlier construction state",
+);
+// Crossing from the source to the first edit must preserve the assembled
+// player. The original poster reveals the edited result instead of rebuilding
+// the video fragments a second time.
+await settleScrub(-349);
+assert.equal(scrubStage.dataset.activeStep, "1");
+assert.equal(scrubScenes[0].style.getPropertyValue("--build-video"), "1.0000");
+await settleScrub(-351);
+assert.equal(scrubStage.dataset.activeStep, "2");
+const firstEditEntry = snapshotBuild(scrubScenes[1]);
+for (const property of [
+  "--build-video",
+  "--build-slice-1",
+  "--build-slice-2",
+  "--build-slice-3",
+]) {
+  assert.equal(
+    scrubScenes[1].style.getPropertyValue(property),
+    "1.0000",
+    "The assembled video survives the first chapter boundary",
+  );
+}
+assert.ok(
+  Number(scrubScenes[1].style.getPropertyValue("--build-edit")) < 0.1,
+  "The first edit begins with the original footage still visible",
+);
+await settleScrub(-500);
+const editMidpoint = Number(
+  scrubScenes[1].style.getPropertyValue("--build-edit"),
+);
+assert.ok(editMidpoint > 0 && editMidpoint < 1);
+await settleScrub(-750);
+assert.equal(scrubScenes[1].style.getPropertyValue("--build-edit"), "1.0000");
+await settleScrub(-351);
+assert.deepEqual(
+  snapshotBuild(scrubScenes[1]),
+  firstEditEntry,
+  "Reversing the first reveal restores the original scroll-driven state",
+);
+const editedVideo = scrubScenes[1].querySelector("video");
+editedVideo.focus();
+assert.equal(scrubDocument.activeElement, editedVideo);
+assert.equal(scrubScenes[1].style.getPropertyValue("--build-edit"), "1.0000");
+editedVideo.blur();
+await settleScrub(-351);
+assert.deepEqual(snapshotBuild(scrubScenes[1]), firstEditEntry);
+ok("The first edit preserves the assembled video and reversibly reveals its result");
+await scrubStory.happyDOM.close();
+ok(
+  "Scroll construction is continuous, reversible, staggered and keeps focused playback controls available",
+);
+// The app's side-panel browser is narrower than a desktop window, but still
+// needs the same sticky construction rather than the static phone layout.
+const compactStory = await fixture(undefined, { width: 753, height: 763 });
+const compactDocument = compactStory.document;
+const compactTrack = compactDocument.querySelector("[data-story-track]");
+const compactStage = compactDocument.querySelector("[data-story-stage]");
+const compactScenes = [
+  ...compactDocument.querySelectorAll("[data-story-scene]"),
+];
+const compactCopies = [
+  ...compactDocument.querySelectorAll(".scroll-chapter-copy"),
+];
+const compactButtons = [
+  ...compactDocument.querySelectorAll("[data-story-jump]"),
+];
+for (const attribute of ["data-enhanced", "data-scrub", "data-compact"])
+  assert.equal(compactTrack.hasAttribute(attribute), true);
+assert.equal(compactScenes.length, 4);
+assert.equal(compactCopies.length, 4);
+for (const [index, button] of compactButtons.entries()) {
+  assert.equal(
+    button.querySelector(".scroll-nav-number").textContent.trim(),
+    `0${index + 1}`,
+  );
+  button.click();
+  assert.equal(compactStage.dataset.activeStep, String(index + 1));
+  assert.equal(compactDocument.activeElement, compactScenes[index]);
+  assert.equal(button.getAttribute("aria-current"), "step");
+  assert.equal(compactScenes.filter((scene) => !scene.hidden).length, 1);
+  assert.equal(compactCopies.filter((copy) => !copy.hidden).length, 1);
+  assert.equal(compactScenes[index].hidden, false);
+  assert.equal(compactCopies[index].hidden, false);
+  assert.deepEqual(
+    [...compactDocument.querySelectorAll("[data-story-scene]")],
+    compactScenes,
+    "Compact chapter navigation preserves the original scene nodes",
+  );
+  assert.deepEqual(
+    [...compactDocument.querySelectorAll(".scroll-chapter-copy")],
+    compactCopies,
+    "Compact chapter navigation preserves the original description nodes",
+  );
+  for (const [sceneIndex, scene] of compactScenes.entries()) {
+    assert.equal(scene.parentElement, compactStage);
+    assert.equal(compactCopies[sceneIndex].parentElement, compactStage);
+    const description = compactDocument.getElementById(
+      scene.getAttribute("aria-describedby"),
+    );
+    assert.ok(description?.textContent.trim());
+    assert.ok(compactCopies[sceneIndex].contains(description));
+  }
+}
+await compactStory.happyDOM.close();
+const compactReducedStory = await fixture(undefined, {
+  width: 753,
+  height: 763,
+  reducedMotion: true,
+});
+for (const attribute of ["data-enhanced", "data-scrub", "data-compact"])
+  assert.equal(
+    compactReducedStory.document
+      .querySelector("[data-story-track]")
+      .hasAttribute(attribute),
+    false,
+  );
+verifyWalkthrough(compactReducedStory.document, {
+  interactive: true,
+  language: "es",
+});
+assert.equal(
+  compactReducedStory.document.querySelectorAll("[data-build-progress]").length,
+  0,
+);
+await compactReducedStory.happyDOM.close();
+ok(
+  "Compact browsers keep sticky scroll construction, accessible descriptions and original nodes, with a static reduced-motion fallback",
+);
+const mobileStory = await fixture(undefined, { width: 390, height: 844 });
+assert.equal(
+  mobileStory.matchMedia("(min-width: 700px) and (min-height: 650px)").matches,
+  false,
+);
+assert.equal(
+  mobileStory.document
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-enhanced"),
+  false,
+);
+verifyWalkthrough(mobileStory.document, { interactive: true, language: "es" });
+assert.equal(
+  mobileStory.document
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-compact"),
+  false,
+);
+assert.equal(
+  mobileStory.document
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-scrub"),
+  false,
+);
+assert.equal(
+  mobileStory.document.querySelectorAll("[data-build-progress]").length,
+  0,
+);
+await mobileStory.happyDOM.close();
+const reducedStory = await fixture(undefined, {
+  width: 1280,
+  height: 900,
+  reducedMotion: true,
+});
+assert.equal(
+  reducedStory.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  true,
+);
+assert.equal(
+  reducedStory.document
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-enhanced"),
+  false,
+);
+verifyWalkthrough(reducedStory.document, { interactive: true, language: "es" });
+assert.equal(
+  reducedStory.document
+    .querySelector("[data-story-track]")
+    .hasAttribute("data-scrub"),
+  false,
+);
+assert.equal(
+  reducedStory.document.querySelectorAll("[data-build-progress]").length,
+  0,
+);
+await reducedStory.happyDOM.close();
+ok(
+  "Four tutorial chapters use the same real footage, native playback and accessible step navigation",
+);
 assert.equal(doc.querySelectorAll("[data-product-tool]").length, 4);
 const toolsText = doc.querySelector("#herramientas").textContent;
 for (const pattern of [
@@ -183,14 +603,14 @@ const faqText = faq.mainEntity
   .map((item) => item.acceptedAnswer.text)
   .join(" ");
 for (const pattern of [
-  /MCP local/,
-  /multiusuario/,
+  /aplicación/,
+  /entrega.*digital|servicio y la entrega son digitales/,
   /MP4\/MOV/,
   /duración depende del montaje y la voz/,
 ])
   assert.match(faqText, pattern);
 assert.doesNotMatch(
-  doc.querySelector(".hero-pitch").textContent,
+  doc.querySelector(".story-hero-pitch").textContent,
   /15 segundos/,
 );
 assert.doesNotMatch(doc.querySelector("#precio").textContent, /de 15 segundos/);
@@ -198,7 +618,7 @@ const productImage = doc.querySelector("#ejemplo-pymes img");
 assert.match(productImage.alt, /Drivo/);
 assert.equal(doc.querySelectorAll(".media-reference").length, 4);
 ok(
-  "Brand profile, suggestions, voiceover, three finishes, sound, references and version history match the pilot scope",
+  "Brand profile, suggestions, four-step editing story, finishes, sound and references match the product scope",
 );
 for (const name of [
   "founder-interview",
@@ -304,11 +724,12 @@ assert.equal(
   3,
 );
 assert.equal(basic.document.querySelector("[data-sample-nav]").hidden, true);
+verifyWalkthrough(basic.document, { interactive: false, language: "es" });
 await basic.happyDOM.close();
 
 assert.equal(
-  doc.querySelector(".hero-actions .text-link").getAttribute("href"),
-  "#ver-edicion",
+  doc.querySelector(".story-hero-actions .text-link").getAttribute("href"),
+  "#como-funciona",
 );
 assert.match(doc.querySelector("#sample-language-note").textContent, /español/);
 const lowerGalleryPhotos = [
@@ -329,14 +750,8 @@ for (const name of [
     for (const suffix of ["", "-360"])
       await fs.access(path.join(dist, `media/${name}${suffix}.${ext}`));
 }
-assert.equal(doc.querySelectorAll(".workflow-steps li").length, 3);
-assert.equal(doc.querySelectorAll("#como-funciona .hs-feature").length, 0);
-assert.match(
-  doc.querySelector(".workflow-photo figcaption").textContent,
-  /Foto de referencia/,
-);
 ok(
-  "Workflow has three editorial steps and the lower gallery uses four different photos",
+  "All tutorial scenes remain readable without JavaScript and the lower gallery keeps four different photos",
 );
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
 assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 6);
@@ -367,11 +782,11 @@ for (const [name, price, quota] of [
 }
 assert.doesNotMatch(planText, /Plan Base|próximamente/);
 assert.match(
-  doc.querySelector(".reassurance").textContent,
-  /Primera edición gratis/,
+  doc.querySelector(".story-trial-link").textContent,
+  /edición gratis/,
 );
 assert.doesNotMatch(
-  doc.querySelector(".reassurance").textContent,
+  doc.querySelector(".story-trial-link").textContent,
   /Uruguay|Argentina/,
 );
 assert.match(planText, /15 videos exportados por semana/);
@@ -536,6 +951,7 @@ assert.deepEqual(payload, {
   email: "ejemplo@example.test",
   city: "Montevideo",
   intent: "waitlist",
+  noticeVersion: "trial-notice-2026-10-23",
   website: "",
   attribution: {
     landing_path: "/",
@@ -784,8 +1200,8 @@ assert.match(
   /sitemap.xml/,
 );
 const sitemap = await fs.readFile(path.join(dist, "sitemap-0.xml"), "utf8");
-assert.equal((sitemap.match(/<loc>/g) || []).length, 10);
-ok("OG, touch icon, robots and all ten sitemap URLs exist");
+assert.equal((sitemap.match(/<loc>/g) || []).length, 14);
+ok("OG, touch icon, robots and all fourteen sitemap URLs exist");
 
 const englishHtml = await fs.readFile(path.join(dist, "en/index.html"), "utf8");
 const englishWindow = await fixture(
@@ -812,13 +1228,17 @@ assert.deepEqual(
 );
 assert.match(
   en.querySelector("#como-funciona").textContent,
-  /up to two supporting/,
+  /request changes in the app/,
 );
+verifyWalkthrough(en, { interactive: true, language: "en" });
 assert.match(
   en.querySelector("#herramientas").textContent,
   /voice.*generation/,
 );
-assert.doesNotMatch(en.querySelector(".hero-pitch").textContent, /15-second/);
+assert.doesNotMatch(
+  en.querySelector(".story-hero-pitch").textContent,
+  /15-second/,
+);
 assert.doesNotMatch(en.querySelector("#precio").textContent, /15-second/);
 
 assert.equal(en.querySelectorAll("[data-sample-case]").length, 3);
@@ -841,8 +1261,15 @@ assert.match(
   /After:/,
 );
 assert.equal(en.documentElement.lang, "en");
-assert.match(en.querySelector("h1").textContent, /Turn raw footage/);
-assert.match(en.querySelector("h1").textContent, /into an edited short/);
+assert.equal(
+  en.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
+  "From your recording to your next post.",
+);
+assert.match(en.title, /Your video, ready for your next post/);
+assert.equal(
+  en.querySelector(".story-hero-actions .text-link").getAttribute("href"),
+  "#como-funciona",
+);
 assert.equal(
   en.querySelector("link[rel=canonical]").href,
   "https://hooksage.com/en/",
@@ -999,6 +1426,65 @@ await switchedLanguage.happyDOM.close();
 await englishWindow.happyDOM.close();
 await nativeEnglish.happyDOM.close();
 for (const item of [w, success, failed]) await item.happyDOM.close();
+for (const [route, language, alternate] of [
+  ["terminos", "es-UY", "/en/terms/"],
+  ["privacidad", "es-UY", "/en/privacy/"],
+  ["en/terms", "en", "/terminos/"],
+  ["en/privacy", "en", "/privacidad/"],
+]) {
+  const page = new Window({
+    url: `https://hooksage.com/${route}/`,
+    settings: {
+      disableCSSFileLoading: true,
+      disableJavaScriptFileLoading: true,
+    },
+  });
+  page.document.write(
+    await fs.readFile(path.join(dist, route, "index.html"), "utf8"),
+  );
+  const legal = page.document.querySelector(".legal-page");
+  assert.ok(legal, `Missing legal content: ${route}`);
+  assert.equal(page.document.documentElement.lang, language);
+  assert.equal(page.document.querySelectorAll("h1").length, 1);
+  assert.match(legal.textContent, /CANARY CODE SAS/);
+  assert.match(legal.textContent, /219631960019/);
+  assert.match(legal.textContent, /Brandzen 1956/);
+  assert.ok(
+    page.document
+      .querySelector(`link[hreflang="${language === "en" ? "es" : "en"}"]`)
+      .href.endsWith(alternate),
+  );
+  const graph = JSON.parse(
+    page.document.querySelector('script[type="application/ld+json"]')
+      .textContent,
+  )["@graph"];
+  assert.ok(!graph.some((item) => item["@type"] === "FAQPage"));
+  const ids = [...page.document.querySelectorAll("[id]")].map(
+    (node) => node.id,
+  );
+  assert.equal(new Set(ids).size, ids.length);
+  for (const link of page.document.querySelectorAll(
+    '.legal-aside a[href^="#"]',
+  )) {
+    assert.ok(
+      page.document.getElementById(link.hash.slice(1)),
+      `Broken contents link: ${route}${link.hash}`,
+    );
+  }
+  if (route.includes("privacy") || route === "privacidad") {
+    assert.match(legal.textContent, /OpenRouter/);
+    assert.match(legal.textContent, /AI33/);
+    assert.doesNotMatch(legal.textContent, /Gemini/);
+  } else {
+    for (const amount of ["5.99", "14.99", "34.99", "59.99"]) {
+      assert.ok(legal.textContent.replace(/,/g, ".").includes(amount));
+    }
+  }
+  await page.happyDOM.close();
+}
+ok(
+  "Four legal pages expose the correct operator, working language/contents links, current prices and real AI providers",
+);
 console.log(
   `${passed} verification groups passed. No external requests were sent.`,
 );
