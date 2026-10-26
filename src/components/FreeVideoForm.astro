@@ -262,12 +262,18 @@ const messages = Object.fromEntries(
             pattern="https://.+"
             placeholder="https://drive.google.com/…"
             autocomplete="off"
-            aria-describedby="footage-url-help footage-url-error"
+            aria-describedby="footage-url-help footage-content-policy footage-url-error"
           />
           <span class="small muted field-help" id="footage-url-help">
             {t(
               "Drive, Dropbox o similar. Revisá que el enlace permita ver el clip. También podés mandarlo después por email.",
             )}
+          </span>
+          <span class="small muted field-help" id="footage-content-policy">
+            {t(
+              "No envíes videos, imágenes, audios, guiones ni instrucciones sexualmente explícitos, pornográficos o NSFW, tampoco mediante enlaces. Está prohibido usar la edición con IA o la generación de voz para producir ese contenido.",
+            )}{" "}
+            <a href={`${termsHref}#material`}>{t("Términos y condiciones")}</a>
           </span>
           <span class="field-error small" id="footage-url-error"></span>
         </div>

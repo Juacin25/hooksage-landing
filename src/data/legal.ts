@@ -33,7 +33,10 @@ export function legalDocument(
   };
   const privacyPath = en ? "/en/privacy/" : "/privacidad/";
   const termsPath = en ? "/en/terms/" : "/terminos/";
-  const updated = text("23 de octubre de 2026", "October 23, 2026");
+  const updated =
+    kind === "terms"
+      ? text("26 de octubre de 2026", "October 26, 2026")
+      : text("23 de octubre de 2026", "October 23, 2026");
 
   if (kind === "terms") {
     return {
@@ -236,6 +239,10 @@ export function legalDocument(
             text(
               "Debés contar con los derechos y autorizaciones necesarios para usar y compartir el contenido, incluida la imagen y voz de terceros. No uses el servicio para suplantar personas, vulnerar derechos o producir contenido ilícito. No envíes documentos de identidad, datos financieros, de salud u otra información sensible que no sea necesaria para la pieza. Las funciones de generación o modificación de voces requieren la autorización de su titular.",
               "You must have the rights and permissions needed to use and share the content, including other people's image and voice. Do not use the service for impersonation, infringement or unlawful content. Do not submit identity documents, financial or health details, or other sensitive information that is unnecessary for the video. Voice generation or modification requires the speaker's authorisation.",
+            ),
+            text(
+              "Está prohibido subir, enviar o proporcionar materiales sexualmente explícitos, pornográficos o NSFW a las funciones de edición con IA y de generación o modificación de voz. Esta prohibición incluye videos, imágenes, audios, textos, guiones e instrucciones, también cuando se comparten mediante enlaces. También está prohibido usar estas funciones para generar contenido sexualmente explícito, pornográfico o NSFW.",
+              "Uploading, submitting or providing sexually explicit, pornographic or NSFW materials to the AI editing and voice generation or modification features is prohibited. This includes videos, images, audio, text, scripts and prompts, including materials shared through links. Using these features to generate sexually explicit, pornographic or NSFW content is also prohibited.",
             ),
             text(
               "Antes de publicar, revisá nombres, cifras, subtítulos, afirmaciones y los derechos sobre los elementos incluidos. Las herramientas automáticas pueden cometer errores. Hooksage no promete visualizaciones, ventas, seguidores ni viralidad. Podemos detener un trabajo ante un problema de seguridad o de derechos y comunicaremos el motivo cuando sea posible; los importes de prestaciones no entregadas se tratan conforme a estas condiciones y la ley.",
