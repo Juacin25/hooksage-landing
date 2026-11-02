@@ -35,7 +35,7 @@ export function legalDocument(
   const termsPath = en ? "/en/terms/" : "/terminos/";
   const updated =
     kind === "terms"
-      ? text("26 de octubre de 2026", "October 26, 2026")
+      ? text("2 de noviembre de 2026", "November 2, 2026")
       : text("23 de octubre de 2026", "October 23, 2026");
 
   if (kind === "terms") {
@@ -151,23 +151,23 @@ export function legalDocument(
         {
           id: "suscripciones",
           title: text(
-            "6. Suscripciones, cupos y renovación",
-            "6. Subscriptions, allowances and renewal",
+            "6. Suscripciones mensuales y anuales, cupos y renovación",
+            "6. Monthly and annual subscriptions, allowances and renewal",
           ),
           paragraphs: [
             text(
-              "Las suscripciones se cobran por mes. Mientras estén activas, su cupo se renueva cada siete días desde la activación. Las unidades no utilizadas durante un período de siete días no se acumulan para el siguiente. La fecha de reinicio y la del próximo cobro se informan al contratar o pueden consultarse por email.",
-              "Subscriptions are billed monthly. While active, their allowance resets every seven days from activation. Units unused during a seven-day period do not carry over to the next. Reset and next-payment dates are provided when purchasing or can be requested by email.",
+              "Podés elegir facturación mensual o anual. La modalidad mensual se paga cada mes. La modalidad anual se paga por adelantado, en un solo cargo por doce meses de servicio desde la activación. El precio anual es el importe total del período; cualquier equivalente por mes se muestra únicamente para comparar y no supone un cobro mensual.",
+              "You can choose monthly or annual billing. Monthly subscriptions are paid each month. Annual subscriptions are paid upfront in one charge for twelve months of service from activation. The annual price is the total for that period; any monthly equivalent is shown only for comparison and does not mean monthly charges.",
             ),
             text(
-              "La renovación automática se aplica únicamente si se informa expresamente durante la compra y la aceptás antes de pagar. Cuando corresponda, el cargo se repite mensualmente hasta que canceles la renovación. Solicitar una prueba gratuita nunca activa una renovación ni una suscripción.",
-              "Automatic renewal applies only if it is expressly disclosed at checkout and you accept it before paying. Where applicable, the charge repeats monthly until you cancel renewal. Requesting a free trial never starts a renewal or subscription.",
+              "En ambas modalidades, el cupo se renueva cada siete días desde la activación y las unidades no utilizadas no se acumulan para el siguiente período. El plan anual conserva ese cupo semanal: no entrega todos los videos del año por adelantado. La fecha de reinicio y la del próximo cobro se informan al contratar o pueden consultarse por email. La renovación automática solo se aplica si se informa expresamente y la aceptás antes de pagar; el cargo se repite cada mes o cada doce meses, según la modalidad elegida, hasta que canceles la renovación. La prueba gratuita y el registro de cuenta no activan cobros ni suscripciones.",
+              "For both billing options, allowances reset every seven days from activation and unused units do not carry over. Annual subscriptions keep that weekly allowance: all videos for the year are not released upfront. Reset and next-payment dates are provided when purchasing or can be requested by email. Automatic renewal applies only if expressly disclosed and accepted before payment; charges repeat each month or every twelve months according to the selected option, until renewal is cancelled. The free trial and account registration do not start charges or subscriptions.",
             ),
           ],
           items: plansFor(lang).map((plan) =>
             text(
-              `${plan.name}: US$${plan.monthlyPriceUSD} por mes, con ${plan.weeklyExports} videos por período de siete días.`,
-              `${plan.name}: US$${plan.monthlyPriceUSD} per month, with ${plan.weeklyExports} videos per seven-day period.`,
+              `${plan.name}: US$${plan.monthlyPriceUSD} por mes o US$${plan.annualPriceUSD} por año (un solo pago por doce meses), con ${plan.weeklyExports} videos por período de siete días en ambas modalidades.`,
+              `${plan.name}: US$${plan.monthlyPriceUSD} per month or US$${plan.annualPriceUSD} per year (one payment for twelve months), with ${plan.weeklyExports} videos per seven-day period for either option.`,
             ),
           ),
         },
@@ -193,8 +193,8 @@ export function legalDocument(
           title: text("8. Cancelar una renovación", "8. Cancelling renewal"),
           paragraphs: [
             text(
-              `Podés cancelar la renovación escribiendo a ${contactEmail} antes del próximo cargo, indicando el correo de tu cuenta y la contratación correspondiente. No hay penalidad por cancelar. Conservás el acceso y los cupos que correspondan hasta finalizar el período mensual ya pagado.`,
-              `You can cancel renewal by emailing ${contactEmail} before the next charge, identifying your account email and purchase. There is no cancellation penalty. You keep access and the applicable allowances until the end of the monthly period already paid for.`,
+              `Podés cancelar la renovación escribiendo a ${contactEmail} antes del próximo cargo, indicando el correo de tu cuenta y la contratación correspondiente. No hay penalidad por cancelar. Conservás el acceso y los cupos que correspondan hasta finalizar el período mensual o anual ya pagado.`,
+              `You can cancel renewal by emailing ${contactEmail} before the next charge, identifying your account email and purchase. There is no cancellation penalty. You keep access and the applicable allowances until the end of the monthly or annual period already paid for.`,
             ),
             text(
               "La cancelación de la renovación no genera por sí sola una devolución del período en curso. Las solicitudes de devolución se rigen por la sección siguiente y por los derechos legales que correspondan.",
@@ -211,8 +211,8 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              "Podés solicitar una devolución de la parte no utilizada durante los diez días corridos posteriores al pago. Si no hubo uso ni prestación, corresponde devolver el importe de esa contratación. Si el servicio se prestó parcialmente, calculamos una devolución proporcional de la parte no prestada y te informamos el cálculo. Esta política comercial se suma a tus derechos legales irrenunciables y no reduce un plazo legal mayor.",
-              "You can request a refund of the unused portion within ten calendar days after payment. If there has been no use or service delivery, the purchase amount is refunded. If the service has been partly delivered, we calculate a proportional refund for the undelivered portion and explain the calculation. This commercial policy supplements your non-waivable legal rights and does not shorten any longer statutory period.",
+              "Esta política se aplica a packs y suscripciones mensuales y anuales. Podés solicitar una devolución de la parte no utilizada durante los diez días corridos posteriores al pago. Si no hubo uso ni prestación, corresponde devolver el importe de esa contratación. Si el servicio se prestó parcialmente, calculamos una devolución proporcional de la parte no prestada y te informamos el cálculo. Esta política comercial se suma a tus derechos legales irrenunciables y no reduce un plazo legal mayor.",
+              "This policy applies to packs and to monthly and annual subscriptions. You can request a refund of the unused portion within ten calendar days after payment. If there has been no use or service delivery, the purchase amount is refunded. If the service has been partly delivered, we calculate a proportional refund for the undelivered portion and explain the calculation. This commercial policy supplements your non-waivable legal rights and does not shorten any longer statutory period.",
             ),
             text(
               "Si un fallo del servicio impide completar una prestación contratada, ofrecemos resolverlo o devolver el importe de la parte no entregada. Los procesamientos fallidos no consumen unidades. Para solicitar una devolución, enviá el correo de tu cuenta y la referencia del pago, si la tenés, a nuestro email de contacto. Te comunicamos la resolución y el medio de devolución; la acreditación también depende del proveedor de pagos y de la entidad emisora.",

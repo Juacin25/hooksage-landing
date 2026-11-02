@@ -7,7 +7,9 @@ const planSummary = plans
       plan.name +
       ": US$" +
       plan.monthlyPriceUSD +
-      " al mes y " +
+      " al mes o US$" +
+      plan.annualPriceUSD +
+      " al año y " +
       plan.weeklyExports +
       " videos exportados por semana",
   )
@@ -55,7 +57,7 @@ export const faqs = [
         ? "El registro y la contratación se realizan en la aplicación de Hooksage. Antes de confirmar un pago se informa el importe total y sus condiciones. Estos son los planes: "
         : "Podés crear una cuenta gratis en la aplicación de Hooksage. Los pagos de planes y packs todavía no están habilitados; el registro no activa cobros ni suscripciones. La oferta comercial publicada es la siguiente: ") +
       planSummary +
-      ". Los precios son mensuales en dólares y las exportaciones se renuevan cada semana. También hay packs de pago único: " +
+      ". Los precios están en dólares. El anual se paga por adelantado en un solo cargo por doce meses; ambas modalidades renuevan el cupo cada siete días, sin acumulación. También hay packs de pago único: " +
       packs
         .map((pack) => pack.exports + " videos por US$" + pack.priceUSD)
         .join(", ") +

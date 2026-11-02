@@ -6,7 +6,9 @@ const planSummary = plansFor("en")
       plan.name +
       ": US$" +
       plan.monthlyPriceUSD +
-      " per month, with " +
+      " per month or US$" +
+      plan.annualPriceUSD +
+      " per year, with " +
       plan.weeklyExports +
       " video exports per week",
   )
@@ -54,7 +56,7 @@ export const englishFaqs = [
         ? "Registration and purchases take place in the Hooksage app. The total amount and conditions are disclosed before confirming payment. These are the subscription plans: "
         : "You can create a free account in the Hooksage app. Payments for plans and packs are not enabled yet; registration does not start charges or a subscription. The published commercial offer is: ") +
       planSummary +
-      ". Prices are in US dollars, billed monthly. Export allowances reset weekly. One-off packs are also available: " +
+      ". Prices are in US dollars. Annual subscriptions are paid upfront in one charge for twelve months; both billing options reset allowances every seven days, without carry-over. One-off packs are also available: " +
       packsFor("en")
         .map((pack) => pack.exports + " videos for US$" + pack.priceUSD)
         .join(", ") +

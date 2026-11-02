@@ -1,0 +1,227 @@
+---
+import Icon from "./Icon.astro";
+import { translator, type Language } from "../lib/i18n";
+import {
+  pricingFor,
+  unitPriceFor,
+  type BillingPeriod,
+  type plansFor,
+  type packsFor,
+} from "../data/plan";
+
+interface Props {
+  plan: ReturnType<typeof plansFor>[number];
+  pack: ReturnType<typeof packsFor>[number];
+  period: BillingPeriod;
+  language: Language;
+  featured: boolean;
+  features: string[];
+  purchaseHref: string;
+  purchaseLabel: string;
+}
+const {
+  plan,
+  pack,
+  period,
+  language,
+  featured,
+  features,
+  purchaseHref,
+  purchaseLabel,
+} = Astro.props;
+const t = translator(language);
+const annual = period === "annual";
+const pricing = pricingFor(plan, period, language);
+const packPrice = unitPriceFor(pack.priceUSD, pack.exports, language);
+---
+
+<div class="subscription-plan">
+  <article
+    class:list={["hs-card hs-price", { "hs-price--featured": featured }]}
+    aria-label={t(annual ? "Plan anual {name}" : "Plan {name}").replace(
+      "{name}",
+      plan.name,
+    )}
+  >
+    {featured && (
+      <span class="hs-badge hs-badge--accent price-badge">
+        {t("Para publicar seguido")}
+      </span>
+    )}
+    <div class="price-header">
+      <h3 class="hs-price__name">{plan.name}</h3>
+    </div>
+    <p class="small muted price-description">{plan.description}</p>
+    <div class="hs-price__amount">
+      <span class="price-currency">{t("US$")}</span>
+      {pricing.priceUSD}
+      <span class="hs-price__period">{t(annual ? "/ año" : "/ mes")}</span>
+    </div>
+    {annual && (
+      <p class="small muted annual-equivalent">
+        {t("Equivale a US${price} por mes. Cobro anual completo.").replace(
+          "{price}",
+          pricing.monthlyEquivalentUSD,
+        )}
+      </p>
+    )}
+    <div class="price-quota">
+      <p>
+        <strong>{plan.weeklyExports}</strong>
+        <span>{t("videos exportados por semana")}</span>
+      </p>
+      <p class="price-quota-detail muted">
+        {t("Hasta {count} videos en 4 semanas").replace(
+          "{count}",
+          String(plan.weeklyExports * 4),
+        )}
+      </p>
+    </div>
+    <div class="unit-comparison">
+      <p class="unit-comparison__amount">
+        ≈ US${pricing.unitPriceUSD} <span>{t("por video")}</span>
+      </p>
+      <p class="unit-comparison__pack">
+        {t("vs. ≈ US${price}/video en {pack}")
+          .replace("{price}", packPrice)
+          .replace("{pack}", pack.name)}
+      </p>
+    </div>
+    <ul class="hs-price__list">
+      {features.map((feature) => (
+        <li>
+          <Icon name="check" />
+          <span>{feature}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="small muted">
+      {t(
+        annual
+          ? "Un solo cobro anual. Consultá las condiciones de cancelación."
+          : "Cobro mensual. Consultá las condiciones de cancelación.",
+      )}
+    </p>
+    <a
+      class:list={[
+        "hs-btn",
+        featured ? "hs-btn--primary" : "hs-btn--secondary",
+      ]}
+      href={purchaseHref}
+    >
+      {purchaseLabel}
+      <Icon name="arrow" />
+    </a>
+  </article>
+  {annual && (
+    <p class="plan-savings">
+      <strong>
+        {t("Ahorrás {percent}%").replace(
+          "{percent}",
+          pricing.annualSavingPercent,
+        )}
+      </strong>
+      <span>
+        {t("US${amount} menos al año frente al pago mensual.").replace(
+          "{amount}",
+          pricing.annualSavingUSD,
+        )}
+      </span>
+    </p>
+  )}
+</div>
+
+<style>
+  .subscription-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+  }
+  .subscription-plan .hs-price {
+    position: relative;
+    flex: 1;
+    height: auto;
+  }
+  .subscription-plan .hs-price--featured {
+    border: 2px solid var(--primary);
+  }
+  .subscription-plan .hs-price__amount {
+    flex-wrap: wrap;
+    white-space: normal;
+    row-gap: 8px;
+  }
+  .price-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .price-quota {
+    display: block;
+  }
+  .price-quota > p:first-child {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .price-quota .price-quota-detail {
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
+  }
+  .annual-equivalent {
+    min-height: 42px;
+    margin-top: -8px;
+  }
+  .unit-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .unit-comparison__amount {
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .unit-comparison__amount span {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .unit-comparison__pack {
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--ink-muted);
+  }
+  .plan-savings {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    padding-inline: 12px;
+    font-size: 13px;
+    line-height: 20px;
+  }
+  .plan-savings strong {
+    color: var(--primary);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .plan-savings span {
+    color: var(--ink-muted);
+  }
+  @media (max-width: 400px) {
+    .subscription-plan .hs-price__amount {
+      font-size: 44px;
+    }
+    .subscription-plan .hs-price__period {
+      flex-basis: 100%;
+      margin-left: 0;
+    }
+  }
+</style>

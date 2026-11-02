@@ -444,7 +444,9 @@ assert.equal(scrubScenes[1].style.getPropertyValue("--build-edit"), "1.0000");
 editedVideo.blur();
 await settleScrub(-351);
 assert.deepEqual(snapshotBuild(scrubScenes[1]), firstEditEntry);
-ok("The first edit preserves the assembled video and reversibly reveals its result");
+ok(
+  "The first edit preserves the assembled video and reversibly reveals its result",
+);
 await scrubStory.happyDOM.close();
 ok(
   "Scroll construction is continuous, reversible, staggered and keeps focused playback controls available",
@@ -754,32 +756,77 @@ ok(
   "All tutorial scenes remain readable without JavaScript and the lower gallery keeps four different photos",
 );
 const planText = doc.querySelector("#precio").textContent.replace(/\s+/g, " ");
-assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 6);
-for (const [name, price, quota] of [
-  ["Founder", "14,99", 5],
-  ["Pyme", "34,99", 15],
-  ["Marca Personal", "59,99", 40],
+assert.equal(doc.querySelectorAll(".pricing-grid .hs-price").length, 9);
+const monthlyPricing = doc.querySelector("#pricing-billing-panel-monthly");
+const annualPricing = doc.querySelector("#pricing-billing-panel-annual");
+for (const [
+  name,
+  monthly,
+  annual,
+  quota,
+  monthlyUnit,
+  annualUnit,
+  discount,
+  saving,
+] of [
+  ["Founder", "14,99", "119,90", 10, "0,35", "0,23", "33,3%", "59,98"],
+  ["Pyme", "34,99", "272,92", 30, "0,27", "0,17", "35%", "146,96"],
+  ["Marca Personal", "59,99", "431,93", 80, "0,17", "0,10", "40%", "287,95"],
 ]) {
-  const card = [...doc.querySelectorAll(".pricing-grid .hs-price")].find(
-    (item) => item.querySelector("h3").textContent.trim() === name,
-  );
-  assert.ok(card);
-  assert.ok(
-    card.querySelector(".hs-price__amount").textContent.includes(price),
-  );
-  assert.equal(
-    Number(card.querySelector(".price-quota strong").textContent),
-    quota,
-  );
-  assert.match(card.textContent, /videos exportados por semana/);
+  const findCard = (panel) =>
+    [...panel.querySelectorAll(".hs-price")].find(
+      (card) => card.querySelector("h3").textContent.trim() === name,
+    );
+  const monthlyCard = findCard(monthlyPricing);
+  const annualCard = findCard(annualPricing);
+  for (const [card, price, unit] of [
+    [monthlyCard, monthly, monthlyUnit],
+    [annualCard, annual, annualUnit],
+  ]) {
+    assert.ok(card, `Missing pricing card: ${name}`);
+    assert.ok(
+      card.querySelector(".hs-price__amount").textContent.includes(price),
+    );
+    assert.equal(
+      Number(card.querySelector(".price-quota strong").textContent),
+      quota,
+    );
+    assert.match(card.textContent, /videos exportados por semana/);
+    assert.ok(
+      card
+        .querySelector(".unit-comparison__amount")
+        .textContent.includes("US$" + unit),
+    );
+  }
+  const savingText =
+    annualCard.parentElement.querySelector(".plan-savings").textContent;
+  assert.ok(savingText.includes(discount));
+  assert.ok(savingText.includes("US$" + saving));
   assert.ok(
     faq.mainEntity.some((item) =>
       item.acceptedAnswer.text.includes(
-        `${name}: US$${price} al mes y ${quota} videos exportados por semana`,
+        `${name}: US$${monthly} al mes o US$${annual} al año y ${quota} videos exportados por semana`,
       ),
     ),
   );
 }
+assert.ok(
+  annualPricing.textContent.includes("US$35,99"),
+  "Annual equivalent matches the updated annual total",
+);
+const annualDiscounts = [
+  ...annualPricing.querySelectorAll(".plan-savings strong"),
+].map((node) => Number(node.textContent.match(/[\d,]+/)[0].replace(",", ".")));
+assert.ok(
+  annualDiscounts.every(
+    (value, index) => index === 0 || value > annualDiscounts[index - 1],
+  ),
+  "Annual discounts increase at each plan tier",
+);
+assert.ok(annualPricing.textContent.includes("US$22,74"));
+assert.equal(doc.querySelectorAll(".unit-comparison__saving").length, 0);
+assert.equal(doc.querySelectorAll(".unit-comparison__amount").length, 6);
+assert.doesNotMatch(planText, /149,90|349,90|599,90|menos por video/);
 assert.doesNotMatch(planText, /Plan Base|próximamente/);
 assert.match(
   doc.querySelector(".story-trial-link").textContent,
@@ -789,48 +836,60 @@ assert.doesNotMatch(
   doc.querySelector(".story-trial-link").textContent,
   /Uruguay|Argentina/,
 );
-assert.match(planText, /15 videos exportados por semana/);
-assert.match(planText, /US\$\s*14,99\s*\/ mes/);
 assert.doesNotMatch(
   doc.body.textContent,
   /MXN|CDMX|IVA incluido|restaurantes|taquerías/i,
 );
 assert.doesNotMatch(
-  doc.body.textContent,
-  /\b80 videos exportados por semana|\b15 videos (?:de 15 segundos )?al mes/,
-);
-assert.ok(
-  faq.mainEntity.some(
-    (item) =>
-      /15 videos exportados por semana/.test(item.acceptedAnswer.text) &&
-      /US\$14,99 al mes/.test(item.acceptedAnswer.text),
-  ),
+  planText,
+  /\b5 videos exportados por semana|\b15 videos exportados por semana|\b40 videos exportados por semana/,
 );
 ok(
-  "One-off packs and weekly subscription quotas use consistent USD pricing and FAQ copy",
+  "Monthly and annual prices, weekly allowances, unit prices, savings and FAQ schema stay consistent",
 );
 
-// Packs remain usable without JavaScript; the enhanced selector supports keyboard navigation.
-assert.equal(doc.querySelectorAll("[data-pricing-panel]").length, 2);
+// Each tablist controls only its own panels; switching away preserves the billing choice.
 const pricingPanels = [...doc.querySelectorAll("[data-pricing-panel]")];
+const billingPanels = [...doc.querySelectorAll("[data-billing-panel]")];
+const pricingTabs = [...doc.querySelectorAll("[data-pricing-tabs] button")];
+const billingTabs = [...doc.querySelectorAll("[data-billing-tabs] button")];
+assert.equal(pricingPanels.length, 2);
+assert.equal(billingPanels.length, 2);
 assert.equal(pricingPanels[0].hidden, false);
 assert.equal(pricingPanels[1].hidden, true);
-const pricingTabs = [...doc.querySelectorAll("[data-pricing-tabs] button")];
+assert.equal(billingPanels[0].hidden, false);
+assert.equal(billingPanels[1].hidden, true);
 pricingTabs[0].dispatchEvent(
   new w.KeyboardEvent("keydown", { key: "End", bubbles: true }),
 );
 assert.equal(pricingPanels[1].hidden, false);
 assert.equal(pricingTabs[1].getAttribute("aria-selected"), "true");
+billingTabs[0].dispatchEvent(
+  new w.KeyboardEvent("keydown", { key: "End", bubbles: true }),
+);
+assert.equal(billingPanels[0].hidden, true);
+assert.equal(billingPanels[1].hidden, false);
+assert.equal(pricingPanels[1].hidden, false);
+assert.equal(pricingTabs[1].getAttribute("aria-selected"), "true");
+pricingTabs[1].dispatchEvent(
+  new w.KeyboardEvent("keydown", { key: "Home", bubbles: true }),
+);
+assert.equal(pricingPanels[1].hidden, true);
+pricingTabs[0].dispatchEvent(
+  new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
+);
+assert.equal(pricingPanels[1].hidden, false);
+assert.equal(billingPanels[1].hidden, false);
 pricingTabs[1].dispatchEvent(
   new w.KeyboardEvent("keydown", { key: "Home", bubbles: true }),
 );
 for (const [name, amount, quota] of [
-  ["Pack 5", "5,99", 5],
-  ["Pack 15", "14,99", 15],
-  ["Pack 40", "34,99", 40],
+  ["Pack 10", "5,99", 10],
+  ["Pack 30", "14,99", 30],
+  ["Pack 80", "34,99", 80],
 ]) {
   const card = [...doc.querySelectorAll(".hs-price")].find(
-    (c) => c.querySelector("h3").textContent === name,
+    (c) => c.querySelector("h3").textContent.trim() === name,
   );
   assert.ok(
     card.querySelector(".hs-price__amount").textContent.includes(amount),
@@ -841,6 +900,31 @@ for (const [name, amount, quota] of [
   );
   assert.match(card.textContent, /pago único/);
 }
+const pricingNoJS = new Window({
+  settings: {
+    enableJavaScriptEvaluation: false,
+    disableJavaScriptFileLoading: true,
+    disableCSSFileLoading: true,
+  },
+});
+pricingNoJS.document.write(html);
+assert.equal(
+  pricingNoJS.document.querySelectorAll(".pricing-grid .hs-price").length,
+  9,
+);
+for (const panel of pricingNoJS.document.querySelectorAll(
+  "[data-pricing-panel], [data-billing-panel]",
+))
+  assert.equal(panel.hidden, false);
+for (const control of pricingNoJS.document.querySelectorAll(
+  "[data-pricing-tabs], [data-billing-tabs]",
+))
+  assert.equal(control.hidden, true);
+await pricingNoJS.happyDOM.close();
+ok(
+  "Nested pricing tabs work independently with keyboard input; all offers remain readable without JavaScript",
+);
+
 assert.equal(doc.querySelectorAll(".sample-changes").length, 3);
 assert.match(doc.querySelector(".sample-changes").textContent, /2,6 s/);
 assert.ok(doc.querySelector(".sample-brand-ad video"));
@@ -1305,9 +1389,9 @@ assert.deepEqual(
   ["", "US", "GB", "UY", "AR"],
 );
 for (const [name, price, quota] of [
-  ["Founder", "14.99", 5],
-  ["Small Business", "34.99", 15],
-  ["Personal Brand", "59.99", 40],
+  ["Founder", "14.99", 10],
+  ["Small Business", "34.99", 30],
+  ["Personal Brand", "59.99", 80],
 ]) {
   const card = [...en.querySelectorAll(".hs-price")].find(
     (card) => card.querySelector("h3").textContent.trim() === name,
@@ -1476,9 +1560,34 @@ for (const [route, language, alternate] of [
     assert.match(legal.textContent, /AI33/);
     assert.doesNotMatch(legal.textContent, /Gemini/);
   } else {
-    for (const amount of ["5.99", "14.99", "34.99", "59.99"]) {
+    for (const amount of [
+      "5.99",
+      "14.99",
+      "34.99",
+      "59.99",
+      "119.90",
+      "272.92",
+      "431.93",
+    ]) {
       assert.ok(legal.textContent.replace(/,/g, ".").includes(amount));
     }
+    assert.match(
+      legal.querySelector("#suscripciones").textContent,
+      /doce meses|twelve months/,
+    );
+    assert.match(
+      legal.querySelector("#cancelacion").textContent,
+      /mensual o anual|monthly or annual/,
+    );
+    assert.match(
+      legal.querySelector("#devoluciones").textContent,
+      /diez días corridos|ten calendar days/,
+    );
+    assert.match(legal.textContent, /2 de noviembre de 2026|November 2, 2026/);
+    assert.doesNotMatch(
+      legal.textContent,
+      /US\$149[,.]90|US\$349[,.]90|US\$599[,.]90/,
+    );
   }
   await page.happyDOM.close();
 }

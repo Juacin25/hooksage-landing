@@ -290,5 +290,22 @@
   "Usaremos tus datos y el enlace que compartas para responder a tu solicitud y coordinar la prueba. Enviar este formulario no crea una cuenta, no realiza una compra ni activa una suscripción.": "We will use your details and the link you share to respond to your request and arrange the trial. Submitting this form does not create an account, make a purchase or start a subscription.",
   "Política de privacidad": "Privacy policy",
   "Términos y condiciones": "Terms and conditions",
-  "No envíes videos, imágenes, audios, guiones ni instrucciones sexualmente explícitos, pornográficos o NSFW, tampoco mediante enlaces. Está prohibido usar la edición con IA o la generación de voz para producir ese contenido.": "Do not submit sexually explicit, pornographic or NSFW videos, images, audio, scripts or prompts, including through links. Using AI editing or voice generation to produce such content is prohibited."
+  "No envíes videos, imágenes, audios, guiones ni instrucciones sexualmente explícitos, pornográficos o NSFW, tampoco mediante enlaces. Está prohibido usar la edición con IA o la generación de voz para producir ese contenido.": "Do not submit sexually explicit, pornographic or NSFW videos, images, audio, scripts or prompts, including through links. Using AI editing or voice generation to produce such content is prohibited.",
+  "Mensual": "Monthly",
+  "Anual": "Annual",
+  "/ año": "/ year",
+  "Packs para una campaña. Suscripciones para publicar cada semana.": "Packs for a campaign. Subscriptions to post every week.",
+  "Elegí pagar por mes o por año.": "Choose monthly or annual billing.",
+  "El mismo cupo semanal, con un solo pago al año.": "The same weekly allowance, with one annual payment.",
+  "Facturación de la suscripción": "Subscription billing",
+  "Plan {name}": "{name} plan",
+  "Plan anual {name}": "{name} annual plan",
+  "Para publicar seguido": "For regular posting",
+  "Equivale a US${price} por mes. Cobro anual completo.": "Equivalent to US${price} per month. Full annual payment.",
+  "vs. ≈ US${price}/video en {pack}": "vs. ≈ US${price}/video in {pack}",
+  "Un solo cobro anual. Consultá las condiciones de cancelación.": "One annual payment. See the cancellation conditions.",
+  "Ahorrás {percent}%": "Save {percent}%",
+  "US${amount} menos al año frente al pago mensual.": "US${amount} less per year compared with monthly billing.",
+  "Precio por video estimado al usar todo el cupo: 52 semanas al año (4,33 por mes, en promedio). Cada plan se compara con el pack de su mismo nivel; el ahorro depende del uso.": "Estimated price per video when using the full allowance: 52 weeks per year (4.33 per month on average). Each plan is compared with the pack at the same tier; savings depend on usage.",
+  "Precios en dólares. Packs válidos durante 90 días. En las suscripciones, el cupo se renueva cada siete días y no se acumula.": "Prices in US dollars. Packs are valid for 90 days. Subscription allowances reset every seven days and do not carry over."
 }
