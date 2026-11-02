@@ -187,3 +187,14 @@ Antes de publicarla tras la aprobación del equipo:
 - Verificar salud, integridad y conteo sin imprimir datos de registros. Comprobar JSON y formulario nativo ES/EN: ambos guardan el enlace y la respuesta opcional. Los enlaces se almacenan; el receptor no descarga los clips. Revisar el aviso del equipo con datos de prueba y limpiar o marcar ese registro conforme al flujo autorizado.
 
 Para la revisión local se usa el puerto 8795, una base en `/private/tmp/hooksage-reddit-review/`, `RESEND_API_KEY` y `NOTIFY_EMAIL_TO` vacíos, y la compilación con `PUBLIC_ENABLE_ANALYTICS=false`. Ninguna de estas opciones locales reemplaza `.service.env`.
+
+## Packs y suscripciones anuales · 2 de noviembre de 2026
+
+Código publicado: `d4b6fcce8aa7de3a5ece5723a9b225d45c0d71ce`, integrado sobre el último `main` e incluyendo la política de contenido del 26 de octubre. Packs: 10/30/80 videos por US$5,99/14,99/34,99. Suscripciones Founder/Pyme/Marca Personal: 10/30/80 videos por semana; mensuales US$14,99/34,99/59,99 y anuales US$119,90/272,92/431,93. El anual se paga completo y ahorra 33,3%/35%/40% frente a doce mensualidades. Landing, FAQ y TyC ES/EN comparten estos datos.
+
+Se publicaron y verificaron 169 archivos estáticos en la misma sesión Tenki, con assets primero y reemplazo atómico de cada HTML. Se conservaron los assets anteriores y un respaldo en `/home/tenki/hooksage-releases/before-d4b6fcc/`. No hubo cambios de servidor, reinicios, migraciones ni modificaciones de la configuración privada o del volumen. SQLite devolvió integridad `ok` y el conteo permaneció en cinco registros; no se enviaron formularios de prueba.
+
+**Enrutamiento público actual:** los DNS de `hooksage.com` y `www.hooksage.com` conservan el túnel `hooksage` hacia Tenki. Un Worker `hooksage-landing`, publicado posteriormente, interceptaba ambos dominios y entregaba otros assets. Con autorización del titular, las rutas `hooksage.com/*` y `www.hooksage.com/*` se conservaron con la selección **Worker: None**. Así usan el origen existente en Tenki. No se eliminó el Worker ni se modificaron DNS, TLS, el túnel o el subdominio de la aplicación. Los próximos despliegues de la landing deben actualizar `dist/` en Tenki; no deben reactivar esa copia independiente del Worker. Para revertir solo este ajuste de rutas, puede volver a seleccionarse `hooksage-landing` en cada una, teniendo presente que contiene la oferta anterior.
+
+Verificación pública: catorce rutas en `hooksage.com`, portadas y términos ES/EN en `www.hooksage.com`, ambos `/healthz` y video MP4 con HTTP Range (`206`, 1024 bytes). El HTML coincide con el build tras normalizar la protección de emails, los scripts añadidos por Cloudflare y los espacios entre etiquetas. Se comprobaron los selectores de suscripción mensual/anual y los tres descuentos en el navegador. Previamente pasaron Astro check, build, las 23 verificaciones de interfaz, 19 pruebas de API y ocho verificaciones de consentimiento.
+
