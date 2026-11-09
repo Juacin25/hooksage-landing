@@ -19,6 +19,9 @@ const t = translator(lang);
         <a href={homePath(lang) + "#ejemplos"}>{t("Para quién es")}</a>
         <a href={homePath(lang) + "#precio"}>{t("Precio")}</a>
         <a href={homePath(lang) + "#preguntas"}>{t("Preguntas")}</a>
+        <a href="/blog/" hreflang="es">
+          {lang === "en" ? "Blog (in Spanish)" : "Blog"}
+        </a>
         <a href={contactUrl}>{contactEmail}</a>
         <a href={legalPath("terms", lang)}>
           {lang === "en" ? "Terms and conditions" : "Términos y condiciones"}

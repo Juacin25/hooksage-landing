@@ -107,3 +107,9 @@ Las fotografías están identificadas como referencias, con créditos en [public
 ## Revisión local del feedback de Reddit
 
 La versión completa se revisa en `http://127.0.0.1:8795/` y `/en/`. El backend usa `/private/tmp/hooksage-reddit-review/waitlist.sqlite` y tiene las notificaciones desactivadas. La versión fue aprobada y publicada el 20 de octubre de 2026 en https://hooksage.com y https://hooksage.com/en/. Ver [docs/local-reddit-review.md](docs/local-reddit-review.md).
+
+## Blog
+
+Los artículos viven en `src/content/blog/<slug>.md`; el nombre del archivo es la URL (`/blog/<slug>/`). El frontmatter se valida en `src/content.config.ts`: `seoTitle` de hasta 49 caracteres (más " | Hooksage" suma 60), `description` de hasta 155, `shortAnswer` (la respuesta corta que se muestra arriba), `category`, fechas, `order`, `faqs` y al menos dos `sources`.
+
+Las portadas son opcionales: guarda la imagen como `public/blog/covers/<slug>.webp` en 16:9 (1200 × 675) y vuelve a compilar. Se usa como portada del artículo, en el índice y como imagen para redes. `llms.txt` y el sitemap se generan solos con cada artículo nuevo.

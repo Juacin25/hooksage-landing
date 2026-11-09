@@ -1289,8 +1289,14 @@ assert.match(
   /sitemap.xml/,
 );
 const sitemap = await fs.readFile(path.join(dist, "sitemap-0.xml"), "utf8");
-assert.equal((sitemap.match(/<loc>/g) || []).length, 14);
-ok("OG, touch icon, robots and all fourteen sitemap URLs exist");
+const blogSlugs = (
+  await fs.readdir(path.join(dist, "blog"), { withFileTypes: true })
+)
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name);
+// 14 landing/legal URLs + the blog index + every post.
+assert.equal((sitemap.match(/<loc>/g) || []).length, 15 + blogSlugs.length);
+ok("OG, touch icon, robots and every sitemap URL exist");
 
 const englishHtml = await fs.readFile(path.join(dist, "en/index.html"), "utf8");
 const englishWindow = await fixture(
@@ -1621,6 +1627,47 @@ for (const [route, language, alternate] of [
 }
 ok(
   "Four legal pages expose the correct operator, working language/contents links, current prices and real AI providers",
+);
+assert.equal(blogSlugs.length, 23);
+const blogTitles = new Set();
+for (const slug of blogSlugs) {
+  const page = new Window();
+  page.document.write(
+    await fs.readFile(path.join(dist, "blog", slug, "index.html"), "utf8"),
+  );
+  const d = page.document;
+  assert.equal(d.documentElement.lang, "es");
+  assert.equal(d.querySelectorAll("h1").length, 1);
+  assert.ok(d.title.length <= 60, d.title);
+  assert.ok(d.querySelector('meta[name="description"]').content.length <= 155);
+  assert.equal(
+    d.querySelector('link[rel="canonical"]').href,
+    `https://hooksage.com/blog/${slug}/`,
+  );
+  // Spanish-only content: no hreflang pointing at the English home.
+  assert.equal(d.querySelectorAll('link[rel="alternate"]').length, 0);
+  assert.match(d.querySelector(".post-answer").textContent, /Respuesta corta/);
+  assert.ok(d.querySelectorAll(".post-sources li").length >= 2);
+  const graph = JSON.parse(
+    d.querySelector('script[type="application/ld+json"]').textContent,
+  )["@graph"];
+  const article = graph.find((node) => node["@type"] === "BlogPosting");
+  assert.ok(article.datePublished && article.dateModified);
+  const crumbs = graph.find((node) => node["@type"] === "BreadcrumbList");
+  assert.equal(crumbs.itemListElement.length, 3);
+  for (const link of d.querySelectorAll('.prose a[href^="/blog/"]'))
+    assert.ok(
+      blogSlugs.includes(link.getAttribute("href").split("/")[2]),
+      link.getAttribute("href"),
+    );
+  blogTitles.add(d.title);
+  await page.happyDOM.close();
+}
+assert.equal(blogTitles.size, blogSlugs.length);
+const llms = await fs.readFile(path.join(dist, "llms.txt"), "utf8");
+for (const slug of blogSlugs) assert.ok(llms.includes(`/blog/${slug}/`));
+ok(
+  "Blog posts have unique metadata, BlogPosting schema, sources and valid internal links",
 );
 console.log(
   `${passed} verification groups passed. No external requests were sent.`,

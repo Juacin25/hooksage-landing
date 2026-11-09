@@ -1781,3 +1781,11 @@ svg {
     min-height: 44px;
   }
 }
+
+.business-guide-list {
+  margin-top: var(--space-6);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+}

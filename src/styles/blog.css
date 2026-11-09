@@ -1,0 +1,240 @@
+/* Blog: article reading layout and index cards. Uses the site tokens. */
+.post {
+  padding-block: var(--space-12) var(--space-16, 64px);
+}
+.post-container {
+  max-width: 760px;
+}
+.post-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--ink-muted);
+}
+.post-breadcrumb a {
+  color: var(--ink-muted);
+}
+.post-title {
+  margin-top: var(--space-6);
+}
+.post-meta {
+  margin-top: var(--space-4);
+}
+.post-meta a {
+  color: inherit;
+}
+.post-answer {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.post-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: var(--space-8);
+  border-radius: var(--radius-md);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.post-toc {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.post-toc-title {
+  margin: 0 0 var(--space-4);
+  font-weight: 700;
+}
+.post-toc ol {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+.post-toc a {
+  color: var(--ink);
+}
+
+/* Markdown body */
+.prose {
+  margin-top: var(--space-8);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.prose > * + * {
+  margin-top: 1.1em;
+}
+.prose h2 {
+  margin-top: 2em;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.15;
+  scroll-margin-top: 96px;
+}
+.prose h3 {
+  margin-top: 1.6em;
+  font-size: 21px;
+  line-height: 1.3;
+  scroll-margin-top: 96px;
+}
+.prose a {
+  color: var(--primary);
+  text-underline-offset: 3px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 24px;
+}
+.prose li + li {
+  margin-top: 0.4em;
+}
+.prose blockquote {
+  margin-inline: 0;
+  padding-left: var(--space-6);
+  border-left: 3px solid var(--border);
+  color: var(--ink-muted);
+}
+.prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.prose th,
+.prose td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+  min-width: 120px;
+}
+.prose thead th {
+  background: var(--surface-sunken);
+}
+
+.post-faqs,
+.post-sources,
+.post-related {
+  margin-top: var(--space-12);
+}
+.post-faqs h2,
+.post-sources h2,
+.post-related h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+}
+.post-faqs details {
+  margin-top: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-4);
+}
+.post-faqs summary {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+.post-faqs summary::-webkit-details-marker {
+  display: none;
+}
+.post-faqs details p {
+  margin-top: var(--space-3, 12px);
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+.post-cta {
+  margin-top: var(--space-12);
+  padding: var(--space-8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+.post-cta .body {
+  margin-top: var(--space-3, 12px);
+}
+.post-cta .hs-btn {
+  margin-top: var(--space-6);
+}
+.post-sources ol {
+  margin-top: var(--space-4);
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.post-sources a,
+.post-related a {
+  color: var(--ink);
+}
+.post-related ul {
+  margin-top: var(--space-4);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+}
+.post-related li {
+  display: grid;
+  gap: 4px;
+}
+
+/* Index */
+.blog-intro {
+  max-width: 720px;
+  margin-top: var(--space-6);
+}
+.blog-category {
+  margin-top: var(--space-12);
+}
+.blog-grid {
+  margin-top: var(--space-6);
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+.blog-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3, 12px);
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+.blog-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.blog-card a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.blog-card a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 700px) {
+  .prose {
+    font-size: 17px;
+  }
+  .post-answer {
+    font-size: 17px;
+    padding: var(--space-4);
+  }
+}

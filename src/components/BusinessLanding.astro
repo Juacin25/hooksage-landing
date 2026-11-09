@@ -13,6 +13,7 @@ import { businesses } from "../data/content";
 import { audiences } from "../data/audiences";
 import { plans, plansFor } from "../data/plan";
 import VideoSamples from "./VideoSamples.astro";
+import { getPosts, postPath } from "../lib/blog";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 interface Props {
@@ -20,6 +21,36 @@ interface Props {
 }
 const { business }: Props = Astro.props;
 const copy = audiences[business.slug][lang];
+// Spanish audience pages link to the guides that answer that audience's next question.
+const guideSlugs: Record<string, string[]> = {
+  startups: [
+    "video-marketing-para-startups",
+    "medidas-video-reels-tiktok-shorts",
+    "mejores-herramientas-ia-editar-videos-verticales",
+  ],
+  pymes: [
+    "ideas-de-videos-para-pymes",
+    "cuanto-cuesta-editar-un-reel",
+    "como-editar-videos-verticales-celular",
+  ],
+  "marca-personal": [
+    "marca-personal-con-video",
+    "videos-para-coaches-y-consultores",
+    "subtitulos-automaticos-videos",
+  ],
+  "equipos-de-marketing": [
+    "calendario-de-contenido-en-video",
+    "cuantos-videos-publicar-por-semana",
+    "mejores-herramientas-ia-editar-videos-verticales",
+  ],
+};
+const posts = await getPosts();
+const guides =
+  lang === "es"
+    ? guideSlugs[business.slug]
+        .map((slug) => posts.find((post) => post.id === slug))
+        .filter((post) => post !== undefined)
+    : [];
 const en = lang === "en";
 const plan = plansFor(lang)[plans.findIndex((item) => item.name === copy.plan)];
 const faqItems = [
@@ -205,6 +236,24 @@ const comparison = en
       </a>
     </div>
   </section>
+  {guides.length > 0 && (
+    <section class="section business-guides">
+      <div class="container">
+        <p class="overline eyebrow">Guías</p>
+        <h2 class="heading-1">Para seguir aprendiendo.</h2>
+        <ul class="business-guide-list">
+          {guides.map((post) => (
+            <li>
+              <a class="text-link" href={postPath(post)}>
+                {post.data.title}
+                <Icon name="arrow" size={18} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
   <section class="section">
     <div class="container faq-grid">
       <h2 class="heading-1">

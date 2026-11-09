@@ -1,0 +1,83 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import {
+  getPosts,
+  postPath,
+  postUrl,
+  coverPath,
+  readingMinutes,
+  formatDate,
+} from "../../lib/blog";
+import "../../styles/blog.css";
+
+const posts = await getPosts();
+const categories = [...new Set(posts.map((post) => post.data.category))];
+const blog = {
+  "@type": "Blog",
+  "@id": "https://hooksage.com/blog/#blog",
+  name: "Blog de Hooksage",
+  url: "https://hooksage.com/blog/",
+  inLanguage: "es",
+  publisher: { "@id": "https://hooksage.com/#organization" },
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    "@id": postUrl(post) + "#article",
+    headline: post.data.title,
+    url: postUrl(post),
+  })),
+};
+---
+
+<Layout
+  title="Blog de video corto: guías, precios e ideas | Hooksage"
+  description="Guías para editar y publicar videos verticales en Reels, TikTok y Shorts: herramientas, precios en Hispanoamérica, formatos e ideas por industria."
+  faqItems={[]}
+  alternates={false}
+  breadcrumbs={[{ name: "Blog", url: "https://hooksage.com/blog/" }]}
+  schema={[blog]}
+>
+  <section class="section blog-index">
+    <div class="container">
+      <p class="overline eyebrow">Blog</p>
+      <h1 class="display-l">Video corto para negocios, explicado con datos.</h1>
+      <p class="body-l muted blog-intro">
+        Guías prácticas para editar, publicar y medir videos verticales en
+        Instagram Reels, TikTok y YouTube Shorts. Con precios, formatos y
+        fuentes, pensadas para equipos chicos de toda Hispanoamérica.
+      </p>
+      {categories.map((category) => (
+        <section class="blog-category" aria-label={category}>
+          <h2 class="heading-2">{category}</h2>
+          <ul class="blog-grid">
+            {posts
+              .filter((post) => post.data.category === category)
+              .map((post) => {
+                const cover = coverPath(post);
+                return (
+                  <li class="blog-card">
+                    {cover && (
+                      <img
+                        src={cover}
+                        alt=""
+                        width="1200"
+                        height="675"
+                        loading="lazy"
+                      />
+                    )}
+                    <a class="heading-3" href={postPath(post)}>
+                      {post.data.title}
+                    </a>
+                    <p class="small muted">{post.data.description}</p>
+                    <p class="small muted">
+                      {formatDate(post.data.updatedDate)} ·{" "}
+                      {readingMinutes(post)} min
+                    </p>
+                  </li>
+                );
+              })}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+</Layout>

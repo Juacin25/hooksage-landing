@@ -31,6 +31,7 @@ const { story = false } = Astro.props;
       )}
       <a href={home + "#precio"}>{t("Precio")}</a>
       <a href={home + "#preguntas"}>{t("Preguntas")}</a>
+      {lang === "es" && <a href="/blog/">Blog</a>}
     </nav>
     <div class="header-actions">
       <div

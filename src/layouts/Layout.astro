@@ -23,15 +23,20 @@ const lang = localeFromPath(Astro.url.pathname);
 const analyticsEnabled = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== "false";
 const t = translator(lang);
 const faqsForLanguage = contentFor(lang).faqs;
-const ogImage =
-  "https://hooksage.com/" +
-  (lang === "en" ? "og-product-en.png" : "og-product.png");
 interface Props {
   title?: string;
   description?: string;
   faqItems?: typeof faqs;
   variant?: "default" | "story";
   noindex?: boolean;
+  // Pages without an English version (the blog) skip hreflang alternates.
+  alternates?: boolean;
+  // Breadcrumb trail after the home item; defaults to the current page.
+  breadcrumbs?: { name: string; url: string }[];
+  // Extra JSON-LD nodes for the page (for example BlogPosting).
+  schema?: Record<string, unknown>[];
+  image?: string;
+  ogType?: "website" | "article";
 }
 const {
   title = lang === "en"
@@ -43,7 +48,16 @@ const {
   faqItems = faqsForLanguage,
   variant = "default",
   noindex = false,
+  alternates = true,
+  breadcrumbs,
+  schema = [],
+  image,
+  ogType = "website",
 }: Props = Astro.props;
+const ogImage =
+  image ??
+  "https://hooksage.com/" +
+    (lang === "en" ? "og-product-en.png" : "og-product.png");
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
 const home = "https://hooksage.com" + homePath(lang);
 const offerAvailability = paidPlansAvailable
@@ -101,19 +115,16 @@ const structuredData = {
             "@type": "BreadcrumbList",
             "@id": canonical + "#breadcrumb",
             itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Hooksage",
-                item: home,
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: title.replace(/ \| Hooksage$/, ""),
-                item: canonical,
-              },
-            ],
+              { name: "Hooksage", url: home },
+              ...(breadcrumbs ?? [
+                { name: title.replace(/ \| Hooksage$/, ""), url: canonical },
+              ]),
+            ].map((crumb, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: crumb.name,
+              item: crumb.url,
+            })),
           },
         ]
       : []),
@@ -151,6 +162,7 @@ const structuredData = {
         })),
       ],
     },
+    ...schema,
     ...(faqItems.length
       ? [
           {
@@ -182,9 +194,9 @@ const structuredData = {
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    {!noindex && (
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && alternates && (
       <Fragment>
-        <link rel="canonical" href={canonical} />
         <link
           rel="alternate"
           hreflang="es"
@@ -219,7 +231,7 @@ const structuredData = {
     )}
     <link rel="icon" href="/logos/hooksage-app-icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content={lang === "en" ? "en_US" : "es_LA"} />
     <meta
       property="og:locale:alternate"

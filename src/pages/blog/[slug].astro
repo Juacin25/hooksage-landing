@@ -1,0 +1,187 @@
+---
+import { render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro";
+import {
+  getPosts,
+  postPath,
+  postUrl,
+  coverPath,
+  readingMinutes,
+  formatDate,
+  relatedPosts,
+  blogAuthor,
+  type Post,
+} from "../../lib/blog";
+import "../../styles/blog.css";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, posts },
+  }));
+}
+interface Props {
+  post: Post;
+  posts: Post[];
+}
+const { post, posts } = Astro.props;
+const { Content, headings } = await render(post);
+const { data } = post;
+const url = postUrl(post);
+const cover = coverPath(post);
+const image = cover
+  ? "https://hooksage.com" + cover
+  : "https://hooksage.com/og-product.png";
+const sections = headings.filter((heading) => heading.depth === 2);
+const related = relatedPosts(post, posts);
+const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+const article = {
+  "@type": "BlogPosting",
+  "@id": url + "#article",
+  headline: data.title,
+  description: data.description,
+  datePublished: data.publishDate.toISOString(),
+  dateModified: data.updatedDate.toISOString(),
+  inLanguage: "es",
+  articleSection: data.category,
+  wordCount: words,
+  image,
+  author: {
+    "@type": "Organization",
+    name: blogAuthor.name,
+    url: blogAuthor.url,
+  },
+  publisher: { "@id": "https://hooksage.com/#organization" },
+  mainEntityOfPage: { "@id": url + "#webpage" },
+  isPartOf: {
+    "@type": "Blog",
+    "@id": "https://hooksage.com/blog/#blog",
+    name: "Blog de Hooksage",
+  },
+};
+---
+
+<Layout
+  title={`${data.seoTitle} | Hooksage`}
+  description={data.description}
+  faqItems={[]}
+  alternates={false}
+  ogType="article"
+  image={image}
+  breadcrumbs={[
+    { name: "Blog", url: "https://hooksage.com/blog/" },
+    { name: data.title, url },
+  ]}
+  schema={[article]}
+>
+  <article class="post">
+    <div class="container post-container">
+      <nav class="post-breadcrumb small" aria-label="Ruta">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/blog/">Blog</a>
+        <span aria-hidden="true">/</span>
+        <span>{data.category}</span>
+      </nav>
+      <h1 class="display-l post-title">{data.title}</h1>
+      <p class="post-meta small muted">
+        Actualizado el{" "}
+        <time datetime={data.updatedDate.toISOString()}>
+          {formatDate(data.updatedDate)}
+        </time>{" "}
+        · Por <a href={blogAuthor.url}>{blogAuthor.name}</a> ·{" "}
+        {readingMinutes(post)} min de lectura
+      </p>
+      <div class="post-answer">
+        <p>
+          <strong>Respuesta corta:</strong> {data.shortAnswer}
+        </p>
+      </div>
+      {cover && (
+        <img
+          class="post-cover"
+          src={cover}
+          alt={data.coverAlt}
+          width="1200"
+          height="675"
+          fetchpriority="high"
+        />
+      )}
+      {sections.length > 2 && (
+        <nav class="post-toc" aria-labelledby="toc-title">
+          <p class="post-toc-title" id="toc-title">
+            En este artículo
+          </p>
+          <ol>
+            {sections.map((heading) => (
+              <li>
+                <a href={"#" + heading.slug}>{heading.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+      <div class="prose">
+        <Content />
+      </div>
+      {data.faqs.length > 0 && (
+        <section class="post-faqs" aria-labelledby="preguntas-frecuentes">
+          <h2 id="preguntas-frecuentes">Preguntas frecuentes</h2>
+          {data.faqs.map((faq) => (
+            <details>
+              <summary>
+                <span>{faq.question}</span>
+                <Icon name="chevron" size={20} />
+              </summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </section>
+      )}
+      <aside class="post-cta" aria-label="Probar Hooksage">
+        <p class="overline eyebrow">Hooksage</p>
+        <p class="heading-3">Edita tus videos verticales con IA</p>
+        <p class="body muted">
+          Sube lo que grabaste y recibe un video para Reels, TikTok o Shorts con
+          cortes, encuadre y subtítulos. La primera edición es gratis.
+        </p>
+        <a
+          class="hs-btn hs-btn--primary"
+          href="/#empezar"
+          data-waitlist-cta
+          data-cta-location="blog"
+        >
+          Probar con mi video
+          <Icon name="arrow" />
+        </a>
+      </aside>
+      <section class="post-sources" aria-labelledby="fuentes">
+        <h2 id="fuentes">Fuentes</h2>
+        <ol>
+          {data.sources.map((source) => (
+            <li>
+              <a href={source.url} rel="noopener">
+                {source.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+      {related.length > 0 && (
+        <section class="post-related" aria-labelledby="relacionados">
+          <h2 id="relacionados">Sigue leyendo</h2>
+          <ul>
+            {related.map((item) => (
+              <li>
+                <a href={postPath(item)}>{item.data.title}</a>
+                <span class="small muted">{item.data.category}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </article>
+</Layout>
