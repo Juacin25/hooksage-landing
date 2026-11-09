@@ -1295,7 +1295,7 @@ const sitemap = await fs.readFile(path.join(dist, "sitemap-0.xml"), "utf8");
 const blogSlugs = (
   await fs.readdir(path.join(dist, "blog"), { withFileTypes: true })
 )
-  .filter((entry) => entry.isDirectory())
+  .filter((entry) => entry.isDirectory() && entry.name !== "covers")
   .map((entry) => entry.name);
 // 14 landing/legal URLs + the blog index + every post.
 assert.equal((sitemap.match(/<loc>/g) || []).length, 15 + blogSlugs.length);
