@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Window } from "happy-dom";
 import sharp from "sharp";
+import { business } from "../src/data/business.ts";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(root, "dist");
 const html = await fs.readFile(path.join(dist, "index.html"), "utf8");
@@ -108,6 +109,8 @@ assert.deepEqual(
   faq.mainEntity.map((item) => item.name),
   summaries,
 );
+// The company tax ID is published only on the legal pages.
+assert.doesNotMatch(doc.documentElement.outerHTML, new RegExp(business.taxId));
 ok("Homepage language, headings, metadata, preloads and FAQ schema match");
 const pageTitles = new Set();
 const pageDescriptions = new Set();
@@ -1648,6 +1651,7 @@ for (const slug of blogSlugs) {
   assert.equal(d.querySelectorAll('link[rel="alternate"]').length, 0);
   assert.match(d.querySelector(".post-answer").textContent, /Respuesta corta/);
   assert.ok(d.querySelectorAll(".post-sources li").length >= 2);
+  assert.doesNotMatch(d.documentElement.outerHTML, new RegExp(business.taxId));
   const graph = JSON.parse(
     d.querySelector('script[type="application/ld+json"]').textContent,
   )["@graph"];
