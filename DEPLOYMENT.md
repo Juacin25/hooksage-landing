@@ -197,3 +197,14 @@ Se publicaron y verificaron 169 archivos estáticos en la misma sesión Tenki, c
 **Enrutamiento público actual:** los DNS de `hooksage.com` y `www.hooksage.com` conservan el túnel `hooksage` hacia Tenki. Un Worker `hooksage-landing`, publicado posteriormente, interceptaba ambos dominios y entregaba otros assets. Con autorización del titular, las rutas `hooksage.com/*` y `www.hooksage.com/*` se conservaron con la selección **Worker: None**. Así usan el origen existente en Tenki. No se eliminó el Worker ni se modificaron DNS, TLS, el túnel o el subdominio de la aplicación. Los próximos despliegues de la landing deben actualizar `dist/` en Tenki; no deben reactivar esa copia independiente del Worker. Para revertir solo este ajuste de rutas, puede volver a seleccionarse `hooksage-landing` en cada una, teniendo presente que contiene la oferta anterior.
 
 Verificación pública: catorce rutas en `hooksage.com`, portadas y términos ES/EN en `www.hooksage.com`, ambos `/healthz` y video MP4 con HTTP Range (`206`, 1024 bytes). El HTML coincide con el build tras normalizar la protección de emails, los scripts añadidos por Cloudflare y los espacios entre etiquetas. Se comprobaron los selectores de suscripción mensual/anual y los tres descuentos en el navegador. Previamente pasaron Astro check, build, las 23 verificaciones de interfaz, 19 pruebas de API y ocho verificaciones de consentimiento.
+
+## Caché en Cloudflare e IndexNow
+
+El servidor envía el HTML con `Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400`, y la regla de caché de Cloudflare "HTML en el borde (respeta Cache-Control)" lo guarda hasta 10 minutos en el borde (`/api/` y `/healthz` quedan excluidos). Después de un deploy, los cambios pueden tardar hasta 10 minutos en verse; para verlos al instante, purga la caché en Cloudflare → Caching → Configuration → Purge Everything.
+
+Después de publicar páginas nuevas o cambios importantes, avisa a Bing y Yandex con IndexNow (la clave está publicada en `public/0b0e5cbb6bff571f447d46072b5165c7.txt`):
+
+```sh
+curl -X POST https://api.indexnow.org/indexnow -H "Content-Type: application/json" \
+  -d '{"host":"hooksage.com","key":"0b0e5cbb6bff571f447d46072b5165c7","keyLocation":"https://hooksage.com/0b0e5cbb6bff571f447d46072b5165c7.txt","urlList":["https://hooksage.com/"]}'
+```
