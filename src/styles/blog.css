@@ -26,7 +26,7 @@
 .post-answer {
   margin-top: var(--space-8);
   padding: var(--space-6);
-  border-left: 4px solid var(--primary);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--surface-sunken);
   font-size: 18px;
@@ -97,9 +97,11 @@
 }
 .prose blockquote {
   margin-inline: 0;
-  padding-left: var(--space-6);
-  border-left: 3px solid var(--border);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
   color: var(--ink-muted);
+  font-style: italic;
 }
 .prose table {
   display: block;
