@@ -3,6 +3,10 @@ import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
+interface Props {
+  ctaHref?: string;
+}
+const { ctaHref = "#empezar" } = Astro.props;
 const cases = [
   {
     id: "talking-head",
@@ -39,7 +43,7 @@ const descriptions = {
 };
 const versions = ["original", "edited"] as const;
 const number = (seconds: number) =>
-  seconds.toLocaleString(lang === "en" ? "en-US" : "es-UY", {
+  seconds.toLocaleString(lang === "en" ? "en-US" : "es", {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
   });
@@ -57,12 +61,12 @@ const duration = (seconds: number) =>
     <div>
       <p class="overline eyebrow">{t("El mismo clip. Otra edición.")}</p>
       <h2 class="heading-2" id="samples-title">
-        {t("Mirá qué cambia.")}
+        {t("Mira qué cambia.")}
       </h2>
     </div>
     <p class="small muted">
       {t(
-        "Es el mismo clip: compará el encuadre, los textos y cuánto dura. Poné play para escuchar el ritmo.",
+        "Es el mismo clip: compara el encuadre, los textos y cuánto dura. Pon play para escuchar el ritmo.",
       )}
     </p>
   </div>
@@ -215,11 +219,11 @@ const duration = (seconds: number) =>
     </p>
     <a
       class="text-link small"
-      href="#empezar"
+      href={ctaHref}
       data-waitlist-cta
       data-cta-location="samples"
     >
-      {t("Probalo con un video tuyo")}
+      {t("Pruébalo con un video tuyo")}
       <Icon name="arrow" size={18} />
     </a>
   </div>

@@ -58,7 +58,7 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              `Hooksage es un servicio de ${identity}, con domicilio constituido en ${business.legalAddress}. Para consultas, soporte, cancelaciones o devoluciones, escribí a ${contactEmail}.`,
+              `Hooksage es un servicio de ${identity}, con domicilio constituido en ${business.legalAddress}. Para consultas, soporte, cancelaciones o devoluciones, escribe a ${contactEmail}.`,
               `Hooksage is provided by ${identity}, with its registered address at ${business.legalAddress}. For questions, support, cancellations or refunds, email ${contactEmail}.`,
             ),
           ],
@@ -98,7 +98,7 @@ export function legalDocument(
                   "App registration is free. Payments for plans and packs are not yet enabled in the app. The commercial conditions published here will apply when a purchase and payment process is enabled. Registering does not purchase a plan, start a subscription or create a charge.",
                 ),
             text(
-              `La aplicación de Hooksage está separada de este sitio. Si no aparece una opción de contratación y pago, consultanos en ${contactEmail}. Este sitio informa sobre el producto y recibe solicitudes de prueba; su formulario no es un proceso de compra. No se cobra por funciones no habilitadas.`,
+              `La aplicación de Hooksage está separada de este sitio. Si no aparece una opción de contratación y pago, consúltanos en ${contactEmail}. Este sitio informa sobre el producto y recibe solicitudes de prueba; su formulario no es un proceso de compra. No se cobra por funciones no habilitadas.`,
               `The Hooksage app is separate from this website. If no purchase and payment option appears, contact ${contactEmail}. This website describes the product and receives trial requests; its form is not a checkout. Features that are not enabled are not charged.`,
             ),
             text(
@@ -123,7 +123,7 @@ export function legalDocument(
               "Purchased jobs are delivered digitally: after successful processing, the result is made available for review and download through the app. Trial delivery is arranged by email. Processing time depends on the length and complexity of the footage, system demand and the providers involved; no fixed turnaround is promised.",
             ),
             text(
-              `Si un trabajo falla o no se completa, escribí a ${contactEmail} para revisar el incidente. Un procesamiento fallido no consume cupo; si se descontó una unidad por error, se restituye al verificarlo.`,
+              `Si un trabajo falla o no se completa, escribe a ${contactEmail} para revisar el incidente. Un procesamiento fallido no consume cupo; si se descontó una unidad por error, se restituye al verificarlo.`,
               `If a job fails or does not complete, email ${contactEmail} so we can review it. Failed processing does not consume an allowance; a unit deducted in error is restored after verification.`,
             ),
           ],
@@ -137,7 +137,7 @@ export function legalDocument(
               "Prices are in US dollars. Each pack is purchased once and does not renew automatically:",
             ),
             text(
-              "Las unidades del pack pueden utilizarse durante 90 días corridos desde la confirmación del pago. Podés consultar el saldo y el vencimiento en la aplicación, cuando esa consulta esté disponible, o solicitarlos por email. Las unidades sin utilizar vencen al terminar ese plazo, sin afectar los derechos de devolución previstos aquí o en la ley.",
+              "Las unidades del pack pueden utilizarse durante 90 días corridos desde la confirmación del pago. Puedes consultar el saldo y el vencimiento en la aplicación, cuando esa consulta esté disponible, o solicitarlos por email. Las unidades sin utilizar vencen al terminar ese plazo, sin afectar los derechos de devolución previstos aquí o en la ley.",
               "Pack units can be used for 90 calendar days from payment confirmation. You can check the balance and expiry in the app when that view is available, or request them by email. Unused units expire at the end of that period, without affecting refund rights under these terms or applicable law.",
             ),
           ],
@@ -156,11 +156,11 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              "Podés elegir facturación mensual o anual. La modalidad mensual se paga cada mes. La modalidad anual se paga por adelantado, en un solo cargo por doce meses de servicio desde la activación. El precio anual es el importe total del período; cualquier equivalente por mes se muestra únicamente para comparar y no supone un cobro mensual.",
+              "Puedes elegir facturación mensual o anual. La modalidad mensual se paga cada mes. La modalidad anual se paga por adelantado, en un solo cargo por doce meses de servicio desde la activación. El precio anual es el importe total del período; cualquier equivalente por mes se muestra únicamente para comparar y no supone un cobro mensual.",
               "You can choose monthly or annual billing. Monthly subscriptions are paid each month. Annual subscriptions are paid upfront in one charge for twelve months of service from activation. The annual price is the total for that period; any monthly equivalent is shown only for comparison and does not mean monthly charges.",
             ),
             text(
-              "En ambas modalidades, el cupo se renueva cada siete días desde la activación y las unidades no utilizadas no se acumulan para el siguiente período. El plan anual conserva ese cupo semanal: no entrega todos los videos del año por adelantado. La fecha de reinicio y la del próximo cobro se informan al contratar o pueden consultarse por email. La renovación automática solo se aplica si se informa expresamente y la aceptás antes de pagar; el cargo se repite cada mes o cada doce meses, según la modalidad elegida, hasta que canceles la renovación. La prueba gratuita y el registro de cuenta no activan cobros ni suscripciones.",
+              "En ambas modalidades, el cupo se renueva cada siete días desde la activación y las unidades no utilizadas no se acumulan para el siguiente período. El plan anual conserva ese cupo semanal: no entrega todos los videos del año por adelantado. La fecha de reinicio y la del próximo cobro se informan al contratar o pueden consultarse por email. La renovación automática solo se aplica si se informa expresamente y la aceptas antes de pagar; el cargo se repite cada mes o cada doce meses, según la modalidad elegida, hasta que canceles la renovación. La prueba gratuita y el registro de cuenta no activan cobros ni suscripciones.",
               "For both billing options, allowances reset every seven days from activation and unused units do not carry over. Annual subscriptions keep that weekly allowance: all videos for the year are not released upfront. Reset and next-payment dates are provided when purchasing or can be requested by email. Automatic renewal applies only if expressly disclosed and accepted before payment; charges repeat each month or every twelve months according to the selected option, until renewal is cancelled. The free trial and account registration do not start charges or subscriptions.",
             ),
           ],
@@ -193,7 +193,7 @@ export function legalDocument(
           title: text("8. Cancelar una renovación", "8. Cancelling renewal"),
           paragraphs: [
             text(
-              `Podés cancelar la renovación escribiendo a ${contactEmail} antes del próximo cargo, indicando el correo de tu cuenta y la contratación correspondiente. No hay penalidad por cancelar. Conservás el acceso y los cupos que correspondan hasta finalizar el período mensual o anual ya pagado.`,
+              `Puedes cancelar la renovación escribiendo a ${contactEmail} antes del próximo cargo, indicando el correo de tu cuenta y la contratación correspondiente. No hay penalidad por cancelar. Conservas el acceso y los cupos que correspondan hasta finalizar el período mensual o anual ya pagado.`,
               `You can cancel renewal by emailing ${contactEmail} before the next charge, identifying your account email and purchase. There is no cancellation penalty. You keep access and the applicable allowances until the end of the monthly or annual period already paid for.`,
             ),
             text(
@@ -211,11 +211,11 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              "Esta política se aplica a packs y suscripciones mensuales y anuales. Podés solicitar una devolución de la parte no utilizada durante los diez días corridos posteriores al pago. Si no hubo uso ni prestación, corresponde devolver el importe de esa contratación. Si el servicio se prestó parcialmente, calculamos una devolución proporcional de la parte no prestada y te informamos el cálculo. Esta política comercial se suma a tus derechos legales irrenunciables y no reduce un plazo legal mayor.",
+              "Esta política se aplica a packs y suscripciones mensuales y anuales. Puedes solicitar una devolución de la parte no utilizada durante los diez días corridos posteriores al pago. Si no hubo uso ni prestación, corresponde devolver el importe de esa contratación. Si el servicio se prestó parcialmente, calculamos una devolución proporcional de la parte no prestada y te informamos el cálculo. Esta política comercial se suma a tus derechos legales irrenunciables y no reduce un plazo legal mayor.",
               "This policy applies to packs and to monthly and annual subscriptions. You can request a refund of the unused portion within ten calendar days after payment. If there has been no use or service delivery, the purchase amount is refunded. If the service has been partly delivered, we calculate a proportional refund for the undelivered portion and explain the calculation. This commercial policy supplements your non-waivable legal rights and does not shorten any longer statutory period.",
             ),
             text(
-              "Si un fallo del servicio impide completar una prestación contratada, ofrecemos resolverlo o devolver el importe de la parte no entregada. Los procesamientos fallidos no consumen unidades. Para solicitar una devolución, enviá el correo de tu cuenta y la referencia del pago, si la tenés, a nuestro email de contacto. Te comunicamos la resolución y el medio de devolución; la acreditación también depende del proveedor de pagos y de la entidad emisora.",
+              "Si un fallo del servicio impide completar una prestación contratada, ofrecemos resolverlo o devolver el importe de la parte no entregada. Los procesamientos fallidos no consumen unidades. Para solicitar una devolución, envía el correo de tu cuenta y la referencia del pago, si la tienes, a nuestro email de contacto. Te comunicamos la resolución y el medio de devolución; la acreditación también depende del proveedor de pagos y de la entidad emisora.",
               "If a service failure prevents us from completing a purchased service, we offer to resolve it or refund the undelivered portion. Failed processing does not consume units. To request a refund, send your account email and payment reference, if available, to our contact email. We explain the decision and refund method; settlement also depends on the payment provider and card issuer or other financial institution.",
             ),
             text(
@@ -233,11 +233,11 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              "Conservás los derechos que te correspondan sobre tus videos, textos, marcas y otros materiales. Al enviarlos, autorizás a CANARY CODE SAS y a los proveedores necesarios a acceder, copiar y transformar ese material únicamente en la medida necesaria para atender el trabajo y entregarte el resultado, según la Política de privacidad. No adquirimos tus derechos de propiedad por prestar el servicio.",
+              "Conservas los derechos que te correspondan sobre tus videos, textos, marcas y otros materiales. Al enviarlos, autorizas a CANARY CODE SAS y a los proveedores necesarios a acceder, copiar y transformar ese material únicamente en la medida necesaria para atender el trabajo y entregarte el resultado, según la Política de privacidad. No adquirimos tus derechos de propiedad por prestar el servicio.",
               "You keep your rights in your videos, text, brands and other materials. By submitting them, you authorise CANARY CODE SAS and the necessary providers to access, copy and transform those materials only as needed to perform the job and deliver the result, as described in the Privacy policy. Providing the service does not transfer your ownership rights to us.",
             ),
             text(
-              "Debés contar con los derechos y autorizaciones necesarios para usar y compartir el contenido, incluida la imagen y voz de terceros. No uses el servicio para suplantar personas, vulnerar derechos o producir contenido ilícito. No envíes documentos de identidad, datos financieros, de salud u otra información sensible que no sea necesaria para la pieza. Las funciones de generación o modificación de voces requieren la autorización de su titular.",
+              "Debes contar con los derechos y autorizaciones necesarios para usar y compartir el contenido, incluida la imagen y voz de terceros. No uses el servicio para suplantar personas, vulnerar derechos o producir contenido ilícito. No envíes documentos de identidad, datos financieros, de salud u otra información sensible que no sea necesaria para la pieza. Las funciones de generación o modificación de voces requieren la autorización de su titular.",
               "You must have the rights and permissions needed to use and share the content, including other people's image and voice. Do not use the service for impersonation, infringement or unlawful content. Do not submit identity documents, financial or health details, or other sensitive information that is unnecessary for the video. Voice generation or modification requires the speaker's authorisation.",
             ),
             text(
@@ -245,7 +245,7 @@ export function legalDocument(
               "Uploading, submitting or providing sexually explicit, pornographic or NSFW materials to the AI editing and voice generation or modification features is prohibited. This includes videos, images, audio, text, scripts and prompts, including materials shared through links. Using these features to generate sexually explicit, pornographic or NSFW content is also prohibited.",
             ),
             text(
-              "Antes de publicar, revisá nombres, cifras, subtítulos, afirmaciones y los derechos sobre los elementos incluidos. Las herramientas automáticas pueden cometer errores. Hooksage no promete visualizaciones, ventas, seguidores ni viralidad. Podemos detener un trabajo ante un problema de seguridad o de derechos y comunicaremos el motivo cuando sea posible; los importes de prestaciones no entregadas se tratan conforme a estas condiciones y la ley.",
+              "Antes de publicar, revisa nombres, cifras, subtítulos, afirmaciones y los derechos sobre los elementos incluidos. Las herramientas automáticas pueden cometer errores. Hooksage no promete visualizaciones, ventas, seguidores ni viralidad. Podemos detener un trabajo ante un problema de seguridad o de derechos y comunicaremos el motivo cuando sea posible; los importes de prestaciones no entregadas se tratan conforme a estas condiciones y la ley.",
               "Before publishing, review names, figures, captions, claims and rights in the included elements. Automated tools can make mistakes. Hooksage does not promise views, sales, followers or virality. We may stop a job for a security or rights issue and explain why when possible; payments for undelivered services are handled under these terms and applicable law.",
             ),
           ],
@@ -258,7 +258,7 @@ export function legalDocument(
           ),
           paragraphs: [
             text(
-              "La Política de privacidad explica los datos tratados, los proveedores y los plazos de conservación. Descargá los videos que quieras conservar: el servicio no es un archivo permanente. Compartir material para editarlo no autoriza a Hooksage a publicarlo en su portfolio, anuncios o redes; esos usos necesitan un permiso separado.",
+              "La Política de privacidad explica los datos tratados, los proveedores y los plazos de conservación. Descarga los videos que quieras conservar: el servicio no es un archivo permanente. Compartir material para editarlo no autoriza a Hooksage a publicarlo en su portfolio, anuncios o redes; esos usos necesitan un permiso separado.",
               "The Privacy policy explains the data processed, providers and retention periods. Download videos you want to keep: this service is not permanent storage. Sharing footage for editing does not authorise Hooksage to publish it in a portfolio, advertising or social media; those uses require separate permission.",
             ),
           ],
@@ -285,7 +285,7 @@ export function legalDocument(
               "We remain responsible for our obligations under applicable law. No provision removes mandatory consumer rights or excludes liability that cannot legally be limited. These terms are interpreted under Uruguayan law without restricting mandatory protections in a consumer's place of residence or access to competent authorities or courts.",
             ),
             text(
-              `Para consultas o reclamos, escribí a ${contactEmail}.`,
+              `Para consultas o reclamos, escribe a ${contactEmail}.`,
               `For questions or complaints, email ${contactEmail}.`,
             ),
           ],
@@ -311,7 +311,7 @@ export function legalDocument(
         title: text("1. Responsable y contacto", "1. Controller and contact"),
         paragraphs: [
           text(
-            `${identity}, con domicilio constituido en ${business.legalAddress}, es responsable del tratamiento de datos personales para operar Hooksage. Para consultar por tus datos o ejercer tus derechos, escribí a ${contactEmail}.`,
+            `${identity}, con domicilio constituido en ${business.legalAddress}, es responsable del tratamiento de datos personales para operar Hooksage. Para consultar por tus datos o ejercer tus derechos, escribe a ${contactEmail}.`,
             `${identity}, with its registered address at ${business.legalAddress}, is the controller of personal data processed to operate Hooksage. To ask about your information or exercise your rights, email ${contactEmail}.`,
           ),
         ],
@@ -325,7 +325,7 @@ export function legalDocument(
         ),
         paragraphs: [
           text(
-            "El formulario solicita empresa o marca, tipo de equipo, nombre del contacto, correo electrónico, país y ciudad. Son obligatorios para enviar la solicitud por ese medio; podés escribirnos directamente por email si preferís no usarlo. WhatsApp, el enlace al video y la respuesta sobre tu experiencia de edición son opcionales.",
+            "El formulario solicita empresa o marca, tipo de equipo, nombre del contacto, correo electrónico, país y ciudad. Son obligatorios para enviar la solicitud por ese medio; puedes escribirnos directamente por email si prefieres no usarlo. WhatsApp, el enlace al video y la respuesta sobre tu experiencia de edición son opcionales.",
             "The form asks for your business or brand, team type, contact name, email, country and city. These are required to submit the form; you can email us directly if you prefer. WhatsApp, the video link and feedback about your editing experience are optional.",
           ),
           text(
@@ -363,11 +363,11 @@ export function legalDocument(
         ),
         paragraphs: [
           text(
-            "Atender tu consulta y preparar una prueba responde a las gestiones previas al servicio que solicitás. Procesar material, entregar videos, administrar una contratación y dar soporte es necesario para prestar el servicio acordado. Los registros fiscales y la información exigida por autoridades se tratan para cumplir obligaciones legales.",
+            "Atender tu consulta y preparar una prueba responde a las gestiones previas al servicio que solicitas. Procesar material, entregar videos, administrar una contratación y dar soporte es necesario para prestar el servicio acordado. Los registros fiscales y la información exigida por autoridades se tratan para cumplir obligaciones legales.",
             "Answering your enquiry and preparing a trial supports the steps you request before a service. Processing footage, delivering videos, administering a purchase and providing support are necessary to perform the agreed service. Tax records and information required by authorities are processed to fulfil legal obligations.",
           ),
           text(
-            "Los usos opcionales que lo requieran dependen de una autorización específica, como activar publicidad de Meta, recibir marketing adicional o permitir que una pieza aparezca en nuestro portfolio. La aceptación general de esta política no reemplaza esas elecciones. Podés retirar ese consentimiento sin afectar los tratamientos ya realizados ni los necesarios para atender el servicio o una obligación legal.",
+            "Los usos opcionales que lo requieran dependen de una autorización específica, como activar publicidad de Meta, recibir marketing adicional o permitir que una pieza aparezca en nuestro portfolio. La aceptación general de esta política no reemplaza esas elecciones. Puedes retirar ese consentimiento sin afectar los tratamientos ya realizados ni los necesarios para atender el servicio o una obligación legal.",
             "Optional uses that require consent depend on a specific choice, such as enabling Meta advertising, receiving additional marketing or allowing a video in our portfolio. General acceptance of this policy does not replace those choices. You can withdraw that consent without affecting processing already carried out or processing needed for the service or a legal obligation.",
           ),
         ],
@@ -414,7 +414,7 @@ export function legalDocument(
             "The payment provider identified before payment: transaction processing and administration.",
           ),
           text(
-            "Meta: medición publicitaria solamente cuando aceptás activarla, según la sección de cookies.",
+            "Meta: medición publicitaria solamente cuando aceptas activarla, según la sección de cookies.",
             "Meta: advertising measurement only when you opt in, as described in the cookies section.",
           ),
         ],
@@ -466,11 +466,11 @@ export function legalDocument(
             "To run a feature, we may send the instructions and necessary text, audio, image or video material to OpenRouter or AI33. OpenRouter routes requests to model providers according to configuration and their policies. Logging, retention and possible use for model improvement depend on the provider and selected model; we do not guarantee zero retention or a blanket training exclusion across all providers.",
           ),
           text(
-            "El uso de infraestructura, correo, pagos y procesamiento de terceros puede implicar transferencias o acceso desde fuera de Uruguay, incluidos Estados Unidos u otros países según el proveedor y la configuración. No afirmamos que todo el tratamiento ocurra en un único país. Las transferencias deben realizarse conforme a los mecanismos y garantías exigidos por la normativa aplicable; podés pedirnos información sobre los proveedores usados en tu trabajo.",
+            "El uso de infraestructura, correo, pagos y procesamiento de terceros puede implicar transferencias o acceso desde fuera de Uruguay, incluidos Estados Unidos u otros países según el proveedor y la configuración. No afirmamos que todo el tratamiento ocurra en un único país. Las transferencias deben realizarse conforme a los mecanismos y garantías exigidos por la normativa aplicable; puedes pedirnos información sobre los proveedores usados en tu trabajo.",
             "Using third-party infrastructure, email, payments and processing may involve transfers or access outside Uruguay, including the United States or other countries depending on the provider and configuration. We do not state that all processing takes place in one country. Transfers must follow the mechanisms and safeguards required by applicable law; you can ask us about the providers used for your job.",
           ),
           text(
-            "Si compartís un enlace de Drive, Dropbox u otro servicio, ese proveedor conserva el original bajo sus condiciones. Recibimos el enlace y podemos acceder al material que autorizaste a compartir. Los permisos y la conservación del archivo original en ese servicio siguen bajo tu control.",
+            "Si compartes un enlace de Drive, Dropbox u otro servicio, ese proveedor conserva el original bajo sus condiciones. Recibimos el enlace y podemos acceder al material que autorizaste a compartir. Los permisos y la conservación del archivo original en ese servicio siguen bajo tu control.",
             "If you share a Drive, Dropbox or other file-service link, that provider keeps the original under its own terms. We receive the link and may access the material you authorise us to use. Permissions and retention of the original with that service remain under your control.",
           ),
         ],
@@ -483,7 +483,7 @@ export function legalDocument(
         ),
         paragraphs: [
           text(
-            "Guardamos tu elección de publicidad en el almacenamiento local del navegador durante un máximo de 180 días para recordar si aceptaste o rechazaste. Solo si aceptás la medición guardamos etiquetas de campaña y página de origen en el almacenamiento de sesión, con una validez de 30 minutos, para asociar una solicitud con su visita. Al rechazar o retirar esa aceptación dejamos de usar esas etiquetas y eliminamos la atribución guardada en esa sesión.",
+            "Guardamos tu elección de publicidad en el almacenamiento local del navegador durante un máximo de 180 días para recordar si aceptaste o rechazaste. Solo si aceptas la medición guardamos etiquetas de campaña y página de origen en el almacenamiento de sesión, con una validez de 30 minutos, para asociar una solicitud con su visita. Al rechazar o retirar esa aceptación dejamos de usar esas etiquetas y eliminamos la atribución guardada en esa sesión.",
             "We store your advertising choice in browser local storage for up to 180 days to remember acceptance or rejection. Only if you accept measurement do we store campaign tags and the entry page in session storage, valid for 30 minutes, to associate a request with its visit. Rejecting or withdrawing that acceptance stops the use of those tags and removes the campaign attribution stored in that session.",
           ),
           text(
@@ -491,7 +491,7 @@ export function legalDocument(
             "Meta Pixel loads only after you accept advertising. Without that acceptance, the Pixel sends no requests to Meta. If you accept, Meta may receive page or confirmed-request events, along with IP address, browser details, identifiers and information processed by its technology. Rejecting advertising still allows you to use the website and submit the form.",
           ),
           text(
-            "Podés revisar tu elección desde Ajustes de cookies en el pie del sitio. Respetamos la señal Global Privacy Control del navegador para mantener desactivada la publicidad. Cambiar tu elección detiene nuevos envíos del Pixel; no elimina la información que Meta ya haya recibido ni todas las cookies que pueda conservar ese tercero. También podés gestionar esas cookies desde el navegador.",
+            "Puedes revisar tu elección desde Ajustes de cookies en el pie del sitio. Respetamos la señal Global Privacy Control del navegador para mantener desactivada la publicidad. Cambiar tu elección detiene nuevos envíos del Pixel; no elimina la información que Meta ya haya recibido ni todas las cookies que pueda conservar ese tercero. También puedes gestionar esas cookies desde el navegador.",
             "You can review your choice through Cookie settings in the footer. We respect the browser's Global Privacy Control signal by keeping advertising disabled. Changing your choice stops new Pixel transmissions; it does not erase information Meta has already received or all cookies that third party may retain. You can also manage cookies through your browser.",
           ),
         ],
@@ -524,7 +524,7 @@ export function legalDocument(
             "Website requests and related communications: twelve months from the last interaction about the request.",
           ),
           text(
-            "Originales, proyectos y resultados de edición: treinta días desde la última actividad del proyecto. Descargá lo que quieras conservar; Hooksage no es un archivo permanente.",
+            "Originales, proyectos y resultados de edición: treinta días desde la última actividad del proyecto. Descarga lo que quieras conservar; Hooksage no es un archivo permanente.",
             "Original footage, editing projects and results: thirty days from the project's last activity. Download anything you want to keep; Hooksage is not permanent storage.",
           ),
           text(
@@ -538,11 +538,11 @@ export function legalDocument(
         title: text("9. Tus derechos", "9. Your rights"),
         paragraphs: [
           text(
-            "Podés consultar cómo tratamos tus datos, acceder a ellos y solicitar su actualización, rectificación, inclusión o supresión cuando corresponda. También podés retirar el consentimiento para usos opcionales. Escribinos desde el correo asociado a tu solicitud o cuenta e indicá qué necesitás. Solo solicitaremos la información razonablemente necesaria para verificar tu identidad y localizar los registros.",
+            "Puedes consultar cómo tratamos tus datos, acceder a ellos y solicitar su actualización, rectificación, inclusión o supresión cuando corresponda. También puedes retirar el consentimiento para usos opcionales. Escríbenos desde el correo asociado a tu solicitud o cuenta e indica qué necesitas. Solo solicitaremos la información razonablemente necesaria para verificar tu identidad y localizar los registros.",
             "You can ask how we process your data, access it and request updates, rectification, inclusion or deletion where applicable. You can also withdraw consent for optional uses. Email us from the address associated with your request or account and explain what you need. We will ask only for information reasonably needed to verify your identity and locate the records.",
           ),
           text(
-            "Respondemos a las solicitudes de acceso, actualización, rectificación o supresión dentro de los cinco días hábiles previstos por la normativa uruguaya, según corresponda, o informamos en ese plazo las razones por las que no proceda el pedido. Si no obtenés respuesta o considerás inadecuado el tratamiento, podés acudir a la Unidad Reguladora y de Control de Datos Personales de Uruguay.",
+            "Respondemos a las solicitudes de acceso, actualización, rectificación o supresión dentro de los cinco días hábiles previstos por la normativa uruguaya, según corresponda, o informamos en ese plazo las razones por las que no proceda el pedido. Si no obtienes respuesta o consideras inadecuado el tratamiento, puedes acudir a la Unidad Reguladora y de Control de Datos Personales de Uruguay.",
             "We respond to requests for access, updates, rectification or deletion within the five working days provided by Uruguayan law, as applicable, or explain within that period why a request cannot be granted. If you do not receive a response or consider the processing inappropriate, you can contact Uruguay's personal data protection authority, the URCDP.",
           ),
         ],
@@ -562,7 +562,7 @@ export function legalDocument(
         ),
         paragraphs: [
           text(
-            "Compartí solo el material necesario y con una base válida para usar los datos de las personas que aparezcan, incluidas las autorizaciones de imagen y voz que correspondan. No envíes datos sensibles innecesarios por el formulario, las instrucciones o los archivos. Contanos si un material requiere un tratamiento especial antes de compartirlo.",
+            "Comparte solo el material necesario y con una base válida para usar los datos de las personas que aparezcan, incluidas las autorizaciones de imagen y voz que correspondan. No envíes datos sensibles innecesarios por el formulario, las instrucciones o los archivos. Cuéntanos si un material requiere un tratamiento especial antes de compartirlo.",
             "Share only necessary material and have a valid basis to use information about people appearing in it, including required image and voice permissions. Do not send unnecessary sensitive information through the form, instructions or files. Tell us before sharing material that needs special handling.",
           ),
           text(
@@ -579,7 +579,7 @@ export function legalDocument(
         ),
         paragraphs: [
           text(
-            "Publicamos los cambios con su fecha de actualización. Si incorporamos un tratamiento que requiere una nueva autorización, informaremos su finalidad y pediremos esa autorización antes de realizarlo. Para consultas sobre esta política o los proveedores de un trabajo, podés escribir al contacto indicado.",
+            "Publicamos los cambios con su fecha de actualización. Si incorporamos un tratamiento que requiere una nueva autorización, informaremos su finalidad y pediremos esa autorización antes de realizarlo. Para consultas sobre esta política o los proveedores de un trabajo, puedes escribir al contacto indicado.",
             "We publish changes with their update date. If we introduce processing that requires new authorisation, we explain its purpose and request that authorisation before carrying it out. For questions about this policy or the providers involved in a job, email the contact listed here.",
           ),
         ],

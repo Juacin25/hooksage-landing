@@ -12,6 +12,9 @@ const lang = localeFromPath(Astro.url.pathname);
 const english = lang === "en";
 const document = legalDocument(kind, lang);
 const sectionTitle = (title: string) => title.replace(/^\d+\.\s*/, "");
+// "Política de privacidad de Hooksage" → "Política de privacidad | Hooksage".
+const withoutBrand = document.title.replace(/ de Hooksage$|^Hooksage /, "");
+const shortTitle = withoutBrand[0].toUpperCase() + withoutBrand.slice(1);
 const description =
   kind === "terms"
     ? english
@@ -23,7 +26,7 @@ const description =
 ---
 
 <Layout
-  title={`${document.title} | Hooksage`}
+  title={`${shortTitle} | Hooksage`}
   description={description}
   faqItems={[]}
 >

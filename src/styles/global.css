@@ -923,6 +923,39 @@ svg {
   background: var(--surface-sunken);
   border-block: 1px solid var(--border);
 }
+.business-problem .container,
+.business-plan .container {
+  max-width: 820px;
+}
+.business-problem .body-l,
+.business-plan .body-l {
+  margin-top: var(--space-6);
+}
+.business-plan .text-link {
+  margin-top: var(--space-6);
+}
+.business-table-scroll {
+  margin-top: var(--space-8);
+  overflow-x: auto;
+}
+.business-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.business-table th,
+.business-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+.business-table thead th:nth-child(2),
+.business-table td:nth-child(2) {
+  background: var(--surface-sunken);
+  font-weight: 600;
+}
 .business-ideas .steps-grid {
   margin-top: var(--space-8);
 }
@@ -1627,8 +1660,8 @@ svg {
   gap: 2px;
 }
 .language-switch a {
-  min-width: 32px;
-  min-height: 34px;
+  min-width: 44px;
+  min-height: 44px;
   display: grid;
   place-items: center;
   font-size: 12px;
@@ -1683,7 +1716,7 @@ svg {
     width: 124px;
   }
   .language-switch a {
-    min-width: 29px;
+    min-width: 40px;
   }
 }
 @media (max-width: 360px) {
@@ -1736,5 +1769,15 @@ svg {
 @media (max-width: 650px) {
   .hero--showcase h1 {
     font-size: clamp(38px, 10vw, 52px);
+  }
+}
+
+/* Comfortable tap targets for footer and inline trial links on touch screens. */
+@media (max-width: 700px) {
+  .site-footer a,
+  .story-trial-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
 }

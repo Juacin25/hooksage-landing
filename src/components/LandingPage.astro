@@ -11,6 +11,7 @@ import Stats from "./Stats.astro";
 import Pricing from "./Pricing.astro";
 import FreeVideoForm from "./FreeVideoForm.astro";
 import FAQ from "./FAQ.astro";
+import About from "./About.astro";
 import FinalCTA from "./FinalCTA.astro";
 import { localeFromPath } from "../lib/i18n";
 const en = localeFromPath(Astro.url.pathname) === "en";
@@ -20,8 +21,8 @@ const en = localeFromPath(Astro.url.pathname) === "en";
   variant="story"
   title={
     en
-      ? "Your video, ready for your next post | Hooksage"
-      : "Tu video, listo para tu próxima publicación | Hooksage"
+      ? "AI short-form video editor for Reels and TikTok | Hooksage"
+      : "Editor de videos verticales con IA para Reels | Hooksage"
   }
 >
   <StoryMotion />
@@ -38,6 +39,7 @@ const en = localeFromPath(Astro.url.pathname) === "en";
   <Stats />
   <Pricing />
   <FreeVideoForm />
+  <About />
   <FAQ />
   <FinalCTA />
 </Layout>

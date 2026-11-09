@@ -10,7 +10,7 @@ const copy = english
   ? {
       title: "Optional cookies",
       description:
-        "With your permission, we use Meta Pixel to measure visits and completed trial requests, and improve our ads. The trial form works if you reject these cookies.",
+        "With your permission, we use Meta Pixel to measure visits and improve our ads. The form works either way.",
       privacy: "Privacy policy",
       accept: "Accept",
       reject: "Reject",
@@ -24,7 +24,7 @@ const copy = english
   : {
       title: "Cookies opcionales",
       description:
-        "Con tu permiso, usamos Meta Pixel para medir visitas y solicitudes de prueba completadas, y mejorar nuestros anuncios. El formulario de prueba funciona aunque rechaces estas cookies.",
+        "Con tu permiso, usamos Meta Pixel para medir visitas y mejorar nuestros anuncios. El formulario funciona igual si rechazas.",
       privacy: "Política de privacidad",
       accept: "Aceptar",
       reject: "Rechazar",
@@ -142,13 +142,21 @@ const copy = english
   }
   @media (max-width: 700px) {
     .cookie-consent {
-      inset: auto 12px 12px;
+      inset: auto 8px 8px;
       display: block;
-      max-height: calc(100dvh - 24px);
-      padding: 20px;
+      max-height: calc(100dvh - 16px);
+      padding: 14px 16px;
+      font-size: 13px;
+    }
+    .cookie-consent h2 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .cookie-consent p {
+      margin-bottom: 4px;
     }
     .cookie-consent__actions {
-      margin-top: 16px;
+      margin-top: 10px;
       min-width: 0;
     }
   }
@@ -351,6 +359,12 @@ const copy = english
       button.hidden = false;
     });
     synchronize();
-    panel.hidden = !enabled || Boolean(preference) || gpc();
+    // Reveal after the page has painted so the banner never becomes the LCP element.
+    const reveal = () => {
+      panel.hidden = !enabled || Boolean(preference) || gpc();
+    };
+    if (document.readyState === "complete") setTimeout(reveal, 1200);
+    else
+      addEventListener("load", () => setTimeout(reveal, 1200), { once: true });
   })();
 </script>

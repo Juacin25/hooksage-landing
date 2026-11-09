@@ -9,9 +9,16 @@ import Footer from "../components/Footer.astro";
 import FunnelTracking from "../components/FunnelTracking.astro";
 import CookieConsent from "../components/CookieConsent.astro";
 import { contentFor, type faqs } from "../data/content";
-import { localeFromPath, translator, alternatePath } from "../lib/i18n";
+import {
+  localeFromPath,
+  translator,
+  alternatePath,
+  homePath,
+} from "../lib/i18n";
+import { plans, packs } from "../data/plan";
+import { countries } from "../../server/countries.mjs";
 import { business } from "../data/business";
-import { contactEmail } from "../lib/config";
+import { contactEmail, paidPlansAvailable } from "../lib/config";
 const lang = localeFromPath(Astro.url.pathname);
 const analyticsEnabled = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== "false";
 const t = translator(lang);
@@ -24,18 +31,25 @@ interface Props {
   description?: string;
   faqItems?: typeof faqs;
   variant?: "default" | "story";
+  noindex?: boolean;
 }
 const {
   title = lang === "en"
     ? "Turn raw footage into an edited short | Hooksage"
     : "De tu video en crudo a un short editado | Hooksage",
   description = lang === "en"
-    ? "Turn your phone footage into a vertical short with cuts, reframing and captions. Send a clip to try your first edit free. For startups and small teams."
-    : "Convertí tus grabaciones en un short vertical con cortes, encuadre y subtítulos. Mandanos un clip para probar tu primera edición gratis.",
+    ? "Hooksage turns raw recordings into vertical shorts for Reels, TikTok and YouTube Shorts, with automatic cuts, reframing and captions. First edit free."
+    : "Hooksage convierte tus grabaciones en videos verticales para Reels, TikTok y Shorts, con cortes, encuadre y subtítulos automáticos. Primera edición gratis.",
   faqItems = faqsForLanguage,
   variant = "default",
+  noindex = false,
 }: Props = Astro.props;
 const canonical = new URL(Astro.url.pathname, "https://hooksage.com/").href;
+const home = "https://hooksage.com" + homePath(lang);
+const offerAvailability = paidPlansAvailable
+  ? "https://schema.org/InStock"
+  : "https://schema.org/PreOrder";
+const price = (value: string) => value.replace(",", ".");
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -46,26 +60,95 @@ const structuredData = {
       legalName: business.legalName,
       taxID: business.taxId,
       email: contactEmail,
-      address: business.legalAddress,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: business.streetAddress,
+        addressLocality: business.city,
+        addressCountry: business.countryCode,
+      },
       url: "https://hooksage.com/",
-      logo: "https://hooksage.com/logos/hooksage-lockup.svg",
+      logo: "https://hooksage.com/logos/hooksage-logo-512.png",
+      areaServed: countries.map((country) => ({
+        "@type": "Country",
+        name: country.en,
+      })),
+      ...(business.sameAs.length ? { sameAs: business.sameAs } : {}),
     },
     {
-      "@type": "SoftwareApplication",
-      name: "Hooksage",
+      "@type": "WebSite",
+      "@id": "https://hooksage.com/#website",
       url: "https://hooksage.com/",
+      name: "Hooksage",
+      inLanguage: ["es", "en"],
+      publisher: { "@id": "https://hooksage.com/#organization" },
+    },
+    {
+      "@type": "WebPage",
+      "@id": canonical + "#webpage",
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: lang,
+      isPartOf: { "@id": "https://hooksage.com/#website" },
+      about: { "@id": "https://hooksage.com/#software" },
+      ...(canonical !== home
+        ? { breadcrumb: { "@id": canonical + "#breadcrumb" } }
+        : {}),
+    },
+    ...(canonical !== home
+      ? [
+          {
+            "@type": "BreadcrumbList",
+            "@id": canonical + "#breadcrumb",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Hooksage",
+                item: home,
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: title.replace(/ \| Hooksage$/, ""),
+                item: canonical,
+              },
+            ],
+          },
+        ]
+      : []),
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://hooksage.com/#software",
+      name: "Hooksage",
+      url: home,
       applicationCategory: "MultimediaApplication",
+      applicationSubCategory:
+        lang === "en" ? "AI video editor" : "Editor de video con IA",
       operatingSystem: "Web",
       description:
         lang === "en"
-          ? "Brand-led content ideas, scripts and short-form video editing, with voiceover, motion, sound and version history."
-          : "Ideas de contenido, guiones y edición de videos cortos según tu marca, con voz en off, movimiento, sonido y versiones.",
+          ? "AI video editor that turns raw recordings into vertical shorts for Reels, TikTok and YouTube Shorts, with cuts, reframing and captions. Exports MP4 720 × 1280 at 30 fps."
+          : "Editor de video con IA que convierte grabaciones en videos verticales para Reels, TikTok y YouTube Shorts, con cortes, encuadre y subtítulos. Exporta MP4 de 720 × 1280 a 30 fps.",
       inLanguage: lang,
-      areaServed: [
-        { "@type": "Country", name: "United States" },
-        { "@type": "Country", name: "United Kingdom" },
-        { "@type": "Country", name: "Uruguay" },
-        { "@type": "Country", name: "Argentina" },
+      publisher: { "@id": "https://hooksage.com/#organization" },
+      offers: [
+        ...plans.map((plan) => ({
+          "@type": "Offer",
+          name: plan.name + (lang === "en" ? " (monthly)" : " (mensual)"),
+          price: price(plan.monthlyPriceUSD),
+          priceCurrency: "USD",
+          availability: offerAvailability,
+          url: home + "#precio",
+        })),
+        ...packs.map((pack) => ({
+          "@type": "Offer",
+          name: pack.name,
+          price: price(pack.priceUSD),
+          priceCurrency: "USD",
+          availability: offerAvailability,
+          url: home + "#precio",
+        })),
       ],
     },
     ...(faqItems.length
@@ -86,7 +169,7 @@ const structuredData = {
 
 <!doctype html>
 <html
-  lang={lang === "en" ? "en" : "es-UY"}
+  lang={lang === "en" ? "en" : "es"}
   data-theme={variant === "story" ? "dark" : undefined}
 >
   <head>
@@ -98,44 +181,49 @@ const structuredData = {
     />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <link
-      rel="alternate"
-      hreflang="es"
-      href={
-        new URL(
-          alternatePath(Astro.url.pathname, "es"),
-          "https://hooksage.com/",
-        ).href
-      }
-    />
-    <link
-      rel="alternate"
-      hreflang="en"
-      href={
-        new URL(
-          alternatePath(Astro.url.pathname, "en"),
-          "https://hooksage.com/",
-        ).href
-      }
-    />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={
-        new URL(
-          alternatePath(Astro.url.pathname, "es"),
-          "https://hooksage.com/",
-        ).href
-      }
-    />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && (
+      <Fragment>
+        <link rel="canonical" href={canonical} />
+        <link
+          rel="alternate"
+          hreflang="es"
+          href={
+            new URL(
+              alternatePath(Astro.url.pathname, "es"),
+              "https://hooksage.com/",
+            ).href
+          }
+        />
+        <link
+          rel="alternate"
+          hreflang="en"
+          href={
+            new URL(
+              alternatePath(Astro.url.pathname, "en"),
+              "https://hooksage.com/",
+            ).href
+          }
+        />
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={
+            new URL(
+              alternatePath(Astro.url.pathname, "es"),
+              "https://hooksage.com/",
+            ).href
+          }
+        />
+      </Fragment>
+    )}
     <link rel="icon" href="/logos/hooksage-app-icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={lang === "en" ? "en_US" : "es_UY"} />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : "es_LA"} />
     <meta
       property="og:locale:alternate"
-      content={lang === "en" ? "es_UY" : "en_US"}
+      content={lang === "en" ? "es_LA" : "en_US"}
     />
     <meta property="og:locale:alternate" content="en_GB" />
     <meta property="og:site_name" content="Hooksage" />
@@ -150,7 +238,7 @@ const structuredData = {
       content={
         lang === "en"
           ? "Hooksage. More videos. Less time editing. For startups and small teams."
-          : "Hooksage. Más videos. Menos horas editando. Startups y pymes de Uruguay y Argentina."
+          : "Hooksage. Más videos. Menos horas editando. Startups y pymes de toda Hispanoamérica."
       }
     />
     <meta name="twitter:card" content="summary_large_image" />

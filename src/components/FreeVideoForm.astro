@@ -2,42 +2,43 @@
 import { localeFromPath, translator } from "../lib/i18n";
 import Icon from "./Icon.astro";
 import { formEndpoint, contactUrl } from "../lib/config";
+import { countries } from "../../server/countries.mjs";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 const privacyHref = lang === "en" ? "/en/privacy/" : "/privacidad/";
 const termsHref = lang === "en" ? "/en/terms/" : "/terminos/";
-const countries =
-  lang === "en"
-    ? [
-        ["US", "Estados Unidos"],
-        ["GB", "Reino Unido"],
-        ["UY", "Uruguay"],
-        ["AR", "Argentina"],
-      ]
-    : [
-        ["UY", "Uruguay"],
-        ["AR", "Argentina"],
-        ["US", "Estados Unidos"],
-        ["GB", "Reino Unido"],
-      ];
+const countryOptions = [...countries]
+  .sort((a, b) => {
+    // English pages list the US and UK first; Spanish pages list Spanish-speaking countries first.
+    const english = ["US", "GB"];
+    const rank = (code: string) =>
+      english.includes(code)
+        ? lang === "en"
+          ? english.indexOf(code)
+          : 100 + english.indexOf(code)
+        : 10;
+    const order = rank(a.code) - rank(b.code);
+    return order || a[lang].localeCompare(b[lang], lang);
+  })
+  .map((country) => [country.code, country[lang]]);
 const messages = Object.fromEntries(
   Object.entries({
     businessName:
-      "Escribí el nombre de tu empresa o marca (al menos 2 caracteres).",
-    type: "Elegí el tipo de equipo.",
-    contact: "Escribí tu nombre.",
-    email: "Escribí un email válido.",
-    country: "Elegí tu país.",
-    phone: "Revisá el número y el código de tu país.",
-    city: "Escribí tu ciudad.",
-    length: "Usá un máximo de 100 caracteres.",
+      "Escribe el nombre de tu empresa o marca (al menos 2 caracteres).",
+    type: "Elige el tipo de equipo.",
+    contact: "Escribe tu nombre.",
+    email: "Escribe un email válido.",
+    country: "Elige tu país.",
+    phone: "Revisa el número y el código de tu país.",
+    city: "Escribe tu ciudad.",
+    length: "Usa un máximo de 100 caracteres.",
     notConfigured:
-      "El formulario aún no está disponible. Intentá de nuevo más tarde.",
+      "El formulario aún no está disponible. Intenta de nuevo más tarde.",
     sending: "Enviando…",
     requestFailed:
-      "No pudimos enviar tus datos. Revisá tu conexión e intentá de nuevo.",
-    footage: "Usá un enlace HTTPS válido, sin usuario ni contraseña.",
-    feedback: "Contanos tu experiencia en un máximo de 1000 caracteres.",
+      "No pudimos enviar tus datos. Revisa tu conexión e intenta de nuevo.",
+    footage: "Usa un enlace HTTPS válido, sin usuario ni contraseña.",
+    feedback: "Cuéntanos tu experiencia en un máximo de 1000 caracteres.",
     submit: "Solicitar mi edición gratis",
   }).map(([key, source]) => [key, t(source)]),
 );
@@ -54,7 +55,7 @@ const messages = Object.fromEntries(
       </h2>
       <p class="body-l muted">
         {t(
-          "Dejanos un enlace al clip y contanos qué querés mejorar. Una persona del equipo te escribe para coordinar la prueba. Si todavía no tenés el video, podés dejar el enlace para después.",
+          "Déjanos un enlace al clip y cuéntanos qué quieres mejorar. Una persona del equipo te escribe para coordinar la prueba. Si todavía no tienes el video, puedes dejar el enlace para después.",
         )}
       </p>
       <ul class="form-benefits body">
@@ -80,7 +81,7 @@ const messages = Object.fromEntries(
           loading="lazy"
         />
         <p class="small muted">
-          {t("Vos ponés el contenido.")}
+          {t("Tú pones el contenido.")}
           <br />
           <strong>{t("Nosotros resolvemos la edición.")}</strong>
         </p>
@@ -113,7 +114,7 @@ const messages = Object.fromEntries(
             autocomplete="off"
           />
         </div>
-        <h3 class="heading-3">{t("Solicitá tu primera edición.")}</h3>
+        <h3 class="heading-3">{t("Solicita tu primera edición.")}</h3>
         <p class="small muted form-subtitle">
           {t(
             "Coordinamos la prueba por email. El enlace y la pregunta de edición son opcionales; los campos con * son obligatorios.",
@@ -146,7 +147,7 @@ const messages = Object.fromEntries(
             required
             aria-describedby="business-type-error"
           >
-            <option value="">{t("Elegí una opción")}</option>
+            <option value="">{t("Elige una opción")}</option>
             <option value="Startup">{t("Startup")}</option>
             <option value="Pyme">{t("Pyme")}</option>
             <option value="Marca personal">{t("Marca personal")}</option>
@@ -170,7 +171,7 @@ const messages = Object.fromEntries(
             required
             minlength="2"
             maxlength="100"
-            placeholder={t("¿Cómo te llamás?")}
+            placeholder={t("¿Cómo te llamas?")}
             aria-describedby="contact-name-error"
           />
           <span class="field-error small" id="contact-name-error"></span>
@@ -202,9 +203,9 @@ const messages = Object.fromEntries(
             required
             aria-describedby="country-error"
           >
-            <option value="">{t("Elegí tu país")}</option>
-            {countries.map(([value, label]) => (
-              <option value={value}>{t(label)}</option>
+            <option value="">{t("Elige tu país")}</option>
+            {countryOptions.map(([value, label]) => (
+              <option value={value}>{label}</option>
             ))}
           </select>
           <span class="field-error small" id="country-error"></span>
@@ -222,13 +223,13 @@ const messages = Object.fromEntries(
             maxlength="24"
             pattern="\+[0-9\s\(\)\.\-]{8,23}"
             title={t(
-              "Incluí el código de país, por ejemplo +1, +44, +598 o +54.",
+              "Incluye el código de país, por ejemplo +52, +57, +54 o +1.",
             )}
-            placeholder={t("+598 99 123 456")}
+            placeholder={t("+52 55 1234 5678")}
             aria-describedby="whatsapp-help whatsapp-error"
           />
           <span class="small muted field-help" id="whatsapp-help">
-            {t("Incluí el código de país, por ejemplo +1, +44, +598 o +54.")}
+            {t("Incluye el código de país, por ejemplo +52, +57, +54 o +1.")}
           </span>
           <span class="field-error small" id="whatsapp-error"></span>
         </div>
@@ -266,7 +267,7 @@ const messages = Object.fromEntries(
           />
           <span class="small muted field-help" id="footage-url-help">
             {t(
-              "Drive, Dropbox o similar. Revisá que el enlace permita ver el clip. También podés mandarlo después por email.",
+              "Drive, Dropbox o similar. Revisa que el enlace permita ver el clip. También puedes mandarlo después por email.",
             )}
           </span>
           <span class="small muted field-help" id="footage-content-policy">
@@ -293,7 +294,7 @@ const messages = Object.fromEntries(
             aria-describedby="editing-feedback-help editing-feedback-error"
           ></textarea>
           <span class="small muted field-help" id="editing-feedback-help">
-            {t("Si probaste un editor con IA, contanos qué no funcionó.")}
+            {t("Si probaste un editor con IA, cuéntanos qué no funcionó.")}
           </span>
           <span class="field-error small" id="editing-feedback-error"></span>
         </div>
@@ -318,8 +319,10 @@ const messages = Object.fromEntries(
         ></p>
         <noscript>
           <p class="small">
-            {t("Podés enviar este formulario sin activar JavaScript.")}
-            <a href={contactUrl}>{t("También podés escribirnos por email.")}</a>
+            {t("Puedes enviar este formulario sin activar JavaScript.")}
+            <a href={contactUrl}>
+              {t("También puedes escribirnos por email.")}
+            </a>
           </p>
         </noscript>
       </form>
@@ -330,7 +333,7 @@ const messages = Object.fromEntries(
         <h3 class="heading-2">{t("Recibimos tu solicitud.")}</h3>
         <p class="body muted">
           {t(
-            "Te escribimos por email para coordinar la prueba. Si todavía no compartiste el clip, podés responder con el enlace cuando te contactemos.",
+            "Te escribimos por email para coordinar la prueba. Si todavía no compartiste el clip, puedes responder con el enlace cuando te contactemos.",
           )}
         </p>
         <a
@@ -346,6 +349,7 @@ const messages = Object.fromEntries(
 </section>
 <script>
   import { normalizePhone } from "../../server/phone.mjs";
+  import { countries } from "../../server/countries.mjs";
   import {
     normalizeFootageUrl,
     normalizeEditingFeedback,
@@ -376,15 +380,12 @@ const messages = Object.fromEntries(
       feedback: form.querySelector<HTMLTextAreaElement>("#editing-feedback")!,
     };
     fields.country.addEventListener("change", () => {
-      const examples: Record<string, string> = {
-        US: "+1 202 555 0123",
-        GB: "+44 7700 900123",
-        UY: "+598 99 123 456",
-        AR: "+54 9 11 1234 5678",
-      };
       fields.phone.placeholder =
-        examples[fields.country.value] ||
-        (form.dataset.language === "en" ? examples.US : examples.UY);
+        countries.find((country) => country.code === fields.country.value)
+          ?.example ||
+        (form.dataset.language === "en"
+          ? "+1 202 555 0123"
+          : "+52 55 1234 5678");
       if (fields.phone.value) validate(fields.phone);
     });
     let sending = false;
@@ -428,7 +429,7 @@ const messages = Object.fromEntries(
         message = messages.email;
       if (
         field === fields.country &&
-        !["UY", "AR", "US", "GB"].includes(field.value)
+        !countries.some((country) => country.code === field.value)
       )
         message = messages.country;
       if (

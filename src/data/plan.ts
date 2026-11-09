@@ -7,7 +7,7 @@ export const plans = [
     monthlyPriceUSD: "14,99",
     annualPriceUSD: "119,90",
     weeklyExports: 10,
-    description: "Para sacar las primeras piezas sin hacer todo vos.",
+    description: "Para sacar las primeras piezas sin hacerlo todo tú.",
   },
   {
     name: "Pyme",
@@ -21,7 +21,7 @@ export const plans = [
     monthlyPriceUSD: "59,99",
     annualPriceUSD: "431,93",
     weeklyExports: 80,
-    description: "Para compartir lo que sabés, al ritmo que necesitás.",
+    description: "Para compartir lo que sabes, al ritmo que necesitas.",
   },
 ] as const;
 export const basePlan = plans[0];

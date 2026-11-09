@@ -98,8 +98,8 @@ const packPrice = unitPriceFor(pack.priceUSD, pack.exports, language);
     <p class="small muted">
       {t(
         annual
-          ? "Un solo cobro anual. Consultá las condiciones de cancelación."
-          : "Cobro mensual. Consultá las condiciones de cancelación.",
+          ? "Un solo cobro anual. Consulta las condiciones de cancelación."
+          : "Cobro mensual. Consulta las condiciones de cancelación.",
       )}
     </p>
     <a
@@ -116,7 +116,7 @@ const packPrice = unitPriceFor(pack.priceUSD, pack.exports, language);
   {annual && (
     <p class="plan-savings">
       <strong>
-        {t("Ahorrás {percent}%").replace(
+        {t("Ahorras {percent}%").replace(
           "{percent}",
           pricing.annualSavingPercent,
         )}

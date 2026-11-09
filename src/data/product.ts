@@ -6,11 +6,11 @@ export function productFor(language: Language) {
       eyebrow: text("Marca e ideas", "Brand & ideas"),
       title: text("Primero, qué contar.", "First, something worth saying."),
       intro: text(
-        "En la aplicación, tu marca le da contexto a las propuestas. Contá qué hacés, a quién le hablás y cómo querés comunicar. Podés editar el perfil o partir de un texto o PDF.",
+        "En la aplicación, tu marca le da contexto a las propuestas. Cuenta qué haces, a quién le hablas y cómo quieres comunicar. Puedes editar el perfil o partir de un texto o PDF.",
         "In the app, your brand gives suggestions context. Describe what you do, who you want to reach and how you want to sound. Edit your profile or start from text or a PDF.",
       ),
       ideas: text(
-        "Recibí propuestas con un hook, un guion y una lista de tomas. También podés explorar referencias de Shorts por categoría, orientadas al perfil de tu marca.",
+        "Recibe propuestas con un hook, un guion y una lista de tomas. También puedes explorar referencias de Shorts por categoría, orientadas al perfil de tu marca.",
         "Get suggestions with a hook, a script and a shot list. You can also explore Shorts references by category, with suggestions based on your brand profile.",
       ),
       exampleLabel: text(
@@ -56,7 +56,7 @@ export function productFor(language: Language) {
         {
           name: text("Guion", "Script"),
           value: text(
-            "Mostrá cómo un cliente elige un horario y confirma sin tener que escribirte.",
+            "Muestra cómo un cliente elige un horario y confirma sin tener que escribirte.",
             "Show a customer choosing a time and confirming without messaging you.",
           ),
         },
@@ -76,11 +76,11 @@ export function productFor(language: Language) {
     workflow: {
       eyebrow: text("Cómo funciona Hooksage", "How Hooksage works"),
       title: text(
-        "Vos grabás. Hooksage hace el primer corte.",
+        "Tú grabas. Hooksage hace el primer corte.",
         "You film. Hooksage makes the first edit.",
       ),
       intro: text(
-        "Una idea a cámara, una demo o algo que pasó en tu negocio. En la aplicación cargás tu material e indicás qué querés decir. Hooksage prepara la edición de forma automática.",
+        "Una idea a cámara, una demo o algo que pasó en tu negocio. En la aplicación cargas tu material e indicas qué quieres decir. Hooksage prepara la edición de forma automática.",
         "A thought to camera, a demo or something happening at your business. Upload your footage in the app and describe what you want to say. Hooksage prepares the edit automatically.",
       ),
       caption: text(
@@ -90,31 +90,31 @@ export function productFor(language: Language) {
       steps: [
         {
           title: text(
-            "Subí la grabación que ya tenés.",
+            "Sube la grabación que ya tienes.",
             "Upload the recording you already have.",
           ),
           text: text(
-            "Conservá tu voz original o partí de una idea con voz en off. Este segundo camino admite un video principal y hasta dos clips o imágenes de apoyo.",
+            "Conserva tu voz original o parte de una idea con voz en off. Este segundo camino admite un video principal y hasta dos clips o imágenes de apoyo.",
             "Keep your original voice or start with an idea and voiceover. The second route supports one main video and up to two supporting clips or images.",
           ),
         },
         {
           title: text(
-            "Elegí cómo querés contarlo.",
+            "Elige cómo quieres contarlo.",
             "Choose how you want to tell it.",
           ),
           text: text(
-            "Natural, Dinámico o Impacto. Podés sumar un video de referencia para orientar el ritmo, los textos y el sonido.",
+            "Natural, Dinámico o Impacto. Puedes sumar un video de referencia para orientar el ritmo, los textos y el sonido.",
             "Choose Natural, Dynamic or Impact. Add a reference video to show the pacing, text and sound you have in mind.",
           ),
         },
         {
           title: text(
-            "Revisá el corte. Ajustá y exportá.",
+            "Revisa el corte. Ajusta y exporta.",
             "Review the edit. Refine and export.",
           ),
           text: text(
-            "Revisá los subtítulos, los cortes y el encuadre, y solicitá ajustes desde la aplicación. Descargá el MP4 vertical cuando esté listo; su duración depende del material y la voz. La biblioteca conserva las versiones.",
+            "Revisa los subtítulos, los cortes y el encuadre, y solicita ajustes desde la aplicación. Descarga el MP4 vertical cuando esté listo; su duración depende del material y la voz. La biblioteca conserva las versiones.",
             "Check captions, cuts and framing, and request adjustments in the app. Download the vertical MP4 when it is ready; its length depends on the footage and voice. The library keeps your versions.",
           ),
         },
@@ -127,7 +127,7 @@ export function productFor(language: Language) {
         "Pacing is a choice, too.",
       ),
       intro: text(
-        "Elegí una dirección para la edición y ajustá sus controles. El acabado orienta el ritmo, el texto, los gráficos y el sonido.",
+        "Elige una dirección para la edición y ajusta sus controles. El acabado orienta el ritmo, el texto, los gráficos y el sonido.",
         "Choose a direction for the edit and adjust the controls. The finish guides pacing, text, graphics and sound.",
       ),
       items: [
@@ -153,7 +153,7 @@ export function productFor(language: Language) {
             "Keep the video moving.",
           ),
           description: text(
-            "Una dirección con más movimiento y énfasis para acompañar lo que decís y sostener la atención.",
+            "Una dirección con más movimiento y énfasis para acompañar lo que dices y sostener la atención.",
             "More movement and emphasis to support what you're saying and hold attention.",
           ),
           detail: text(
@@ -195,7 +195,7 @@ export function productFor(language: Language) {
             "A voice you can hear clearly.",
           ),
           description: text(
-            "Limpieza y nivelado de voz, sonidos guardados que podés reutilizar y generación opcional de voces y efectos de sonido.",
+            "Limpieza y nivelado de voz, sonidos guardados que puedes reutilizar y generación opcional de voces y efectos de sonido.",
             "Voice cleanup and levelling, saved sounds you can reuse, and optional voice and sound-effect generation.",
           ),
         },
@@ -212,7 +212,7 @@ export function productFor(language: Language) {
             "A reference for the direction.",
           ),
           description: text(
-            "Subí un video de referencia para orientar el ritmo y el lenguaje visual. Se analiza por separado de tu propio metraje.",
+            "Sube un video de referencia para orientar el ritmo y el lenguaje visual. Se analiza por separado de tu propio metraje.",
             "Upload a reference video to guide pacing and visual style. It's analysed separately from your own footage.",
           ),
         },
@@ -232,7 +232,7 @@ export function productFor(language: Language) {
         "Vertical MP4 · 720 × 1280 · 30 fps",
       ),
       note: text(
-        "La duración depende del montaje y la voz. Revisá cada exportación antes de publicarla.",
+        "La duración depende del montaje y la voz. Revisa cada exportación antes de publicarla.",
         "Length depends on the edit and the voice. Review each export before posting.",
       ),
     },

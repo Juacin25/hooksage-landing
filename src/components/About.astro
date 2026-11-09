@@ -1,0 +1,54 @@
+---
+import { localeFromPath } from "../lib/i18n";
+import { business } from "../data/business";
+import { contactEmail, contactUrl } from "../lib/config";
+const en = localeFromPath(Astro.url.pathname) === "en";
+---
+
+<section class="section about" id="quienes-somos" aria-labelledby="about-title">
+  <div class="container about-grid">
+    <div>
+      <p class="overline eyebrow">{en ? "Who we are" : "Quiénes somos"}</p>
+      <h2 class="heading-1" id="about-title">
+        {en
+          ? "Built in Montevideo, for small teams."
+          : "Hecho en Montevideo, para equipos chicos."}
+      </h2>
+    </div>
+    <div class="about-copy">
+      <p class="body-l muted">
+        {en
+          ? "Hooksage started at the Build 101 hackathon, from a simple problem: small teams record plenty of video but rarely have time to edit it. Today it is a product of " +
+            business.legalName +
+            ", a company registered in Montevideo, Uruguay, building AI video editing for startups, small businesses and creators across Latin America and beyond."
+          : "Hooksage nació en la hackatón Build 101, a partir de un problema simple: los equipos chicos graban mucho video, pero casi nunca tienen tiempo para editarlo. Hoy es un producto de " +
+            business.legalName +
+            ", empresa registrada en Montevideo, Uruguay, que desarrolla edición de video con IA para startups, pymes y creadores de toda Hispanoamérica."}
+      </p>
+      <p class="body muted">
+        {en ? "Write to us at " : "Escríbenos a "}
+        <a class="text-link" href={contactUrl}>
+          {contactEmail}
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+  .about-copy .body {
+    margin-top: var(--space-4);
+  }
+  @media (max-width: 860px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+</style>

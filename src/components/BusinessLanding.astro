@@ -10,55 +10,93 @@ import VideoCard from "./VideoCard.astro";
 import Icon from "./Icon.astro";
 import FinalCTA from "./FinalCTA.astro";
 import { businesses } from "../data/content";
+import { audiences } from "../data/audiences";
+import { plans, plansFor } from "../data/plan";
+import VideoSamples from "./VideoSamples.astro";
 const lang = localeFromPath(Astro.url.pathname);
 const t = translator(lang);
 interface Props {
   business: (typeof businesses)[number];
 }
 const { business }: Props = Astro.props;
-const faqItems =
-  lang === "en"
-    ? [
-        {
-          question:
-            "What footage can I use for " + business.name.toLowerCase() + "?",
-          answer:
-            "You could film: " +
-            business.ideas.map((idea) => idea.toLowerCase()).join(", ") +
-            ". Use the equipment you have and make sure voices can be heard clearly.",
-        },
-        {
-          question: "Do I need editing experience?",
-          answer:
-            "No. Hooksage automates the edit from your footage or voiceover. In the app, choose a message and finish, then review the result before exporting.",
-        },
-        {
-          question: "Can I try it for free?",
-          answer:
-            "Request your first free edit using the form on this website. We arrange the trial by email, with no card or purchase required. You can also create a free account in the app. See the pricing section for plan conditions and payment availability.",
-        },
-      ]
-    : [
-        {
-          question: `¿Qué material puedo usar para ${business.name.toLowerCase()}?`,
-          answer: `Podés grabar: ${business.ideas.map((idea) => idea.toLowerCase()).join(", ")}. Grabá con el equipo que tengas y priorizá que la voz se escuche bien.`,
-        },
-        {
-          question: "¿Necesito saber editar?",
-          answer:
-            "No necesitás saber editar. Hooksage automatiza la edición a partir de tus grabaciones o una voz en off. En la aplicación indicás el mensaje, elegís el acabado y revisás el resultado antes de exportar.",
-        },
-        {
-          question: "¿Puedo probar gratis?",
-          answer:
-            "Solicitá tu primera edición gratis en el formulario de este sitio. Coordinamos la prueba por email, sin tarjeta ni compra. También podés crear una cuenta gratis en la app. Consultá en precios las condiciones de los planes y la disponibilidad de pagos.",
-        },
-      ];
+const copy = audiences[business.slug][lang];
+const en = lang === "en";
+const plan = plansFor(lang)[plans.findIndex((item) => item.name === copy.plan)];
+const faqItems = [
+  ...copy.faqs,
+  {
+    question: en ? "Can I try it for free?" : "¿Puedo probar gratis?",
+    answer: en
+      ? "Request your first free edit using the form on this website. We arrange the trial by email, with no card or purchase required."
+      : "Solicita tu primera edición gratis en el formulario de este sitio. Coordinamos la prueba por email, sin tarjeta ni compra.",
+  },
+];
+const comparison = en
+  ? {
+      title: "Hooksage, a freelancer or doing it yourself.",
+      columns: ["", "Hooksage", "Freelance editor", "Editing it yourself"],
+      rows: [
+        [
+          "Who edits",
+          "AI makes the first cut; you review",
+          "A person, per piece",
+          "You, by hand",
+        ],
+        [
+          "Turnaround",
+          "Minutes in the app",
+          "Depends on the editor's queue",
+          "Depends on your time",
+        ],
+        [
+          "Changes",
+          "New version, previous one kept",
+          "Back-and-forth by message",
+          "You redo it",
+        ],
+        [
+          "Cost",
+          "Weekly allowance or one-off packs",
+          "Per piece or per hour",
+          "Your time",
+        ],
+      ],
+    }
+  : {
+      title: "Hooksage, un editor freelance o hacerlo tú.",
+      columns: ["", "Hooksage", "Editor freelance", "Editarlo tú"],
+      rows: [
+        [
+          "Quién edita",
+          "La IA hace el primer corte; tú revisas",
+          "Una persona, por pieza",
+          "Tú, a mano",
+        ],
+        [
+          "Tiempo",
+          "Minutos en la aplicación",
+          "Depende de la agenda del editor",
+          "Depende de tu tiempo",
+        ],
+        [
+          "Cambios",
+          "Nueva versión, se conserva la anterior",
+          "Idas y vueltas por mensaje",
+          "Lo rehaces tú",
+        ],
+        [
+          "Costo",
+          "Cupo semanal o packs de pago único",
+          "Por pieza o por hora",
+          "Tu tiempo",
+        ],
+      ],
+    };
 ---
 
 <Layout
-  title={business.metaTitle}
-  description={business.metaDescription}
+  title={copy.metaTitle}
+  description={copy.metaDescription}
   faqItems={faqItems}
 >
   <section class="section business-hero">
@@ -68,7 +106,7 @@ const faqItems =
           {t("Todos los equipos")}
           <Icon name="arrow" size={18} />
         </a>
-        <p class="overline eyebrow">{t("Uruguay y Argentina")}</p>
+        <p class="overline eyebrow">{t("Hispanoamérica")}</p>
         <h1 class="display-l">{business.seo}</h1>
         <p class="heading-2 business-tagline">{business.headline}</p>
         <p class="body-l muted">{business.description}</p>
@@ -95,33 +133,76 @@ const faqItems =
       />
     </div>
   </section>
+  <section class="section business-problem">
+    <div class="container">
+      <h2 class="heading-1">{copy.problemTitle}</h2>
+      <p class="body-l muted">{copy.problem}</p>
+    </div>
+  </section>
   <section class="section business-ideas">
     <div class="container">
-      <p class="overline eyebrow">{t("Empezá con lo que ya tenés")}</p>
+      <p class="overline eyebrow">{t("Empieza con lo que ya tienes")}</p>
       <h2 class="heading-1">{t("Tres ideas de qué grabar.")}</h2>
       <div class="steps-grid">
         {business.ideas.map((idea, i) => (
           <article class="hs-card hs-feature">
             <span class="hs-feature__step">Idea 0{i + 1}</span>
             <h3 class="heading-3">{idea}</h3>
-            <p class="body muted">
-              {t(
-                "Partí de material real. Elegí una idea por pieza y dejá que la edición acompañe lo que querés comunicar.",
-              )}
-            </p>
+            <p class="body muted">{copy.ideaDetails[i]}</p>
           </article>
         ))}
       </div>
-      <p class="body muted business-seo">
-        {t(
-          "Tu perfil de marca ayuda a preparar propuestas con hook, guion y tomas. Estas ideas son puntos de partida.",
-        )}
+    </div>
+  </section>
+  <section class="section business-samples">
+    <div class="container">
+      <VideoSamples ctaHref={waitlistHref(Astro.url.pathname)} />
+    </div>
+  </section>
+  <section class="section business-compare">
+    <div class="container">
+      <h2 class="heading-1">{comparison.title}</h2>
+      <div class="business-table-scroll">
+        <table class="business-table">
+          <thead>
+            <tr>
+              {comparison.columns.map((column) => (
+                <th scope="col">{column}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.rows.map(([label, ...cells]) => (
+              <tr>
+                <th scope="row">{label}</th>
+                {cells.map((cell) => (
+                  <td>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="section business-plan">
+    <div class="container">
+      <p class="overline eyebrow">
+        {en ? "Recommended plan" : "Plan recomendado"}
       </p>
-      <p class="body muted business-seo">
-        {t(
-          "Hooksage convierte tus grabaciones en videos para TikTok, Instagram Reels y Shorts. Podés solicitar la prueba sin enviar material todavía.",
-        )}
+      <h2 class="heading-1">
+        {plan.name}: US${plan.monthlyPriceUSD}
+        {en ? " a month" : " al mes"}
+      </h2>
+      <p class="body-l muted">
+        {plan.weeklyExports}
+        {en ? " videos a week. " : " videos por semana. "}
+        {copy.planReason}
       </p>
+      <a class="text-link" href={homePath(lang) + "#precio"}>
+        {en ? "See all plans and packs" : "Ver todos los planes y packs"}
+        <Icon name="arrow" size={18} />
+      </a>
     </div>
   </section>
   <section class="section">

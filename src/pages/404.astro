@@ -1,0 +1,37 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Layout
+  title="Página no encontrada | Hooksage"
+  description="La página que buscas no existe o cambió de dirección."
+  faqItems={[]}
+  noindex
+>
+  <section class="section">
+    <div class="container">
+      <p class="overline eyebrow">Error 404</p>
+      <h1 class="display-l">Esta página no existe.</h1>
+      <p class="body-l muted">
+        Puede que el enlace esté roto o que la página haya cambiado de
+        dirección.
+      </p>
+      <p>
+        <a class="hs-btn hs-btn--primary" href="/">
+          Ir al inicio
+          <Icon name="arrow" />
+        </a>
+      </p>
+      <p class="small muted">
+        <a class="text-link" href="/#precio">
+          Ver precios
+        </a>{" "}
+        ·
+        <a class="text-link" href="/en/" hreflang="en">
+          English version
+        </a>
+      </p>
+    </div>
+  </section>
+</Layout>

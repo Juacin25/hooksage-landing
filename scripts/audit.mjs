@@ -38,10 +38,7 @@ const server = http.createServer(async (req, res) => {
       body = Buffer.from(
         body
           .toString()
-          .replace(
-            '<html lang="es-UY">',
-            '<html lang="es-UY" data-theme="light">',
-          ),
+          .replace('<html lang="es">', '<html lang="es" data-theme="light">'),
       );
     res.writeHead(200, {
       "Content-Type": types[path.extname(target)] || "application/octet-stream",

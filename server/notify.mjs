@@ -1,3 +1,4 @@
+import { countryName } from "./countries.mjs";
 // Emails each new waitlist entry through Resend's HTTPS API (no SMTP, no dependencies).
 export function createNotifier({
   apiKey,
@@ -34,7 +35,7 @@ export function createNotifier({
           `Contacto: ${entry.contactName}`,
           `Email: ${entry.email}`,
           `WhatsApp: ${entry.whatsapp || "No indicado"}`,
-          `País: ${{ UY: "Uruguay", AR: "Argentina", MX: "México", US: "Estados Unidos", GB: "Reino Unido" }[entry.country || "MX"]}`,
+          `País: ${countryName(entry.country || "MX")}`,
           `Ciudad: ${entry.city}`,
           `Barrio: ${entry.neighborhood || "-"}`,
           `Video para la prueba: ${entry.footageUrl || "Todavía no compartido"}`,

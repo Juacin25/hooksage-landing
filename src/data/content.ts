@@ -18,17 +18,17 @@ export const faqs = [
   {
     question: "¿Para quién está pensado Hooksage?",
     answer:
-      "Para startups, negocios chicos, creadores y equipos de marketing sin editor dedicado. Podés partir de grabaciones propias o de una idea para comunicar tu producto, servicio o marca personal.",
+      "Para startups, negocios chicos, creadores y equipos de marketing sin editor dedicado. Puedes partir de grabaciones propias o de una idea para comunicar tu producto, servicio o marca personal.",
   },
   {
     question: "¿Cómo usa mi marca para sugerir contenido?",
     answer:
-      "En la aplicación creás un perfil editable o importás información desde un texto o PDF. Con ese contexto, Hooksage propone hooks, guiones y listas de tomas. También podés explorar referencias de Shorts por categoría y afinidad aproximada con tu marca. Las sugerencias no garantizan ventas ni viralidad.",
+      "En la aplicación creas un perfil editable o importas información desde un texto o PDF. Con ese contexto, Hooksage propone hooks, guiones y listas de tomas. También puedes explorar referencias de Shorts por categoría y afinidad aproximada con tu marca. Las sugerencias no garantizan ventas ni viralidad.",
   },
   {
     question: "¿Tengo que llegar con un video grabado?",
     answer:
-      "Podés editar una grabación y conservar tu voz original, o partir de un guion y una voz en off. Ese segundo camino admite un video principal y hasta dos clips o imágenes de apoyo. La generación de voz y sonidos es opcional; revisá su disponibilidad y las condiciones de tu compra en la aplicación.",
+      "Puedes editar una grabación y conservar tu voz original, o partir de un guion y una voz en off. Ese segundo camino admite un video principal y hasta dos clips o imágenes de apoyo. La generación de voz y sonidos es opcional; revisa su disponibilidad y las condiciones de tu compra en la aplicación.",
   },
   {
     question: "¿Qué cambia entre Natural, Dinámico e Impacto?",
@@ -38,7 +38,7 @@ export const faqs = [
   {
     question: "¿Puedo subir un video de referencia?",
     answer:
-      "Sí. Una referencia puede orientar el ritmo y la dirección visual. Se analiza por separado del metraje que querés editar. Es un recurso distinto de las referencias de Shorts que podés explorar por categoría.",
+      "Sí. Una referencia puede orientar el ritmo y la dirección visual. Se analiza por separado del metraje que quieres editar. Es un recurso distinto de las referencias de Shorts que puedes explorar por categoría.",
   },
   {
     question: "¿Qué formato y duración tienen las exportaciones?",
@@ -48,14 +48,14 @@ export const faqs = [
   {
     question: "¿Puedo pedir cambios sin perder la edición anterior?",
     answer:
-      "Sí. La biblioteca guarda originales y versiones automáticamente. Cada revisión crea un trabajo nuevo y conserva el resultado anterior, para poder retomarlo y compararlo. Revisá cada exportación antes de publicarla.",
+      "Sí. La biblioteca guarda originales y versiones automáticamente. Cada revisión crea un trabajo nuevo y conserva el resultado anterior, para poder retomarlo y compararlo. Revisa cada exportación antes de publicarla.",
   },
   {
     question: "¿Cómo contrato Hooksage y cuánto cuesta?",
     answer:
       (paidPlansAvailable
         ? "El registro y la contratación se realizan en la aplicación de Hooksage. Antes de confirmar un pago se informa el importe total y sus condiciones. Estos son los planes: "
-        : "Podés crear una cuenta gratis en la aplicación de Hooksage. Los pagos de planes y packs todavía no están habilitados; el registro no activa cobros ni suscripciones. La oferta comercial publicada es la siguiente: ") +
+        : "Puedes crear una cuenta gratis en la aplicación de Hooksage. Los pagos de planes y packs todavía no están habilitados; el registro no activa cobros ni suscripciones. La oferta comercial publicada es la siguiente: ") +
       planSummary +
       ". Los precios están en dólares. El anual se paga por adelantado en un solo cargo por doce meses; ambas modalidades renuevan el cupo cada siete días, sin acumulación. También hay packs de pago único: " +
       packs
@@ -66,12 +66,12 @@ export const faqs = [
   {
     question: "¿Qué pasa cuando completo el formulario?",
     answer:
-      "Recibimos tu solicitud y una persona del equipo te escribe por email para coordinar una primera edición gratis. Podés compartir un enlace al clip y contarnos qué tuviste que rehacer en tu última edición; ambos son opcionales, al igual que WhatsApp. Completar este formulario no crea una cuenta en la aplicación, no realiza una compra ni activa una suscripción.",
+      "Recibimos tu solicitud y una persona del equipo te escribe por email para coordinar una primera edición gratis. Puedes compartir un enlace al clip y contarnos qué tuviste que rehacer en tu última edición; ambos son opcionales, al igual que WhatsApp. Completar este formulario no crea una cuenta en la aplicación, no realiza una compra ni activa una suscripción.",
   },
   {
     question: "¿Cómo funciona la edición y la entrega?",
     answer:
-      "Hooksage es una plataforma de edición automática con inteligencia artificial. En la aplicación cargás tu material, indicás el mensaje y el acabado, revisás el resultado y descargás el MP4. El servicio y la entrega son digitales; los planes y packs corresponden al uso de la plataforma. La primera prueba gratuita de este sitio se coordina por email.",
+      "Hooksage es una plataforma de edición automática con inteligencia artificial. En la aplicación cargas tu material, indicas el mensaje y el acabado, revisas el resultado y descargas el MP4. El servicio y la entrega son digitales; los planes y packs corresponden al uso de la plataforma. La primera prueba gratuita de este sitio se coordina por email.",
   },
 ];
 export const businesses = [
@@ -81,9 +81,9 @@ export const businesses = [
     singular: "Startup",
     icon: "bulb",
     tone: "A cámara",
-    headline: "Explicá lo que estás construyendo.",
+    headline: "Explica lo que estás construyendo.",
     description:
-      "Una demo, una novedad o la historia detrás del producto. Transformá el material de tu equipo en videos cortos sin sumar un editor full time.",
+      "Una demo, una novedad o la historia detrás del producto. Transforma el material de tu equipo en videos cortos sin sumar un editor full time.",
     ideas: [
       "El problema que resuelve tu producto",
       "Una función nueva, mostrada en pantalla",
@@ -94,7 +94,7 @@ export const businesses = [
     sample: "Tu producto, bien explicado.",
     metaTitle: "Videos para startups | Hooksage",
     metaDescription:
-      "Edición automática de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis, coordinada por email.",
+      "Edición automática de videos cortos para startups. Cortes, zooms y subtítulos con tu material. Solicita una primera edición gratis, coordinada por email.",
   },
   {
     slug: "pymes",
@@ -102,7 +102,7 @@ export const businesses = [
     singular: "Pyme",
     icon: "users",
     tone: "Producto",
-    headline: "Mostrá lo que hacés, sin pasar horas editando.",
+    headline: "Muestra lo que haces, sin pasar horas editando.",
     description:
       "Para empresas chicas que ya graban su trabajo y necesitan publicar con más constancia. Tu producto, tu servicio y tu equipo tienen algo para contar.",
     ideas: [
@@ -112,10 +112,10 @@ export const businesses = [
     ],
     poster: "drivo-product",
     seo: "Videos para pymes",
-    sample: "Lo que hacés, bien contado.",
+    sample: "Lo que haces, bien contado.",
     metaTitle: "Videos para pymes | Hooksage",
     metaDescription:
-      "Edición automática de videos cortos para pymes. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis, coordinada por email.",
+      "Edición automática de videos cortos para pymes. Cortes, zooms y subtítulos con tu material. Solicita una primera edición gratis, coordinada por email.",
   },
   {
     slug: "marca-personal",
@@ -125,7 +125,7 @@ export const businesses = [
     tone: "Educativo",
     headline: "Tu experiencia merece salir del borrador.",
     description:
-      "Si vendés cursos, servicios o infoproductos, la edición no debería frenar tus ideas. Convertí explicaciones y contenido educativo en piezas cortas para tus redes.",
+      "Si vendes cursos, servicios o infoproductos, la edición no debería frenar tus ideas. Convierte explicaciones y contenido educativo en piezas cortas para tus redes.",
     ideas: [
       "Un consejo concreto de tu especialidad",
       "Una pregunta que te hacen tus clientes",
@@ -136,7 +136,7 @@ export const businesses = [
     sample: "Una idea clara. Tu forma de contarla.",
     metaTitle: "Videos para marca personal | Hooksage",
     metaDescription:
-      "Edición automática de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis por email.",
+      "Edición automática de videos cortos para marca personal. Cortes, zooms y subtítulos con tu material. Solicita una primera edición gratis por email.",
   },
   {
     slug: "equipos-de-marketing",
@@ -154,10 +154,10 @@ export const businesses = [
     ],
     poster: "team-collaboration",
     seo: "Videos para equipos de marketing",
-    sample: "Seguí el ritmo de tu equipo.",
+    sample: "Sigue el ritmo de tu equipo.",
     metaTitle: "Videos para equipos de marketing | Hooksage",
     metaDescription:
-      "Edición automática de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Solicitá una primera edición gratis por email.",
+      "Edición automática de videos cortos para equipos de marketing. Cortes, zooms y subtítulos con tu material. Solicita una primera edición gratis por email.",
   },
 ];
 export function contentFor(language: "es" | "en") {

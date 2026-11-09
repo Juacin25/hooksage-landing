@@ -584,7 +584,7 @@ test("Native forms preserve validation, origin checks, limits and honest failure
       body: encode({}),
     });
     assert.equal(response.status, 429);
-    assert.match(await response.text(), /Esperá unos minutos/);
+    assert.match(await response.text(), /Espera unos minutos/);
     assert.ok(response.headers.get("retry-after"));
   } finally {
     await limited.close();
@@ -633,7 +633,7 @@ test("Schema v1 migrates losslessly with a private snapshot and supports both co
     const original = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 5);
     const migrated = db.prepare("SELECT * FROM waitlist_entries").get();
     const { country, language, footage_url, editing_feedback, ...preserved } =
       migrated;
@@ -858,7 +858,7 @@ test("Schema v2 migration preserves every existing field and country, adds Spani
     const original = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 5);
     const { language, footage_url, editing_feedback, ...preserved } = db
       .prepare("SELECT * FROM waitlist_entries")
       .get();
@@ -1022,7 +1022,7 @@ test("US and UK submissions retain English contact preference, normalize phones 
     assert.equal(invalid.status, 400);
     const html = await invalid.text();
     assert.match(html, /Check the form fields/);
-    assert.doesNotMatch(html, /Revisá|Ya estás/);
+    assert.doesNotMatch(html, /Revisa|Ya estás/);
   } finally {
     await f.close();
   }
@@ -1170,7 +1170,7 @@ test("Schema v3 upgrades to v4 with a private snapshot, preserving every existin
     const before = db.prepare("SELECT * FROM waitlist_entries").get();
     db.close();
     db = openDatabase(filename);
-    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 4);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 5);
     const { footage_url, editing_feedback, ...preserved } = db
       .prepare("SELECT * FROM waitlist_entries")
       .get();
@@ -1198,6 +1198,63 @@ test("Schema v3 upgrades to v4 with a private snapshot, preserving every existin
     copy.close();
   } finally {
     db?.close();
+    await fs.rm(folder, { recursive: true, force: true });
+  }
+});
+
+test("A v4 database migrates to v5 without losing rows and accepts Spanish-speaking countries", async () => {
+  const folder = await fs.mkdtemp(path.join(os.tmpdir(), "hooksage-v5-"));
+  const filename = path.join(folder, "waitlist.sqlite");
+  try {
+    const legacy = new DatabaseSync(filename);
+    legacy.exec(`CREATE TABLE waitlist_entries (
+      id INTEGER PRIMARY KEY, fingerprint TEXT NOT NULL UNIQUE, business_name TEXT NOT NULL,
+      business_type TEXT NOT NULL, contact_name TEXT NOT NULL, email TEXT NOT NULL,
+      whatsapp TEXT NOT NULL DEFAULT '', city TEXT NOT NULL, neighborhood TEXT NOT NULL DEFAULT '',
+      landing_path TEXT NOT NULL, utm_source TEXT, utm_medium TEXT, utm_campaign TEXT,
+      utm_content TEXT, utm_term TEXT, consent_version TEXT NOT NULL DEFAULT 'waitlist-v2',
+      created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+      country TEXT NOT NULL DEFAULT 'MX' CHECK(country IN ('UY','AR','MX','US','GB')),
+      language TEXT NOT NULL DEFAULT 'es', footage_url TEXT NOT NULL DEFAULT '',
+      editing_feedback TEXT NOT NULL DEFAULT '');
+      INSERT INTO waitlist_entries (fingerprint, business_name, business_type, contact_name, email, city, landing_path, country)
+      VALUES ('legacy', 'Legacy UY', 'Startup', 'Ana', 'ana@example.test', 'Montevideo', '/', 'UY');
+      PRAGMA user_version = 4;`);
+    legacy.close();
+    const db = openDatabase(filename);
+    assert.equal(db.prepare("PRAGMA user_version").get().user_version, 5);
+    assert.equal(
+      db
+        .prepare(
+          "SELECT business_name FROM waitlist_entries WHERE fingerprint = 'legacy'",
+        )
+        .get().business_name,
+      "Legacy UY",
+    );
+    const colombia = validateEntry({
+      ...entry,
+      businessType: "Pyme",
+      country: "CO",
+      city: "Bogotá",
+      whatsapp: "+57 300 123 4567",
+    });
+    assert.equal(colombia.whatsapp, "+573001234567");
+    assert.equal(saveEntry(db, colombia).created, true);
+    assert.equal(
+      validateEntry({ ...entry, businessType: "Pyme", country: "ES" }),
+      null,
+    );
+    assert.equal(
+      validateEntry({
+        ...entry,
+        businessType: "Pyme",
+        country: "PE",
+        whatsapp: "",
+      }).whatsapp,
+      "",
+    );
+    db.close();
+  } finally {
     await fs.rm(folder, { recursive: true, force: true });
   }
 });

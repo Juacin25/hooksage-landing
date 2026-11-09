@@ -1,4 +1,5 @@
 import { normalizePhone } from "./phone.mjs";
+import { countryCodes } from "./countries.mjs";
 import {
   normalizeFootageUrl,
   normalizeEditingFeedback,
@@ -42,7 +43,7 @@ export function validateEntry(input) {
     return null;
   if (input.website !== undefined && input.website !== "") return null;
   const country = input.country === undefined ? "MX" : input.country;
-  if (!["UY", "AR", "MX", "US", "GB"].includes(country)) return null;
+  if (!countryCodes.includes(country)) return null;
   const language = input.language === undefined ? "es" : input.language;
   if (!["es", "en"].includes(language)) return null;
   const noticeVersion =

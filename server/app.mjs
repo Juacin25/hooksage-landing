@@ -1,5 +1,5 @@
 import http from "node:http";
-import { createReadStream, statSync, realpathSync } from "node:fs";
+import { createReadStream, statSync, realpathSync, existsSync } from "node:fs";
 import path from "node:path";
 import { isIP } from "node:net";
 import { validateEntry } from "./validation.mjs";
@@ -98,6 +98,11 @@ export function createApp({
   const server = http.createServer(async (request, response) => {
     response.setHeader("X-Content-Type-Options", "nosniff");
     response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    response.setHeader("X-Frame-Options", "DENY");
+    response.setHeader(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), payment=()",
+    );
     let pathname;
     try {
       pathname = decodeURIComponent(
@@ -208,7 +213,21 @@ export function createApp({
     if (!["GET", "HEAD"].includes(request.method))
       return json(response, 405, { ok: false });
     if (pathname.split("/").some((segment) => segment.startsWith(".")))
-      return json(response, 404, { ok: false });
+      return notFound(response, request.method);
+    // One URL per page: /en and /privacidad redirect to their canonical trailing-slash form.
+    if (!pathname.endsWith("/") && !path.extname(pathname)) {
+      const directory = path.resolve(root, `.${pathname}`);
+      if (
+        directory.startsWith(root + path.sep) &&
+        existsSync(path.join(directory, "index.html"))
+      ) {
+        response.writeHead(301, {
+          Location:
+            pathname + "/" + new URL(request.url, "http://localhost").search,
+        });
+        return response.end();
+      }
+    }
     try {
       let filename = path.resolve(root, `.${pathname}`);
       if (!filename.startsWith(root + path.sep) && filename !== root)
@@ -224,8 +243,9 @@ export function createApp({
       const headers = {
         "Content-Type": type,
         "Content-Length": size,
+        // Browsers revalidate HTML; Cloudflare may keep it 10 minutes at the edge.
         "Cache-Control": type.startsWith("text/html")
-          ? "no-cache"
+          ? "public, max-age=0, s-maxage=600, stale-while-revalidate=86400"
           : "public, max-age=3600",
       };
       let status = 200;
@@ -274,9 +294,19 @@ export function createApp({
       stream.on("error", () => response.destroy());
       stream.pipe(response);
     } catch {
-      json(response, 404, { ok: false });
+      notFound(response, request.method);
     }
   });
+  function notFound(response, method) {
+    const page = path.join(root, "404.html");
+    if (!existsSync(page)) return json(response, 404, { ok: false });
+    response.writeHead(404, {
+      "Content-Type": MIME[".html"],
+      "Cache-Control": "no-cache",
+    });
+    if (method === "HEAD") return response.end();
+    createReadStream(page).pipe(response);
+  }
   server.requestTimeout = 15000;
   server.headersTimeout = 10000;
   return server;

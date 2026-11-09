@@ -5,4 +5,9 @@ export const business = {
   taxId: "219631960019",
   country: "Uruguay",
   legalAddress: "Brandzen 1956, apartamento 501, Montevideo, Uruguay",
+  streetAddress: "Brandzen 1956, apartamento 501",
+  city: "Montevideo",
+  countryCode: "UY",
+  // Public profiles (LinkedIn, Instagram, YouTube...). Each URL becomes schema.org sameAs.
+  sameAs: [] as string[],
 } as const;

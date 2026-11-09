@@ -17,7 +17,7 @@ const schema = `CREATE TABLE waitlist_entries (
   utm_source TEXT, utm_medium TEXT, utm_campaign TEXT, utm_content TEXT, utm_term TEXT,
   consent_version TEXT NOT NULL DEFAULT 'waitlist-v2',
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-  country TEXT NOT NULL DEFAULT 'MX' CHECK(country IN ('UY','AR','MX','US','GB')),
+  country TEXT NOT NULL DEFAULT 'MX' CHECK(length(country) = 2 AND country = upper(country)),
   language TEXT NOT NULL DEFAULT 'es' CHECK(language IN ('es','en')),
   footage_url TEXT NOT NULL DEFAULT '' CHECK(length(footage_url) <= 2048),
   editing_feedback TEXT NOT NULL DEFAULT '' CHECK(length(editing_feedback) <= 1000)
@@ -32,7 +32,7 @@ export function openDatabase(filename) {
       "PRAGMA journal_mode = WAL; PRAGMA synchronous = FULL; PRAGMA busy_timeout = 5000;",
     );
     const version = db.prepare("PRAGMA user_version").get().user_version;
-    if (version > 4) throw new Error("Unsupported database schema version");
+    if (version > 5) throw new Error("Unsupported database schema version");
     const exists = db
       .prepare(
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name='waitlist_entries'",
@@ -100,8 +100,33 @@ export function openDatabase(filename) {
       }
     } else if (!exists) {
       db.exec(
-        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 4; COMMIT;`,
+        `BEGIN IMMEDIATE; ${schema}; CREATE INDEX waitlist_created_at ON waitlist_entries(created_at); PRAGMA user_version = 5; COMMIT;`,
       );
+    }
+    // v5: the allowed country list lives in server/countries.mjs, not in a CHECK.
+    if (db.prepare("PRAGMA user_version").get().user_version === 4) {
+      const columns = db
+        .prepare("PRAGMA table_info(waitlist_entries)")
+        .all()
+        .map((column) => column.name)
+        .join(",");
+      const snapshot = `${filename}.before-v5-${Date.now()}.sqlite`;
+      db.exec(`VACUUM INTO '${snapshot.replaceAll("'", "''")}'`);
+      chmodSync(snapshot, 0o600);
+      db.exec("BEGIN IMMEDIATE");
+      try {
+        db.exec(
+          "ALTER TABLE waitlist_entries RENAME TO waitlist_entries_legacy",
+        );
+        db.exec(schema);
+        db.exec(`INSERT INTO waitlist_entries (${columns}) SELECT ${columns} FROM waitlist_entries_legacy;
+          DROP TABLE waitlist_entries_legacy;
+          CREATE INDEX waitlist_created_at ON waitlist_entries(created_at);
+          PRAGMA user_version = 5; COMMIT;`);
+      } catch (error) {
+        db.exec("ROLLBACK");
+        throw error;
+      }
     }
     return db;
   } catch (error) {

@@ -67,16 +67,21 @@ async function fixture(fetcher, options = {}) {
 }
 const w = await fixture();
 const doc = w.document;
-assert.equal(doc.documentElement.lang, "es-UY");
+assert.equal(doc.documentElement.lang, "es");
 assert.equal(doc.querySelectorAll("h1").length, 1);
 assert.equal(doc.querySelectorAll(".story-hero h1").length, 1);
 assert.ok(doc.title.length <= 60);
-assert.match(doc.title, /Tu video, listo para tu próxima publicación/);
+assert.match(doc.title, /Editor de videos verticales con IA/);
 assert.equal(
   doc.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
   "De tu grabación a tu próxima publicación.",
 );
-assert.equal(schemaOffer(), undefined);
+// Prices are public; until payments open, offers are marked PreOrder.
+assert.equal(schemaOffer().length, 6);
+for (const offer of schemaOffer()) {
+  assert.equal(offer.priceCurrency, "USD");
+  assert.equal(offer.availability, "https://schema.org/PreOrder");
+}
 function schemaOffer() {
   return JSON.parse(
     doc.querySelector('script[type="application/ld+json"]').textContent,
@@ -176,7 +181,7 @@ const workflowText = doc.querySelector("#como-funciona").textContent;
 for (const pattern of [
   /aplicación/,
   /subtítulos/,
-  /pedí cambios/,
+  /pide cambios/,
   /MP4/,
   /Reels, TikTok o Shorts/,
 ])
@@ -1349,7 +1354,7 @@ assert.equal(
   en.querySelector("h1").textContent.trim().replace(/\s+/g, " "),
   "From your recording to your next post.",
 );
-assert.match(en.title, /Your video, ready for your next post/);
+assert.match(en.title, /AI short-form video editor/);
 assert.equal(
   en.querySelector(".story-hero-actions .text-link").getAttribute("href"),
   "#como-funciona",
@@ -1386,7 +1391,30 @@ assert.equal(
 );
 assert.deepEqual(
   [...en.querySelectorAll("#country option")].map((option) => option.value),
-  ["", "US", "GB", "UY", "AR"],
+  [
+    "",
+    "US",
+    "GB",
+    "AR",
+    "BO",
+    "CL",
+    "CO",
+    "CR",
+    "CU",
+    "DO",
+    "EC",
+    "SV",
+    "GT",
+    "HN",
+    "MX",
+    "NI",
+    "PA",
+    "PY",
+    "PE",
+    "PR",
+    "UY",
+    "VE",
+  ],
 );
 for (const [name, price, quota] of [
   ["Founder", "14.99", 10],
@@ -1511,8 +1539,8 @@ await englishWindow.happyDOM.close();
 await nativeEnglish.happyDOM.close();
 for (const item of [w, success, failed]) await item.happyDOM.close();
 for (const [route, language, alternate] of [
-  ["terminos", "es-UY", "/en/terms/"],
-  ["privacidad", "es-UY", "/en/privacy/"],
+  ["terminos", "es", "/en/terms/"],
+  ["privacidad", "es", "/en/privacy/"],
   ["en/terms", "en", "/terminos/"],
   ["en/privacy", "en", "/privacidad/"],
 ]) {
