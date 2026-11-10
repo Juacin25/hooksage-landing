@@ -3,10 +3,10 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 export type Post = CollectionEntry<"blog">;
 
-// Byline for every post. Replace with a real person (name + role) once founders are public.
+// Byline for every post; the owner chose a team byline. The page explains who writes and how.
 export const blogAuthor = {
   name: "Equipo de Hooksage",
-  url: "https://hooksage.com/#quienes-somos",
+  url: "https://hooksage.com/quienes-somos/",
 };
 
 export async function getPosts() {

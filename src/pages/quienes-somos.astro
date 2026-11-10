@@ -1,0 +1,214 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { business } from "../data/business";
+import { contactEmail, contactUrl } from "../lib/config";
+import { getPosts } from "../lib/blog";
+import "../styles/blog.css";
+
+const url = "https://hooksage.com/quienes-somos/";
+const postCount = (await getPosts()).length;
+const shortDescription =
+  "Hooksage es un editor de video con IA que convierte grabaciones en videos verticales para Reels, TikTok y Shorts, con cortes, encuadre y subtítulos.";
+---
+
+<Layout
+  title="Quiénes somos y cómo escribimos el blog | Hooksage"
+  description="Hooksage es un producto de CANARY CODE SAS, de Montevideo. Quiénes somos, qué hace el producto y cómo investigamos y corregimos lo que publicamos."
+  faqItems={[]}
+  alternates={false}
+  breadcrumbs={[{ name: "Quiénes somos", url }]}
+>
+  <article class="post">
+    <div class="container post-container">
+      <nav class="post-breadcrumb small" aria-label="Ruta">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span>Quiénes somos</span>
+      </nav>
+      <h1 class="display-l post-title">Quiénes somos y cómo escribimos</h1>
+      <div class="post-answer">
+        <p>
+          Hooksage es un producto de {business.legalName}, una empresa
+          registrada en {business.city}, {business.country}. Hacemos un editor
+          de video con IA para equipos chicos que graban mucho y editan poco, y
+          publicamos un blog sobre video corto para negocios de habla hispana.
+        </p>
+      </div>
+      <div class="prose">
+        <h2 id="de-donde-salimos">De dónde salimos</h2>
+        <p>
+          Hooksage empezó en la hackatón Build 101 con un problema concreto: un
+          equipo chico tiene el celular lleno de grabaciones del producto, del
+          local o del fundador explicando algo, y pocas llegan a publicarse
+          porque nadie tiene tiempo para editarlas.
+        </p>
+        <p>
+          Después de la hackatón seguimos con el proyecto desde Montevideo. El
+          producto está pensado para startups, pymes y profesionales
+          independientes de Hispanoamérica, y tiene una versión en inglés para
+          Estados Unidos y Reino Unido.
+        </p>
+
+        <h2 id="que-hace-hooksage">Qué hace Hooksage</h2>
+        <p>
+          Subes una grabación, o partes de un guion con voz en off, y recibes un
+          video vertical con cortes, encuadre y subtítulos. Indicas el mensaje y
+          el estilo, revisas el resultado y pides otra versión si hace falta.
+          También puedes cargar el perfil de tu marca para que la aplicación
+          proponga hooks, guiones y listas de tomas.
+        </p>
+        <p>Lo que conviene saber antes de probarlo:</p>
+        <ul>
+          <li>
+            Exporta MP4 de 720 × 1280 a 30 fps, una resolución menor que el 1080
+            × 1920 que recomiendan las plataformas.
+          </li>
+          <li>
+            Está pensado para videos a cámara, de producto y explicaciones. Si
+            buscas efectos, transiciones o animación, un editor manual sigue
+            siendo la mejor opción.
+          </li>
+          <li>La primera edición es gratis.</li>
+        </ul>
+        <p>
+          En <a href="/#ver-edicion">la portada</a> hay tres ejemplos con la grabación
+          original y el corte editado. Uno es el pitch de Drivo, una plataforma de
+          subastas de autos; los otros dos son anuncios nuestros.
+        </p>
+
+        <h2 id="como-escribimos-el-blog">Cómo escribimos el blog</h2>
+        <p>
+          El blog tiene {postCount} artículos sobre video corto: ideas por rubro,
+          guías de edición, precios de herramientas y medidas de cada plataforma.
+          Los firma el equipo de Hooksage. Estas son las reglas que seguimos:
+        </p>
+        <ul>
+          <li>
+            <strong>Cada dato lleva su fuente.</strong> Precios, fechas, medidas y
+            porcentajes están enlazados en el texto y listados al final de cada
+            artículo. Preferimos la página oficial de cada plataforma o
+            herramienta a un resumen de terceros.
+          </li>
+          <li>
+            <strong>Los precios llevan la fecha de consulta.</strong> Cambian
+            seguido y según el país, así que decimos cuándo y dónde los vimos.
+          </li>
+          <li>
+            <strong>Las estimaciones se marcan como tales.</strong> Cuando un número
+            sale de un cálculo nuestro, y no de una fuente, el artículo lo dice.
+          </li>
+          <li>
+            <strong>Declaramos nuestro interés.</strong> Cuando Hooksage aparece en
+            una comparativa, lo aclaramos al principio y contamos también sus límites.
+          </li>
+          <li>
+            <strong>No inventamos casos.</strong> No publicamos testimonios, clientes
+            ni resultados que no podamos mostrar. Los ejemplos de video son grabaciones
+            reales.
+          </li>
+          <li>
+            <strong>Usamos IA para investigar y redactar.</strong> Los borradores se
+            escriben con ayuda de herramientas de IA, y los datos se comprueban en su
+            fuente antes de publicar.
+          </li>
+        </ul>
+
+        <h2 id="correcciones">Correcciones</h2>
+        <p>
+          Si encuentras un dato desactualizado o un error, escríbenos a <a
+            href={contactUrl}>{contactEmail}</a
+          > con el enlace al artículo. Lo revisamos, lo corregimos y cambiamos la fecha
+          de actualización que aparece debajo del título.
+        </p>
+
+        <h2 id="para-medios">Si vas a escribir sobre Hooksage</h2>
+        <p>Puedes usar esta descripción tal cual:</p>
+        <blockquote>{shortDescription}</blockquote>
+        <p>
+          El logo está en <a href="/logos/hooksage-logo-512.png"
+            >hooksage-logo-512.png</a
+          > (PNG de 512 px). Para cualquier otra cosa, escríbenos.
+        </p>
+
+        <h2 id="datos-de-la-empresa">Datos de la empresa</h2>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">Marca</th>
+              <td>{business.brand}</td>
+            </tr>
+            <tr>
+              <th scope="row">Razón social</th>
+              <td>{business.legalName}</td>
+            </tr>
+            <tr>
+              <th scope="row">Ciudad</th>
+              <td>{business.city}, {business.country}</td>
+            </tr>
+            <tr>
+              <th scope="row">Contacto</th>
+              <td><a href={contactUrl}>{contactEmail}</a></td>
+            </tr>
+            <tr>
+              <th scope="row">Redes</th>
+              <td>
+                {business.sameAs.map((profile, index) => (
+                  <>
+                    {index > 0 && " · "}
+                    <a href={profile} rel="me noopener">
+                      {new URL(profile).hostname.replace(/^www\./, "")}
+                    </a>
+                  </>
+                ))}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Los datos legales completos están en los <a href="/terminos/"
+            >términos y condiciones</a
+          > y en la <a href="/privacidad/">política de privacidad</a>.
+        </p>
+      </div>
+      <aside class="post-cta" aria-label="Probar Hooksage">
+        <p class="overline eyebrow">Hooksage</p>
+        <p class="heading-3">Prueba con un video tuyo</p>
+        <p class="body muted">
+          Sube una grabación y recibe un video vertical con cortes, encuadre y
+          subtítulos. La primera edición es gratis.
+        </p>
+        <a
+          class="hs-btn hs-btn--primary"
+          href="/#empezar"
+          data-waitlist-cta
+          data-cta-location="about"
+        >
+          Probar con mi video
+        </a>
+      </aside>
+      <section class="post-related" aria-labelledby="para-empezar">
+        <h2 id="para-empezar">Para empezar a leer</h2>
+        <ul>
+          <li>
+            <a href="/blog/hooks-para-videos-de-negocio/"
+              >100 hooks para reels y TikTok</a
+            >
+            <span class="small muted">Estrategia de contenido</span>
+          </li>
+          <li>
+            <a href="/blog/guion-para-reels-plantillas/"
+              >Guion para reels: 12 plantillas para copiar</a
+            >
+            <span class="small muted">Estrategia de contenido</span>
+          </li>
+          <li>
+            <a href="/blog/mejores-herramientas-ia-editar-videos-verticales/"
+              >Herramientas con IA para editar videos verticales</a
+            >
+            <span class="small muted">Herramientas y precios</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </article>
+</Layout>
