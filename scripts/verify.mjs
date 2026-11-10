@@ -1299,6 +1299,8 @@ const blogSlugs = (
   .map((entry) => entry.name);
 // 14 landing/legal URLs + the blog index + every post.
 assert.equal((sitemap.match(/<loc>/g) || []).length, 15 + blogSlugs.length);
+// Every post carries its updatedDate as lastmod.
+assert.equal((sitemap.match(/<lastmod>/g) || []).length, blogSlugs.length);
 ok("OG, touch icon, robots and every sitemap URL exist");
 
 const englishHtml = await fs.readFile(path.join(dist, "en/index.html"), "utf8");
@@ -1631,7 +1633,7 @@ for (const [route, language, alternate] of [
 ok(
   "Four legal pages expose the correct operator, working language/contents links, current prices and real AI providers",
 );
-assert.equal(blogSlugs.length, 23);
+assert.equal(blogSlugs.length, 34);
 const blogTitles = new Set();
 for (const slug of blogSlugs) {
   const page = new Window();

@@ -9,5 +9,5 @@ export const business = {
   city: "Montevideo",
   countryCode: "UY",
   // Public profiles (LinkedIn, Instagram, YouTube...). Each URL becomes schema.org sameAs.
-  sameAs: [] as string[],
+  sameAs: ["https://www.instagram.com/hooksage.uy/"] as string[],
 } as const;

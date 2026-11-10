@@ -36,7 +36,7 @@ Un buen fragmento cumple tres condiciones:
 
 - **Tiene una sola idea.** Un consejo, un dato, una respuesta.
 - **Se entiende sin lo anterior.** No empieza con "como decía antes".
-- **Dura entre 20 y 60 segundos.** Hasta 3 minutos se admite en Reels y Shorts, pero los fragmentos cortos se ven completos más seguido.
+- **Dura entre 20 y 60 segundos.** Hasta 3 minutos se admite en Reels y Shorts, pero los fragmentos cortos se ven completos más seguido. Hay referencias por objetivo en [duración ideal de un reel](/blog/duracion-ideal-de-un-reel/).
 
 Señales en la transcripción de que hay un buen clip:
 
@@ -59,7 +59,7 @@ Agrega subtítulos grandes en el centro y un titular en los primeros segundos qu
 
 ## 6. Arma el calendario
 
-No publiques los diez clips el mismo día. Un ritmo de dos o tres por semana, intercalados con otro contenido, te da un mes de publicaciones a partir de una sola grabación.
+No publiques los diez clips el mismo día. Un ritmo de dos o tres por semana, intercalados con otro contenido, te da un mes de publicaciones a partir de una sola grabación. Para ordenarlo, usa la plantilla del [calendario de contenido en video](/blog/calendario-de-contenido-en-video/).
 
 | Semana | Clips                        | Criterio                      |
 | ------ | ---------------------------- | ----------------------------- |
@@ -72,7 +72,7 @@ No publiques los diez clips el mismo día. Un ritmo de dos o tres por semana, in
 
 **A mano** (Descript o CapCut): más control sobre qué fragmentos elegir. Una hora de video lleva entre 2 y 4 horas de trabajo para sacar 10 clips.
 
-**Con herramientas automáticas** (como OpusClip): la herramienta propone los clips y tú eliges cuáles publicar. Conviene revisar cada propuesta, porque a veces corta ideas a la mitad.
+**Con herramientas automáticas** (como [OpusClip](https://www.opus.pro/pricing), que cobra por minuto procesado): la herramienta propone los clips y tú eliges cuáles publicar. Conviene revisar cada propuesta, porque a veces corta ideas a la mitad. Si su precio o sus límites no encajan, revisa las [alternativas a OpusClip y Submagic](/blog/alternativas-opusclip-submagic/).
 
 ## Errores frecuentes
 

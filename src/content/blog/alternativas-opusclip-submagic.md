@@ -34,9 +34,9 @@ Aclaración: Hooksage es nuestro producto y aparece entre las alternativas.
 
 ## Qué hacen OpusClip y Submagic
 
-**OpusClip** recibe un video largo y lo convierte en varios clips verticales con subtítulos. Su página oficial lista un plan gratuito, Starter a US$15 al mes, Pro a US$29 al mes y un plan Business con precio a medida. Cobra en función de los minutos de video que procesas.
+**OpusClip** recibe un video largo y lo convierte en varios clips verticales con subtítulos. Su [página oficial de precios](https://www.opus.pro/pricing) lista un plan gratuito, Starter a US$15 al mes, Pro a US$29 al mes y un plan Business con precio a medida. Cobra en función de los minutos de video que procesas.
 
-**Submagic** agrega subtítulos animados, zooms y efectos sobre videos a cámara. Según su página de precios, Starter cuesta US$19 al mes (US$12 con pago anual) con 15 videos de hasta 2 minutos; Pro, US$39 (US$23 anual) con 40 videos de hasta 5 minutos; y Business, US$69 (US$41 anual) con 100 videos de hasta 30 minutos.
+**Submagic** agrega subtítulos animados, zooms y efectos sobre videos a cámara. Según su [página de precios](https://www.submagic.co/pricing), Starter cuesta US$19 al mes (US$12 con pago anual) con 15 videos de hasta 2 minutos; Pro, US$39 (US$23 anual) con 40 videos de hasta 5 minutos; y Business, US$69 (US$41 anual) con 100 videos de hasta 30 minutos.
 
 ## Señales de que necesitas otra herramienta
 
@@ -70,7 +70,7 @@ VEED ofrece subtítulos automáticos, traducción y edición básica en el naveg
 
 ## Hooksage, para videos cortos en español
 
-Hooksage parte de una grabación corta (o de un guion con voz en off) y entrega un video vertical con cortes, encuadre y subtítulos. Cobra por video con packs desde US$5,99 por 10 videos, es decir, entre US$0,44 y US$0,60 por video según el pack. Sus límites: exporta en 720 × 1280 y no ofrece efectos ni transiciones avanzadas. Los pagos todavía no están habilitados; se puede pedir una primera edición gratis.
+Hooksage parte de una grabación corta (o de un guion con voz en off) y entrega un video vertical con cortes, encuadre y subtítulos. Cobra por video con packs desde US$5,99 por 10 videos, es decir, entre US$0,44 y US$0,60 por video según el pack. Sus límites: exporta en 720 × 1280 y no ofrece efectos ni transiciones avanzadas. Los pagos todavía no están habilitados; se puede pedir una primera edición gratis. En [la portada](/#ver-edicion) hay tres pares con la grabación original y el corte editado.
 
 ## Cómo decidir
 

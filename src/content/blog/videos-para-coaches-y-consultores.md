@@ -1,11 +1,11 @@
 ---
-title: "Videos para coaches y consultores: cómo atraer clientes con contenido corto"
-seoTitle: "Videos para coaches y consultores"
-description: "Qué videos cortos publicar si eres coach o consultor: respuestas, casos sin datos sensibles, tu método y opiniones. Cómo pasar de vistas a consultas."
-shortAnswer: "Un coach o consultor atrae clientes con video cuando muestra cómo piensa: respuestas concretas a las preguntas de su cliente ideal, errores comunes que ve en su trabajo, su método explicado en pasos y casos contados sin datos sensibles. Lo que convierte vistas en consultas es un perfil claro y una invitación directa a conversar."
+title: "30 ideas de reels para coaches y consultores, con el hook de cada una"
+seoTitle: "30 ideas de reels para coaches y consultores"
+description: "30 ideas de reels para coaches y consultores, con su hook: preguntas de clientes, errores, tu método, casos y opiniones. Cómo pasar de vistas a consultas."
+shortAnswer: "Un coach o consultor atrae clientes con video cuando muestra cómo piensa: respuestas concretas a las preguntas de su cliente ideal, errores comunes que ve en su trabajo, su método explicado en pasos y casos contados sin datos sensibles. Abajo hay 30 ideas con su frase de inicio. Lo que convierte vistas en consultas es un perfil claro y una invitación directa a conversar."
 category: "Ideas por industria"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 21
 coverAlt: "Consultor explicando un esquema en una pizarra frente a un celular"
 faqs:
@@ -15,6 +15,8 @@ faqs:
     answer: "Sí, con permiso y sin datos que los identifiquen. Cuenta el problema, lo que hicieron y el resultado en términos generales."
   - question: "¿Cada cuánto conviene publicar?"
     answer: "Dos o tres veces por semana es sostenible para una persona sola. La constancia durante varios meses importa más que publicar mucho al principio."
+  - question: "¿Tengo que aparecer siempre a cámara?"
+    answer: "En este rubro ayuda, porque la persona te contrata a ti. Puedes alternar con una pizarra, una pantalla compartida o un documento, con tu voz explicando."
 sources:
   - title: "RouteNote: Adam Mosseri responde cada cuánto publicar en Instagram"
     url: "https://routenote.com/blog/how-often-you-should-post-on-instagram/"
@@ -26,13 +28,55 @@ sources:
 
 Quien contrata a un coach o a un consultor compra criterio. El video corto deja ver ese criterio antes de la primera reunión: cómo explicas, qué priorizas, qué opinas de los problemas de tu cliente. Bien hecho, llega a la consulta alguien que ya confía en ti.
 
-## Cinco formatos para repetir cada semana
+Las 30 ideas están ordenadas por tipo de video. Cada una trae una frase de inicio; reemplaza lo que está entre corchetes por tu tema y tu cliente.
 
-1. **La pregunta de la primera reunión.** Cada pregunta que te hacen al empezar con un cliente es un video.
-2. **El error que ves siempre.** "Casi todos mis clientes llegan habiendo hecho esto...".
-3. **Tu método en pasos.** Explica una parte de cómo trabajas, en 3 pasos.
-4. **Un caso sin datos sensibles.** El problema, lo que hicieron y el resultado general.
-5. **Una opinión.** Algo en lo que no estás de acuerdo con la práctica común de tu sector, y por qué.
+## Preguntas de tus clientes (ideas 1 a 6)
+
+1. **La pregunta de la primera reunión.** Hook: "Lo primero que me preguntan: [pregunta]."
+2. **La pregunta sobre precio.** Hook: "¿Cuánto cuesta [servicio]? Depende de estas tres cosas."
+3. **La pregunta sobre tiempo.** Hook: "¿En cuánto tiempo se ven cambios? Te digo lo que veo."
+4. **La duda que nadie se anima a hacer.** Hook: "Casi nadie lo pregunta en voz alta: [duda]."
+5. **Cuándo no hace falta contratarte.** Hook: "Si tu problema es [situación], no necesitas un consultor."
+6. **Cómo elegir a un profesional de tu rubro.** Hook: "Tres preguntas para hacerle a un [profesión] antes de contratarlo."
+
+## Errores y diagnósticos (ideas 7 a 12)
+
+7. **El error que ves siempre.** Hook: "Casi todos mis clientes llegan habiendo hecho esto."
+8. **La señal temprana.** Hook: "Si te pasa [síntoma], el problema suele ser [causa]."
+9. **Lo que parece el problema y lo que es.** Hook: "Me dicen que les falta [cosa]. Casi siempre falta otra."
+10. **El consejo popular que no aplica a todos.** Hook: "[Consejo conocido] funciona solo si [condición]."
+11. **Un diagnóstico en un minuto.** Hook: "Respóndete estas tres preguntas."
+12. **Lo que harías distinto.** Hook: "Si hoy empezara [actividad] de cero, haría esto primero."
+
+## Tu método (ideas 13 a 18)
+
+13. **Un paso del método.** Hook: "El primer paso con cualquier cliente nuevo."
+14. **El método completo en tres pasos.** Hook: "Así trabajo, en tres pasos."
+15. **Una herramienta o plantilla que usas.** Hook: "Uso esta planilla con todos mis clientes."
+16. **Un ejercicio para hacer hoy.** Hook: "Toma cinco minutos y escribe esto."
+17. **Cómo es una sesión.** Hook: "Qué pasa en una sesión de [servicio]."
+18. **Qué pides antes de empezar.** Hook: "Antes de la primera reunión te pido estos tres datos."
+
+## Casos (ideas 19 a 23)
+
+19. **Un caso en tres partes.** Problema, qué hicieron, resultado general, con permiso y sin datos que identifiquen. Hook: "Llegó con [problema]. Esto fue lo primero que cambiamos."
+20. **La decisión difícil.** Hook: "Le recomendé a un cliente dejar de [práctica]. Por esto."
+21. **Lo que no funcionó.** Hook: "Probamos [táctica] y no funcionó. Esto aprendimos."
+22. **Antes y después de un documento o un proceso.** Hook: "Así era su [documento] antes. Así quedó."
+23. **La pregunta que cambió una sesión.** Hook: "Una pregunta que hago cuando una sesión se traba."
+
+## Opiniones (ideas 24 a 27)
+
+24. **Algo en lo que no coincides con tu sector.** Hook: "No recomiendo [práctica común]. Te explico por qué."
+25. **Una tendencia sobrevalorada.** Hook: "Todos hablan de [tendencia]. Para la mayoría, es prematuro."
+26. **Un libro o una idea que usas.** Hook: "Una idea de [autor] que aplico cada semana."
+27. **Una predicción con fundamento.** Hook: "Lo que veo venir en [sector] el año que viene."
+
+## Tu forma de trabajar (ideas 28 a 30)
+
+28. **Tu historia en 45 segundos.** Hook: "Pasé [número] años en [actividad] antes de dedicarme a esto."
+29. **Para quién trabajas y para quién no.** Hook: "Trabajo con [tipo de cliente]. Si eres [otro tipo], te conviene otra cosa."
+30. **Un día de trabajo.** Hook: "Un martes de un consultor de [especialidad]."
 
 ## Estructura de un video que convierte
 
@@ -41,7 +85,7 @@ Quien contrata a un coach o a un consultor compra criterio. El video corto deja 
 3. **Ejemplo:** una situación real que lo ilustre.
 4. **Cierre:** una invitación simple, como "si te pasa esto, escríbeme".
 
-Para el inicio, usa las plantillas de [hooks para videos de negocio](/blog/hooks-para-videos-de-negocio/).
+Hay más frases de inicio en los [100 hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 
 ## Del video a la consulta
 
@@ -58,9 +102,9 @@ Para el inicio, usa las plantillas de [hooks para videos de negocio](/blog/hooks
 
 ## Errores frecuentes
 
-- Hablar para todo el mundo en vez de para tu cliente ideal.
+- Hablarle a todo el mundo y que tu cliente ideal no se reconozca.
 - Videos motivacionales sin contenido concreto.
 - Pedir que te contraten en cada video.
 - Desaparecer cuando un video no funciona.
 
-La guía de [marca personal con video](/blog/marca-personal-con-video/) profundiza en cómo elegir el tema y la red. Y si el tiempo de edición te frena, revisa las opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/).
+La guía de [marca personal con video](/blog/marca-personal-con-video/) profundiza en cómo elegir el tema y la red. Si el tiempo de edición te frena, revisa las opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/) o mira cómo funciona [Hooksage para marca personal](/videos-para-marca-personal/).

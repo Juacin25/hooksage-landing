@@ -38,7 +38,7 @@ Es la opción que mejor funciona en redes, porque el video ocupa toda la pantall
 
 Pones el video horizontal completo en el centro y, detrás, una copia ampliada y desenfocada que llena la pantalla. Conserva toda la imagen original, pero el contenido queda chico.
 
-Conviene para material donde importa ver todo el cuadro, como una demostración en pantalla o una toma grupal.
+Conviene para material donde importa ver todo el cuadro, como una demostración en pantalla o una toma grupal. Si grabas demos de software, hay más formatos en [video marketing para startups](/blog/video-marketing-para-startups/).
 
 ## Opción 3: pantalla dividida
 
@@ -55,7 +55,7 @@ Divides la pantalla vertical en dos: arriba una toma y abajo otra. Funciona para
 
 ## Hacerlo con FFmpeg
 
-Si tienes muchos videos, FFmpeg (gratis) permite automatizarlo desde la terminal.
+Si tienes muchos videos, FFmpeg (gratis) permite automatizarlo desde la terminal. Los filtros que usan estos comandos están en la [documentación de FFmpeg](https://ffmpeg.org/ffmpeg-filters.html).
 
 Recorte centrado a 9:16 y escalado a 1080 × 1920:
 
@@ -73,4 +73,4 @@ El recorte centrado no sigue al sujeto: si la persona se mueve a un costado, que
 
 ## Para la próxima grabación
 
-Si sabes que el video va a terminar en vertical, grábalo en vertical. Si necesitas las dos versiones, graba en horizontal con el sujeto centrado y deja aire arriba de la cabeza: así el recorte vertical funciona sin mover nada. Más consejos en la guía para [grabar videos con el celular para tu negocio](/blog/como-grabar-videos-con-celular-para-negocio/).
+Si sabes que el video va a terminar en vertical, grábalo en vertical. Si necesitas las dos versiones, graba en horizontal con el sujeto centrado y deja aire arriba de la cabeza: así el recorte vertical funciona sin mover nada. Más consejos en la guía para [grabar videos con el celular para tu negocio](/blog/como-grabar-videos-con-celular-para-negocio/). Las medidas de exportación están en [medidas y formatos para Reels, TikTok y Shorts](/blog/medidas-video-reels-tiktok-shorts/).

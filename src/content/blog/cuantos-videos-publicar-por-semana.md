@@ -28,9 +28,9 @@ Es una de las preguntas más comunes al empezar con video corto, y la respuesta 
 
 ## Lo que dicen las plataformas
 
-**Instagram:** Adam Mosseri, responsable de Instagram, dijo que no hay un número perfecto para todos y que hay cuentas que funcionan publicando una vez al mes y otras cinco Reels por día. En sus preguntas frecuentes para creadores, Instagram indicó que los creadores con mayor crecimiento neto de seguidores publican en promedio 10 o más Reels por mes.
+**Instagram:** Adam Mosseri, responsable de Instagram, [dijo que](https://routenote.com/blog/how-often-you-should-post-on-instagram/) no hay un número perfecto para todos y que hay cuentas que funcionan publicando una vez al mes y otras cinco Reels por día. En sus preguntas frecuentes para creadores, Instagram indicó que los creadores con mayor crecimiento neto de seguidores publican en promedio 10 o más Reels por mes.
 
-**TikTok:** muchas guías de marketing repiten que TikTok recomienda publicar de 1 a 4 veces por día, pero no encontramos esa cifra en una página oficial vigente de TikTok, así que la tomamos con cautela. Las guías de terceros con datos de cuentas suelen ubicar el punto de equilibrio entre 3 y 5 videos por semana para cuentas de negocio.
+**TikTok:** muchas guías de marketing repiten que TikTok recomienda publicar de 1 a 4 veces por día, pero no encontramos esa cifra en una página oficial vigente de TikTok, así que la tomamos con cautela. Las guías de terceros con datos de cuentas, como las de [Buffer](https://buffer.com/resources/social-media-frequency-guide/) y [SocialCrawl](https://www.socialcrawl.dev/blog/how-often-should-you-post-on-tiktok), suelen ubicar el punto de equilibrio entre 3 y 5 videos por semana para cuentas de negocio.
 
 ## Una referencia práctica por etapa
 
@@ -61,4 +61,4 @@ Mira estos datos cada mes:
 
 Si la retención baja cuando subes la frecuencia, estás publicando más de lo que puedes hacer bien. Si se mantiene, puedes probar con más.
 
-Para armar el plan semana a semana, usa la plantilla del [calendario de contenido en video](/blog/calendario-de-contenido-en-video/).
+Para armar el plan semana a semana, usa la plantilla del [calendario de contenido en video](/blog/calendario-de-contenido-en-video/). Si publicas como profesional independiente, sigue con [marca personal con video](/blog/marca-personal-con-video/); si lo haces desde una startup, con [video marketing para startups](/blog/video-marketing-para-startups/).

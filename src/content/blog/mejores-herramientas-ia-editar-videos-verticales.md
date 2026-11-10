@@ -5,7 +5,7 @@ description: "CapCut, OpusClip, Submagic, Descript, VEED, Canva y Hooksage compa
 shortAnswer: "No hay una herramienta mejor para todo. CapCut sirve si quieres editar a mano con ayuda de IA; OpusClip, si necesitas recortar videos largos en clips; Submagic, si lo principal son los subtítulos animados; y un editor automático como Hooksage, si quieres que la IA haga el primer corte completo de tu grabación."
 category: "Herramientas y precios"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 1
 coverAlt: "Varias interfaces de editores de video con IA mostrando clips verticales"
 faqs:
@@ -40,7 +40,7 @@ Aclaración: Hooksage es nuestro producto y aparece en la lista. Lo comparamos c
 
 | Herramienta | Para qué sirve más                                 | Desde (precio mensual)       | Versión gratis         |
 | ----------- | -------------------------------------------------- | ---------------------------- | ---------------------- |
-| CapCut      | Editar a mano con ayudas de IA                     | Varía por país               | Sí                     |
+| CapCut      | Editar a mano con ayudas de IA                     | US$23,99 (referencia web)    | Sí                     |
 | OpusClip    | Convertir videos largos en clips                   | US$15 (Starter)              | Sí, con marca de agua  |
 | Submagic    | Subtítulos animados y zooms automáticos            | US$19 (US$12 con pago anual) | Prueba limitada        |
 | Descript    | Editar video editando el texto de la transcripción | Ver su página de precios     | Sí                     |
@@ -48,13 +48,13 @@ Aclaración: Hooksage es nuestro producto y aparece en la lista. Lo comparamos c
 | Canva       | Plantillas y diseño con video simple               | Ver su página de precios     | Sí                     |
 | Hooksage    | Primer corte automático de una grabación           | US$5,99 (pack de 10 videos)  | Primera edición gratis |
 
-Los precios de OpusClip y Submagic salen de sus páginas oficiales. CapCut no publica un precio único: su ayuda oficial indica que varía según la región, el dispositivo y las promociones vigentes.
+Los precios salen de las páginas oficiales de [OpusClip](https://www.opus.pro/pricing) y [Submagic](https://www.submagic.co/pricing). El de CapCut es la referencia de su [página de precios](https://www.capcut.com/pricing) para el plan Pro; su [ayuda oficial](https://www.capcut.com/help/how-much-does-capcut-pro-cost) indica que el precio final varía según la región, el dispositivo y las promociones vigentes. Los precios del App Store de siete países están en [CapCut Pro: precio por país](/blog/capcut-pro-precio-por-pais/).
 
 ## CapCut: el editor manual más completo
 
 CapCut es la opción más conocida para editar en el celular. Tiene línea de tiempo, plantillas, efectos, subtítulos automáticos y una versión gratuita amplia. La versión Pro suma funciones de IA y más almacenamiento.
 
-**Conviene si** te gusta controlar cada corte y tienes tiempo para editar. **Ten en cuenta que** las plantillas más usadas se repiten mucho en el feed, y que el tiempo de edición sigue dependiendo de ti.
+**Conviene si** te gusta controlar cada corte y tienes tiempo para editar. **Ten en cuenta que** las plantillas más usadas se repiten mucho en el feed, y que el tiempo de edición sigue dependiendo de ti. Comparamos las dos formas de trabajar en [CapCut o un editor con IA](/blog/capcut-o-editor-con-ia/), y otros editores manuales en [7 alternativas a CapCut](/blog/alternativas-a-capcut/).
 
 ## OpusClip: para recortar videos largos
 
@@ -66,7 +66,7 @@ OpusClip toma un video largo (un podcast, una clase, un webinar) y propone vario
 
 Submagic se especializa en subtítulos animados, zooms y efectos automáticos sobre videos a cámara. Según su página de precios, Starter cuesta US$19 al mes (US$12 con pago anual) e incluye 15 videos de hasta 2 minutos; Pro cuesta US$39 (US$23 anual) con 40 videos de hasta 5 minutos.
 
-**Conviene si** tu contenido es una persona hablando a cámara y quieres el estilo de subtítulo de los creadores. **Ten en cuenta que** los límites de duración por plan son estrictos en los planes de entrada.
+**Conviene si** tu contenido es una persona hablando a cámara y quieres el estilo de subtítulo de los creadores. **Ten en cuenta que** los límites de duración por plan son estrictos en los planes de entrada. Si ya usas OpusClip o Submagic y no te convencen, revisa las [alternativas a OpusClip y Submagic](/blog/alternativas-opusclip-submagic/).
 
 ## Descript: editar como si fuera un documento
 
@@ -82,7 +82,7 @@ VEED es un editor web con subtítulos automáticos, traducción y plantillas. Ca
 
 ## Hooksage: el primer corte, hecho por la IA
 
-Hooksage parte de tu grabación (o de un guion con voz en off) y entrega un video vertical con cortes, encuadre y subtítulos. Tú indicas el mensaje y el estilo, revisas el resultado y pides otra versión si hace falta. Exporta MP4 de 720 × 1280 a 30 fps, una resolución menor que el 1080 × 1920 que recomiendan las plataformas, aunque suficiente para el celular. Los packs empiezan en US$5,99 por 10 videos. Los pagos todavía no están habilitados; hoy se puede pedir una primera edición gratis.
+Hooksage parte de tu grabación (o de un guion con voz en off) y entrega un video vertical con cortes, encuadre y subtítulos. Tú indicas el mensaje y el estilo, revisas el resultado y pides otra versión si hace falta. Exporta MP4 de 720 × 1280 a 30 fps, una resolución menor que el 1080 × 1920 que recomiendan las plataformas, aunque suficiente para el celular. Los packs empiezan en US$5,99 por 10 videos. Los pagos todavía no están habilitados; hoy se puede pedir una primera edición gratis. En [la portada](/#ver-edicion) hay tres pares con la grabación original y el corte editado, para juzgar el resultado antes de probar.
 
 **Conviene si** no quieres editar y tu material son grabaciones de producto, explicaciones o videos a cámara. **Ten en cuenta que** no reemplaza a un editor si buscas efectos complejos o animación.
 
