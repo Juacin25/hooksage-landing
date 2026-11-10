@@ -36,7 +36,7 @@ La edición de video corto tiene su propio vocabulario, mezcla de términos de c
 
 **Bitrate (tasa de bits):** cantidad de datos por segundo del video. A mayor tasa, mejor calidad y archivo más pesado.
 
-**Códec:** el formato de compresión del video. H.264 es el más compatible con redes sociales.
+**Códec:** el formato de compresión del video. H.264 es el más compatible con redes sociales y el que indica YouTube en su [configuración de carga recomendada](https://support.google.com/youtube/answer/1722171?hl=es-419).
 
 **Corte:** el punto donde termina una toma y empieza otra.
 
@@ -44,7 +44,7 @@ La edición de video corto tiene su propio vocabulario, mezcla de términos de c
 
 ## D a H
 
-**Duración:** lo que dura el video. Reels y Shorts admiten hasta 3 minutos.
+**Duración:** lo que dura el video. Reels y Shorts admiten hasta 3 minutos. Ver [duración ideal de un reel](/blog/duracion-ideal-de-un-reel/).
 
 **Encuadre:** qué parte de la escena entra en el cuadro y cómo se ubica el sujeto.
 
@@ -52,7 +52,7 @@ La edición de video corto tiene su propio vocabulario, mezcla de términos de c
 
 **fps (cuadros por segundo):** cuántas imágenes por segundo tiene el video. 30 fps es el estándar para redes.
 
-**Hook:** el inicio del video, diseñado para que la persona no deslice. Ver [30 hooks para videos de negocio](/blog/hooks-para-videos-de-negocio/).
+**Hook:** el inicio del video, diseñado para que la persona no deslice. Ver [100 hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 
 ## J a P
 
@@ -80,7 +80,7 @@ La edición de video corto tiene su propio vocabulario, mezcla de términos de c
 
 **Ritmo:** la velocidad con la que cambian las tomas, los textos y la información.
 
-**Subtítulos quemados:** subtítulos grabados en la imagen del video, que se ven siempre.
+**Subtítulos quemados:** subtítulos grabados en la imagen del video, que se ven siempre. Ver [cómo poner subtítulos automáticos](/blog/subtitulos-automaticos-videos/).
 
 **Subtítulos cerrados (CC):** subtítulos que la persona puede activar o desactivar.
 
@@ -92,6 +92,6 @@ La edición de video corto tiene su propio vocabulario, mezcla de términos de c
 
 **Voz en off:** voz que narra sin que se vea a quien habla.
 
-**Zona segura:** el área del video que no queda tapada por la interfaz de la app. Detalles en la guía de [medidas y formatos para Reels, TikTok y Shorts](/blog/medidas-video-reels-tiktok-shorts/).
+**Zona segura:** el área del video que no queda tapada por la interfaz de la app. Hay una plantilla gratuita en [zona segura en Reels, TikTok y Shorts](/blog/zona-segura-reels-tiktok-shorts/) y más detalle en [medidas y formatos para Reels, TikTok y Shorts](/blog/medidas-video-reels-tiktok-shorts/).
 
 **Zoom:** acercar la imagen. Un zoom leve en las frases importantes ayuda a marcar el ritmo.

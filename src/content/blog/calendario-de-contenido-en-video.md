@@ -51,7 +51,7 @@ Copia esta estructura en una hoja de cálculo:
 | Mié 5 | LinkedIn + Shorts  | Producto  | Demo de la función X           | Pantalla         | Juan  | IA + revisión | Luis    | En edición |
 | Vie 7 | Instagram + TikTok | Equipo    | Un día en el equipo de soporte | Detrás de escena | Ana   | Pendiente     | Luis    | Grabado    |
 
-Estados posibles: idea, guion, grabado, en edición, en revisión, aprobado, publicado.
+Estados posibles: idea, guion, grabado, en edición, en revisión, aprobado, publicado. Para la etapa de guion, usa las 12 plantillas de [guion para reels](/blog/guion-para-reels-plantillas/).
 
 ## Paso 4: el flujo semanal
 
@@ -69,8 +69,8 @@ Un video vertical sirve para Reels, TikTok, YouTube Shorts y LinkedIn. Planifica
 ## Qué revisar cada mes
 
 - Qué pilar tuvo mejor retención y alcance.
-- Qué hooks funcionaron, para repetir la estructura.
+- Qué hooks funcionaron, para repetir la estructura. Hay 100 para probar en [hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 - Cuántos videos se atrasaron y en qué etapa.
 - Qué piezas trajeron consultas o ventas.
 
-Si la etapa que más se atrasa es la edición, compara el costo de cada opción en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/). Para llenar el calendario con ideas, usa las [50 ideas de videos para pymes](/blog/ideas-de-videos-para-pymes/).
+Si la etapa que más se atrasa es la edición, compara el costo de cada opción en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/). Para llenar el calendario con ideas, usa las [50 ideas de videos para pymes](/blog/ideas-de-videos-para-pymes/). Si tu equipo graba pero no llega a editar, mira cómo funciona [Hooksage para equipos de marketing](/videos-para-equipos-de-marketing/).

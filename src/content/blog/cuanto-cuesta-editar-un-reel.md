@@ -48,10 +48,10 @@ Las tarifas por reel de freelance son una estimación nuestra: no encontramos un
 
 ## Tarifas de editores freelance en la región
 
-- **Floowi** indica que los editores latinoamericanos suelen cobrar entre US$15 y US$40 por hora en plataformas freelance.
-- **Krock.io** agrupa Latinoamérica con Europa del Este en un rango de US$15 a US$50 por hora.
-- **Julita en Remoto** distingue por nivel: editor básico para redes, de US$20 a US$35 por hora; intermedio con motion graphics y corrección de color, de US$40 a US$65.
-- **En Chile**, el directorio 2x3 indica que un editor suele cobrar entre CLP 20.000 y CLP 60.000 por editar un video.
+- **[Floowi](https://floowitalent.com/tips/video-editor-hourly-rate)** indica que los editores latinoamericanos suelen cobrar entre US$15 y US$40 por hora en plataformas freelance.
+- **[Krock.io](https://krock.io/blog/stay-creative/how-much-video-editor-should-charge/)** agrupa Latinoamérica con Europa del Este en un rango de US$15 a US$50 por hora.
+- **[Julita en Remoto](https://julitaenremoto.com/cuanto-cobrar-freelancer-dolares-2026/)** distingue por nivel: editor básico para redes, de US$20 a US$35 por hora; intermedio con motion graphics y corrección de color, de US$40 a US$65.
+- **En Chile**, el [directorio 2x3](https://www.2x3.cl/p/precios-edicion-video) indica que un editor suele cobrar entre CLP 20.000 y CLP 60.000 por editar un video.
 
 Como referencia del mercado global, Krock.io ubica la edición de un TikTok, Reel o Short de 30 a 60 segundos entre US$50 y US$400 por video, con mucha variación según la complejidad. Muchos editores latinoamericanos trabajan para clientes de Estados Unidos y cobran en dólares; si contratas en moneda local, el precio puede ser menor.
 
@@ -80,4 +80,4 @@ Multiplica la cantidad de reels que quieres publicar por mes por el costo por pi
 - Con una herramienta de subtítulos con IA: el plan de US$19 alcanza para 15 videos.
 - Haciéndolo tú: entre 6 y 24 horas de trabajo al mes.
 
-Suma a cualquier opción el tiempo de grabar y de revisar, que no desaparece con ninguna. Si todavía no sabes cuántos videos publicar, empieza por [cuántos videos publicar por semana](/blog/cuantos-videos-publicar-por-semana/).
+Suma a cualquier opción el tiempo de grabar y de revisar, que no desaparece con ninguna. Si todavía no sabes cuántos videos publicar, empieza por [cuántos videos publicar por semana](/blog/cuantos-videos-publicar-por-semana/). Si dudas entre editar a mano y automatizar, la comparación está en [CapCut o un editor con IA](/blog/capcut-o-editor-con-ia/).

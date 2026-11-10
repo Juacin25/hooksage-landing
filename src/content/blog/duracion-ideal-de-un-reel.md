@@ -5,7 +5,7 @@ description: "Cuánto debería durar un reel, un TikTok o un Short: límites vig
 shortAnswer: "No hay una duración ideal única. Instagram y YouTube admiten hasta 3 minutos, pero las plataformas recomiendan según cuánto del video mira la gente, así que un video corto que se ve completo suele llegar más lejos que uno largo que se abandona. Como referencia: 7 a 15 segundos para productos, 20 a 45 para explicaciones y 45 a 90 para historias o tutoriales."
 category: "Referencia"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 23
 coverAlt: "Barra de progreso de un video vertical con marcas de 15, 30 y 60 segundos"
 faqs:
@@ -26,7 +26,7 @@ sources:
     url: "https://sociality.io/blog/tiktok-video-length/"
 ---
 
-Las plataformas ampliaron sus límites en los últimos dos años: Instagram pasó de 90 segundos a 3 minutos en enero de 2025 y YouTube Shorts de 60 segundos a 3 minutos en octubre de 2024. Que se pueda publicar más largo no significa que convenga. Esta guía reúne lo que dicen las propias plataformas y propone duraciones de referencia según el objetivo.
+Las plataformas ampliaron sus límites en los últimos dos años: Instagram [pasó de 90 segundos a 3 minutos](https://www.socialmediatoday.com/news/instagram-officially-expands-reels-length-to-3-minutes/737766/) en enero de 2025 y YouTube Shorts, [de 60 segundos a 3 minutos](https://support.google.com/youtube/answer/15424877?hl=es-419) en octubre de 2024. Que se pueda publicar más largo no significa que convenga. Esta guía reúne lo que dicen las propias plataformas y propone duraciones de referencia según el objetivo.
 
 ## Los límites vigentes
 
@@ -38,7 +38,7 @@ Las plataformas ampliaron sus límites en los últimos dos años: Instagram pas�
 
 ## Lo que pesa más que la duración: la retención
 
-Instagram, TikTok y YouTube reparten los videos según cómo responde la gente. El tiempo de visualización y el porcentaje del video que se mira están entre las señales principales. Al anunciar los Reels de 3 minutos, Instagram aclaró que seguía enfocado en el video corto y que el cambio buscaba dar más margen creativo.
+Instagram, TikTok y YouTube reparten los videos según cómo responde la gente. El tiempo de visualización y el porcentaje del video que se mira están entre las señales principales. Al anunciar los Reels de 3 minutos, Instagram aclaró que seguía enfocado en el video corto y que el cambio buscaba dar más margen creativo, según [recogió Marketing Dive](https://www.marketingdive.com/news/instagram-reels-tips-3-minutes-unfiltered-nyc/742335/).
 
 En la práctica, eso significa que un video de 15 segundos que la mayoría mira entero suele llegar a más personas que uno de 2 minutos que se abandona a los 10 segundos.
 
@@ -60,6 +60,18 @@ Son puntos de partida, no reglas. La duración correcta para tu cuenta es la que
 2. Compara el porcentaje de retención y el alcance de cada una.
 3. Repite con tres o cuatro ideas distintas.
 4. Quédate con la duración que mejor retiene en tu cuenta y vuelve a probar cada pocos meses.
+
+## Cómo leer el gráfico de retención
+
+Instagram, TikTok y YouTube Studio muestran una curva con el porcentaje de personas que sigue mirando en cada segundo. Tres formas frecuentes y qué hacer con cada una:
+
+| Forma de la curva                         | Qué indica                        | Qué cambiar                                   |
+| ----------------------------------------- | --------------------------------- | --------------------------------------------- |
+| Cae fuerte en los primeros 3 segundos     | El inicio no retiene              | La primera frase y la primera imagen          |
+| Baja de golpe en un punto del medio       | Ese tramo sobra o confunde        | Corta ese tramo o cámbialo de lugar           |
+| Se mantiene y cae en los últimos segundos | La duración es adecuada           | Acorta el cierre o termina en la última idea  |
+
+Si el problema está en el inicio, prueba otra frase de los [100 hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 
 ## Cómo acortar sin perder contenido
 

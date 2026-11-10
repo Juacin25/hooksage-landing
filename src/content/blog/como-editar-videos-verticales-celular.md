@@ -5,7 +5,7 @@ description: "Paso a paso para editar un reel o un TikTok en el celular: elegir 
 shortAnswer: "Para editar un video vertical en el celular: elige una sola idea por video, corta todo lo que no la cuenta, encuadra en 9:16 con el sujeto centrado, agrega subtítulos, pon la música bajo la voz y exporta en 1080 × 1920 a 30 fps. Con práctica, un reel de 30 segundos lleva unos 30 minutos."
 category: "Guías de edición"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 6
 coverAlt: "Manos sosteniendo un celular con una línea de tiempo de edición en pantalla"
 faqs:
@@ -48,19 +48,37 @@ Los primeros segundos deciden si alguien sigue mirando. Empieza el video en la p
 
 Un buen punto de partida: si una pausa dura más de medio segundo y no tiene intención dramática, sácala.
 
+Un ejemplo de lo que cambia. Este es el pitch de Drivo, una plataforma de subastas de autos, editado con Hooksage. La grabación original dura 13,6 segundos y el corte, 11,1. El mensaje es el mismo, con 2,5 segundos menos y subtítulos.
+
+<figure class="post-compare">
+  <div>
+    <video controls playsinline preload="none" poster="/videos/drivo-original-poster.webp" width="720" height="1280" aria-label="Antes: grabación original del pitch de Drivo">
+      <source src="/videos/drivo-original.mp4" type="video/mp4" />
+    </video>
+    <p>Antes · 13,6 s</p>
+  </div>
+  <div>
+    <video controls playsinline preload="none" poster="/videos/drivo-edited-poster.webp" width="720" height="1280" aria-label="Después: el pitch de Drivo con un corte más corto y subtítulos">
+      <source src="/videos/drivo-edited.mp4" type="video/mp4" />
+    </video>
+    <p>Después · 11,1 s</p>
+  </div>
+  <figcaption>El pitch de Drivo: la grabación original y el corte editado. Hay dos pares más en <a href="/#ver-edicion">la portada</a>.</figcaption>
+</figure>
+
 ## 4. Encuadra en 9:16
 
 Configura el proyecto en 9:16 (1080 × 1920). Si grabaste en vertical, ajusta el zoom para que la cara o el producto ocupen buena parte del cuadro. Si grabaste en horizontal, reencuadra cada toma siguiendo al sujeto. Un zoom leve en las frases importantes ayuda a marcar el ritmo.
 
 ## 5. Agrega subtítulos
 
-Una parte grande de la audiencia mira con el sonido apagado: un estudio de Verizon Media y Publicis citado por TechRadar encontró que el 69 % ve videos sin sonido en lugares públicos. Usa la función de subtítulos automáticos y corrige:
+Una parte grande de la audiencia mira con el sonido apagado: un estudio de Verizon Media y Publicis [citado por TechRadar](https://global.techradar.com/es-mx/pro/por-que-debes-agregar-subtitulos-a-tus-videos-en-linea-y-no-es-solo-porque-el-69-por-ciento-de-los-espectadores-los-ve-con-el-sonido-desactivado) encontró que el 69 % ve videos sin sonido en lugares públicos. Usa la función de subtítulos automáticos y corrige:
 
 - Nombres propios y marcas.
 - Números y precios.
 - Palabras técnicas de tu rubro.
 
-Ubica los subtítulos en el tercio central, lejos de los botones y la descripción de la app.
+Ubica los subtítulos en el tercio central, lejos de los botones y la descripción de la app. El detalle está en [cómo poner subtítulos automáticos](/blog/subtitulos-automaticos-videos/).
 
 ## 6. Música y sonido
 
@@ -82,4 +100,4 @@ Exporta en MP4, 1080 × 1920, a la misma cantidad de cuadros por segundo con la 
 - Publicar en horizontal con barras negras.
 - Exportar en 4K pensando que se va a ver mejor.
 
-Si editar cada video te lleva más de una hora y publicas seguido, compara el costo de tu tiempo con otras opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/).
+Si editar cada video te lleva más de una hora y publicas seguido, compara el costo de tu tiempo con otras opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/) y en [CapCut o un editor con IA](/blog/capcut-o-editor-con-ia/). Si algún término de esta guía no te resulta familiar, está en el [glosario de edición de video corto](/blog/glosario-edicion-video-corto/).

@@ -5,7 +5,7 @@ description: "CapCut te da control total, pero la edición sigue siendo tuya. Un
 shortAnswer: "CapCut conviene si te gusta editar y tienes tiempo: es gratis y muy completo, pero cada corte lo haces tú. Un editor automático con IA conviene si publicas varias veces por semana y prefieres revisar un primer corte ya hecho. La diferencia principal es quién hace el trabajo de edición."
 category: "Herramientas y precios"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 3
 coverAlt: "Una línea de tiempo de edición manual junto a un video vertical terminado"
 faqs:
@@ -34,7 +34,7 @@ Aclaración: Hooksage, nuestro producto, es un editor automático con IA. Compar
 
 En **CapCut**, tú armas el video: eliges cada corte, mueves los clips, ajustas los subtítulos, agregas música y exportas. La IA te ayuda en tareas puntuales, como generar subtítulos o quitar el fondo.
 
-En un **editor automático con IA**, subes la grabación, indicas qué quieres comunicar y recibes un primer corte con encuadre vertical y subtítulos. Tu trabajo es revisar y pedir cambios.
+En un **editor automático con IA**, subes la grabación, indicas qué quieres comunicar y recibes un primer corte con encuadre vertical y subtítulos. Tu trabajo es revisar y pedir cambios. En [la portada de Hooksage](/#ver-edicion) hay tres ejemplos con la grabación original y el corte editado.
 
 |                        | CapCut                                     | Editor automático con IA           |
 | ---------------------- | ------------------------------------------ | ---------------------------------- |
@@ -63,7 +63,7 @@ CapCut tiene además una ventaja clara en el costo: la versión gratuita alcanza
 
 ## Los costos, comparados
 
-CapCut Pro no tiene un precio único publicado: su ayuda oficial indica que varía según la región, el dispositivo y las promociones. Los editores con IA suelen cobrar por volumen: Submagic cuesta US$19 al mes por 15 videos, OpusClip desde US$15 al mes por minutos procesados y los packs de Hooksage van de US$0,44 a US$0,60 por video.
+CapCut Pro figura a US$23,99 al mes en su [página de precios](https://www.capcut.com/pricing), como referencia: su [ayuda oficial](https://www.capcut.com/help/how-much-does-capcut-pro-cost) indica que el precio final varía según la región, el dispositivo y las promociones. Reunimos la referencia de la web y los precios del App Store de siete países en [CapCut Pro: precio por país](/blog/capcut-pro-precio-por-pais/). Los editores con IA suelen cobrar por volumen: [Submagic](https://www.submagic.co/pricing) cuesta US$19 al mes por 15 videos, [OpusClip](https://www.opus.pro/pricing) desde US$15 al mes por minutos procesados y los packs de Hooksage van de US$0,44 a US$0,60 por video.
 
 En la práctica, el tiempo pesa más que la suscripción. Si alguien del equipo dedica una hora a cada reel y publican tres por semana, son unas 12 horas al mes solo de edición.
 
@@ -71,4 +71,4 @@ En la práctica, el tiempo pesa más que la suscripción. Si alguien del equipo 
 
 Muchos equipos usan los dos. Un editor automático resuelve el volumen semanal (las piezas de producto, las respuestas a preguntas, los videos a cámara) y CapCut queda para los videos especiales, como un lanzamiento o una campaña con efectos.
 
-Si estás eligiendo entre más opciones, revisa la comparativa completa de [herramientas con IA para editar videos verticales](/blog/mejores-herramientas-ia-editar-videos-verticales/). Y si quieres probar CapCut primero, la guía para [editar videos verticales desde el celular](/blog/como-editar-videos-verticales-celular/) te lleva paso a paso.
+Si estás eligiendo entre más opciones, revisa la comparativa completa de [herramientas con IA para editar videos verticales](/blog/mejores-herramientas-ia-editar-videos-verticales/) y las [alternativas a OpusClip y Submagic](/blog/alternativas-opusclip-submagic/). Si buscas otro editor manual, están en [7 alternativas a CapCut](/blog/alternativas-a-capcut/). Y si quieres probar CapCut primero, la guía para [editar videos verticales desde el celular](/blog/como-editar-videos-verticales-celular/) te lleva paso a paso.

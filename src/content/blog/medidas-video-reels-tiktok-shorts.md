@@ -45,9 +45,9 @@ Los tres formatos de video corto más usados en Hispanoamérica comparten el mis
 | Cuadros por segundo    | 30 fps (hasta 60) | 30 fps (hasta 60)                       | 30 fps (hasta 60) |
 | Códec más compatible   | H.264 + audio AAC | H.264 + audio AAC                       | H.264 + audio AAC |
 
-Dos datos de esta tabla cambiaron hace poco. Instagram subió el límite de los Reels de 90 segundos a 3 minutos en enero de 2025, según el anuncio de Adam Mosseri, responsable de Instagram. YouTube hizo lo mismo con los Shorts en octubre de 2024: los videos verticales o cuadrados de hasta 3 minutos se clasifican como Shorts.
+Dos datos de esta tabla cambiaron hace poco. Instagram subió el límite de los Reels de 90 segundos a 3 minutos en enero de 2025, según [el anuncio de Adam Mosseri](https://www.socialmediatoday.com/news/instagram-officially-expands-reels-length-to-3-minutes/737766/), responsable de Instagram. YouTube hizo lo mismo con los Shorts en octubre de 2024: según [su página de ayuda](https://support.google.com/youtube/answer/15424877?hl=es-419), los videos verticales o cuadrados de hasta 3 minutos se clasifican como Shorts.
 
-TikTok es el caso con más variación. La mayoría de las guías actualizadas indican 10 minutos para videos subidos desde la galería, y TikTok probó en 2024 cargas de hasta 60 minutos con un grupo reducido de cuentas. Antes de grabar algo largo, revisa el límite que te muestra la app en tu cuenta.
+TikTok es el caso con más variación. La mayoría de las guías actualizadas, como [la de Sociality.io](https://sociality.io/blog/tiktok-video-length/), indican 10 minutos para videos subidos desde la galería, y TikTok [probó en 2024](https://techcrunch.com/2024/05/16/tiktok-upload-60-minute-videos) cargas de hasta 60 minutos con un grupo reducido de cuentas. Antes de grabar algo largo, revisa el límite que te muestra la app en tu cuenta.
 
 ## Por qué 1080 × 1920 y no 4K
 
@@ -71,11 +71,13 @@ Un error frecuente es exportar en horizontal y dejar que la app recorte. El reco
 
 La interfaz de cada app ocupa parte de la pantalla. Arriba aparecen el nombre de la cuenta y algunos íconos; abajo, la descripción, el audio y los botones. Si pones un titular o un subtítulo en esas franjas, queda tapado.
 
-Ninguna de las tres plataformas publica una medida oficial única, y las guías de terceros dan cifras distintas porque la interfaz cambia con cada actualización. Una regla conservadora para un lienzo de 1080 × 1920:
+Ninguna de las tres plataformas publica una medida oficial única, y las guías de terceros, como [la de AdaptlyPost](https://adaptlypost.com/blog/social-media-safe-zones-2026-complete-guide), dan cifras distintas porque la interfaz cambia con cada actualización. Una regla conservadora para un lienzo de 1080 × 1920:
 
 - Deja libres unos **250 px arriba**.
 - Deja libres unos **400 px abajo** (TikTok tapa más espacio inferior que Instagram).
 - Deja unos **120 px a la derecha**, donde van los botones de interacción.
+
+Hay una plantilla PNG gratuita con estas franjas marcadas en [zona segura en Reels, TikTok y Shorts](/blog/zona-segura-reels-tiktok-shorts/).
 
 Los subtítulos funcionan mejor en el tercio central o un poco por debajo de la mitad. Antes de publicar, mira la vista previa en la app: es la forma más confiable de comprobar que nada quede tapado.
 
@@ -92,4 +94,4 @@ Reels y TikTok muestran la portada en la cuadrícula del perfil con un recorte d
 5. El archivo es MP4 con H.264 y audio AAC.
 6. Revisaste la vista previa en la app.
 
-Si publicas el mismo video en las tres plataformas, edítalo una vez en 9:16 y cuida las zonas seguras más restrictivas, que son las de TikTok. Así sirve para todas sin cambios. Para elegir cuánto debería durar cada pieza, revisa la guía sobre la [duración ideal de un reel](/blog/duracion-ideal-de-un-reel/).
+Si publicas el mismo video en las tres plataformas, edítalo una vez en 9:16 y cuida las zonas seguras más restrictivas, que son las de TikTok. Así sirve para todas sin cambios. Para elegir cuánto debería durar cada pieza, revisa la guía sobre la [duración ideal de un reel](/blog/duracion-ideal-de-un-reel/). Si algún término de esta página no te resulta familiar, está definido en el [glosario de edición de video corto](/blog/glosario-edicion-video-corto/).

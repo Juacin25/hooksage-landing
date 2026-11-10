@@ -28,7 +28,7 @@ Las startups tienen algo que muchas empresas grandes no tienen: cambian rápido 
 
 ## Los cuatro formatos que funcionan
 
-**1. El founder explicando el problema.** Un video a cámara de 30 a 60 segundos que responde "¿por qué existe esta empresa?". Es el formato que más confianza genera en etapas tempranas.
+**1. El founder explicando el problema.** Un video a cámara de 30 a 60 segundos que responde "¿por qué existe esta empresa?". Suele ser el primer video que conviene grabar. Para la primera frase, mira la sección de startups en los [100 hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 
 **2. Demos cortas.** Una función por video, grabando la pantalla. Haz zoom sobre lo importante y cuenta qué resuelve, no cómo está construido.
 
@@ -79,4 +79,4 @@ En una startup, el objetivo del video suele ser uno de estos tres: conseguir usu
 - Publicar solo cuando hay un lanzamiento grande.
 - Copiar el estilo de marcas de consumo masivo cuando tu cliente es otra empresa.
 
-Para elegir cuántos videos sostener, revisa [cuántos videos publicar por semana](/blog/cuantos-videos-publicar-por-semana/). Y si el cuello de botella es la edición, compara opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/).
+Para elegir cuántos videos sostener, revisa [cuántos videos publicar por semana](/blog/cuantos-videos-publicar-por-semana/). Para planificar el mes, usa el [calendario de contenido en video](/blog/calendario-de-contenido-en-video/). Y si el cuello de botella es la edición, compara opciones en [cuánto cuesta editar un reel](/blog/cuanto-cuesta-editar-un-reel/) o mira cómo funciona [Hooksage para startups](/videos-para-startups/).

@@ -43,7 +43,7 @@ Responde dos preguntas por escrito:
 
 **Opinión o decisión.** Algo que hiciste distinto y por qué. Es el formato que más diferencia tu marca de la de otros.
 
-Con estos tres formatos tienes un sistema: cada semana uno de cada tipo.
+Con estos tres formatos tienes un sistema: cada semana uno de cada tipo. Para la primera frase de cada video, usa la sección de marca personal de los [100 hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
 
 ## 3. Qué red elegir
 
@@ -83,4 +83,4 @@ Dos o tres videos por semana, durante al menos tres meses. Graba todo en una ses
 - Publicar mucho dos semanas y desaparecer un mes.
 - Copiar el estilo de creadores de entretenimiento si tu cliente busca un profesional.
 
-Si ya das clases o charlas, puedes reutilizarlas: lo explicamos en [cómo convertir un video largo en shorts](/blog/convertir-video-largo-en-shorts/). Y si eres coach o consultor, revisa también [videos para coaches y consultores](/blog/videos-para-coaches-y-consultores/).
+Si ya das clases o charlas, puedes reutilizarlas: lo explicamos en [cómo convertir un video largo en shorts](/blog/convertir-video-largo-en-shorts/). Si eres coach o consultor, hay 30 ideas en [reels para coaches y consultores](/blog/videos-para-coaches-y-consultores/). Y si grabas pero no llegas a editar, mira cómo funciona [Hooksage para marca personal](/videos-para-marca-personal/).

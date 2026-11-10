@@ -59,7 +59,7 @@ Un video con imagen mediocre y buen audio se mira. Uno con buena imagen y audio 
 
 - **Altura:** el celular a la altura de los ojos. Desde abajo o desde arriba cambia la percepción de la persona.
 - **Distancia:** de la cintura o el pecho hacia arriba para videos a cámara.
-- **Aire:** deja algo de espacio sobre la cabeza y no pongas la cara en el borde inferior, donde la app tapa con la descripción.
+- **Aire:** deja algo de espacio sobre la cabeza y no pongas la cara en el borde inferior, donde la app tapa con la descripción. Las medidas de esa zona están en [medidas y formatos para Reels, TikTok y Shorts](/blog/medidas-video-reels-tiktok-shorts/).
 - **Estabilidad:** trípode o un soporte. Si grabas en movimiento, usa el modo de estabilización del celular.
 - **Fondo:** ordenado y con algo que cuente tu negocio, como el local, el producto o el taller.
 
@@ -75,6 +75,8 @@ Un video con imagen mediocre y buen audio se mira. Uno con buena imagen y audio 
 - Usa una superficie neutra y luz lateral para marcar textura.
 - Graba tomas cortas desde varios ángulos: de frente, de cerca, en uso.
 - Mueve el producto, no la cámara, para evitar tomas temblorosas.
+
+Si lo que grabas es comida, hay consejos específicos en [reels para restaurantes y cafeterías](/blog/videos-para-restaurantes/). Para productos que se venden por internet, en [reels para tiendas online](/blog/videos-para-tiendas-online/).
 
 ## Lista antes de grabar
 

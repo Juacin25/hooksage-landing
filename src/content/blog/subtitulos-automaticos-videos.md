@@ -5,7 +5,7 @@ description: "Cómo agregar subtítulos automáticos en Instagram, TikTok, YouTu
 shortAnswer: "Instagram, TikTok, YouTube y CapCut generan subtítulos automáticos gratis a partir del audio. Actívalos al editar o al publicar, corrige nombres, números y términos técnicos, y ubícalos en el centro de la pantalla con letras grandes y alto contraste. Con buen audio, la corrección lleva pocos minutos."
 category: "Guías de edición"
 publishDate: 2026-11-08
-updatedDate: 2026-11-08
+updatedDate: 2026-11-09
 order: 7
 coverAlt: "Video vertical de una persona hablando con subtítulos grandes en el centro"
 faqs:
@@ -26,7 +26,27 @@ sources:
     url: "https://adaptlypost.com/blog/social-media-safe-zones-2026-complete-guide"
 ---
 
-Los subtítulos hacen que un video se entienda sin sonido y lo vuelven accesible para personas con discapacidad auditiva. Según un estudio de Verizon Media y Publicis citado por TechRadar, el 69 % de las personas mira videos sin sonido en lugares públicos. En un video vertical para redes, subtitular dejó de ser opcional.
+Los subtítulos hacen que un video se entienda sin sonido y lo vuelven accesible para personas con discapacidad auditiva. Según un estudio de Verizon Media y Publicis [citado por TechRadar](https://global.techradar.com/es-mx/pro/por-que-debes-agregar-subtitulos-a-tus-videos-en-linea-y-no-es-solo-porque-el-69-por-ciento-de-los-espectadores-los-ve-con-el-sonido-desactivado), el 69 % de las personas mira videos sin sonido en lugares públicos. En un video vertical para redes, subtitular dejó de ser opcional.
+
+## El mismo video, sin subtítulos y con subtítulos
+
+Este es un anuncio nuestro grabado a cámara. La grabación original dura 8,4 segundos y no tiene subtítulos: con el celular en silencio, no se sabe de qué habla. El corte editado dura 5,8 segundos, está reencuadrado y lleva subtítulos grandes grabados en la imagen, en blanco con una palabra en amarillo.
+
+<figure class="post-compare">
+  <div>
+    <video controls playsinline preload="none" poster="/videos/talking-head-original-poster.webp" width="480" height="864" aria-label="Antes: grabación original a cámara, sin subtítulos">
+      <source src="/videos/talking-head-original.mp4" type="video/mp4" />
+    </video>
+    <p>Antes · 8,4 s</p>
+  </div>
+  <div>
+    <video controls playsinline preload="none" poster="/videos/talking-head-edited-poster.webp" width="720" height="1280" aria-label="Después: el mismo video reencuadrado y con subtítulos">
+      <source src="/videos/talking-head-edited.mp4" type="video/mp4" />
+    </video>
+    <p>Después · 5,8 s</p>
+  </div>
+  <figcaption>Un anuncio de Hooksage: la grabación original y el corte editado con subtítulos. Míralos sin sonido para notar la diferencia.</figcaption>
+</figure>
 
 ## Dos tipos de subtítulos
 
@@ -43,7 +63,7 @@ Para Reels y TikTok de negocios, los grabados en el video son la opción más se
 
 **TikTok:** en el editor, la opción de subtítulos transcribe el audio; revísalos antes de publicar.
 
-**YouTube:** genera subtítulos automáticos para muchos idiomas, incluido el español, y los puedes editar desde YouTube Studio. Sirven para accesibilidad y para que YouTube entienda el contenido del video.
+**YouTube:** genera [subtítulos automáticos](https://support.google.com/youtube/answer/6373554?hl=es-419) para muchos idiomas, incluido el español, y los puedes editar desde YouTube Studio. Sirven para accesibilidad y para que YouTube entienda el contenido del video.
 
 Los nombres de los botones cambian con cada actualización de las apps, pero la función está en el editor de las cuatro.
 
@@ -64,13 +84,13 @@ Con audio claro, corregir un video de 30 segundos lleva entre 2 y 5 minutos.
 - **Tamaño:** grande, legible en un celular pequeño.
 - **Contraste:** letra blanca con borde negro o sobre una franja oscura semitransparente.
 - **Cantidad de texto:** de 2 a 5 palabras por pantalla. Bloques largos obligan a leer en vez de mirar.
-- **Posición:** tercio central o un poco por debajo de la mitad, fuera de la zona que tapan la descripción y los botones.
+- **Posición:** tercio central o un poco por debajo de la mitad, fuera de la zona que tapan la descripción y los botones. La [plantilla de zona segura](/blog/zona-segura-reels-tiktok-shorts/) marca esas franjas.
 - **Énfasis:** resalta con color una palabra clave por frase, no todas.
 
 ## Accesibilidad
 
-La guía de accesibilidad del W3C recomienda que los subtítulos incluyan también información sonora relevante, como "[risas]" o "[música]", cuando aporta al sentido. En videos de negocio, lo más importante es que el texto coincida con lo que se dice y se lea a tiempo.
+La [guía de accesibilidad del W3C](https://www.w3.org/WAI/media/av/captions/) recomienda que los subtítulos incluyan también información sonora relevante, como "[risas]" o "[música]", cuando aporta al sentido. En videos de negocio, lo más importante es que el texto coincida con lo que se dice y se lea a tiempo.
 
 ## Cuándo usar IA para subtitular
 
-Si publicas pocas piezas, los subtítulos gratuitos de CapCut o de cada plataforma alcanzan. Si publicas varias veces por semana, las herramientas que subtitulan, cortan y encuadran en un solo paso ahorran el tiempo de repetir el proceso en cada video. Las comparamos en [herramientas con IA para editar videos verticales](/blog/mejores-herramientas-ia-editar-videos-verticales/).
+Si publicas pocas piezas, los subtítulos gratuitos de CapCut o de cada plataforma alcanzan; comparamos esa opción en [CapCut o un editor con IA](/blog/capcut-o-editor-con-ia/). Si publicas varias veces por semana, las herramientas que subtitulan, cortan y encuadran en un solo paso ahorran el tiempo de repetir el proceso en cada video. Las comparamos en [herramientas con IA para editar videos verticales](/blog/mejores-herramientas-ia-editar-videos-verticales/).

@@ -24,7 +24,7 @@ sources:
     url: "https://www.tiktok.com/business/es"
 ---
 
-Lo más difícil de publicar videos seguido suele ser decidir qué grabar esta semana. Esta lista reúne 50 ideas probadas en negocios chicos, cinco por rubro, pensadas para grabarse con el celular sin producción.
+Lo más difícil de publicar videos seguido suele ser decidir qué grabar esta semana. Esta lista reúne 50 ideas para negocios chicos, cinco por rubro, pensadas para grabarse con el celular sin producción.
 
 Usa las de tu rubro y mira también las de los demás: muchas se adaptan con cambiar dos palabras.
 
@@ -35,6 +35,8 @@ Usa las de tu rubro y mira también las de los demás: muchas se adaptan con cam
 3. La respuesta a "¿tienen opciones sin gluten / veganas?".
 4. Apertura del local: los primeros minutos del día.
 5. El plato nuevo de la semana, con precio en pantalla.
+
+Hay 30 ideas más, cada una con su frase de inicio, en [reels para restaurantes y cafeterías](/blog/videos-para-restaurantes/).
 
 ## Comercios y tiendas físicas
 
@@ -52,6 +54,8 @@ Usa las de tu rubro y mira también las de los demás: muchas se adaptan con cam
 14. Qué documentos traer a la primera consulta.
 15. Un término de tu profesión explicado sin jerga.
 
+Si trabajas por tu cuenta, sigue con [reels para coaches y consultores](/blog/videos-para-coaches-y-consultores/). Para estudios jurídicos hay una lista propia: [reels para abogados](/blog/reels-para-abogados/).
+
 ## Salud y estética
 
 16. Cómo es una primera consulta, paso a paso.
@@ -60,7 +64,7 @@ Usa las de tu rubro y mira también las de los demás: muchas se adaptan con cam
 19. Un mito común de tu especialidad.
 20. Presentación del equipo: quién atiende y qué hace cada uno.
 
-Si tu rubro es salud, revisa las particularidades en la guía de [videos para clínicas y consultorios](/blog/videos-para-clinicas-y-consultorios/).
+Si tu rubro es salud, revisa las particularidades en la guía de [videos para clínicas y consultorios](/blog/videos-para-clinicas-y-consultorios/). Hay listas aparte para [dentistas](/blog/reels-para-dentistas/), [centros de estética](/blog/reels-para-centros-de-estetica/) y [peluquerías y barberías](/blog/reels-para-peluquerias-y-barberias/).
 
 ## Inmobiliarias
 
@@ -96,6 +100,8 @@ Más ideas en [videos para inmobiliarias](/blog/videos-para-inmobiliarias/).
 39. Presentación de un entrenador o profesor.
 40. Respuesta a una pregunta frecuente sobre horarios o planes.
 
+Hay 30 ideas más en [reels para gimnasios y entrenadores](/blog/reels-para-gimnasios/).
+
 ## Turismo y hospitalidad
 
 41. Recorrido por la habitación o el espacio.
@@ -116,9 +122,10 @@ Más en la guía de [videos para tiendas online](/blog/videos-para-tiendas-onlin
 
 ## Cómo convertir una idea en un video
 
-1. Escribe el hook: la primera frase que dirás. Tienes 30 plantillas en [hooks para videos de negocio](/blog/hooks-para-videos-de-negocio/).
-2. Graba en vertical, con buena luz y audio claro.
-3. Corta lo que sobra y agrega subtítulos.
-4. Publica y anota qué ideas funcionan mejor para repetirlas.
+1. Escribe el hook: la primera frase que dirás. Tienes 100 plantillas en [hooks para reels y TikTok](/blog/hooks-para-videos-de-negocio/).
+2. Escribe el resto en tres líneas. Hay 12 plantillas en [guion para reels](/blog/guion-para-reels-plantillas/).
+3. Graba en vertical, con buena luz y audio claro.
+4. Corta lo que sobra y agrega subtítulos.
+5. Publica y anota qué ideas funcionan mejor para repetirlas.
 
-Si eliges cinco ideas de esta lista y grabas todas en una misma tarde, tienes contenido para dos semanas.
+Si eliges cinco ideas de esta lista y grabas todas en una misma tarde, tienes contenido para dos semanas. Si tu negocio es una startup, hay formatos propios en [video marketing para startups](/blog/video-marketing-para-startups/). Y si prefieres grabar y delegar la edición, mira cómo funciona [Hooksage para pymes](/videos-para-pymes/).
