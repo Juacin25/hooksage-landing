@@ -208,3 +208,13 @@ Después de publicar páginas nuevas o cambios importantes, avisa a Bing y Yande
 curl -X POST https://api.indexnow.org/indexnow -H "Content-Type: application/json" \
   -d '{"host":"hooksage.com","key":"0b0e5cbb6bff571f447d46072b5165c7","keyLocation":"https://hooksage.com/0b0e5cbb6bff571f447d46072b5165c7.txt","urlList":["https://hooksage.com/"]}'
 ```
+
+## Auditoría del blog y 11 artículos nuevos · 9 de noviembre de 2026
+
+Código publicado: `eb41b0891e1a418bfa3582b712693073ee2d8b98` (merge del PR 1). El blog pasa de 23 a 34 artículos: se reescribieron los cinco de rubro y los hooks, se sumaron citas en línea, enlaces internos y hacia las páginas `/videos-para-*`, `lastmod` en el sitemap y el perfil de Instagram en `sameAs`. `src/content/blog/_prueba-5-editores-con-ia.md` es un borrador que no se publica mientras su nombre empiece con `_`.
+
+Solo cambió contenido estático. Se compararon los `sha256` de `dist/` local y de `/home/tenki/hooksage/dist`, y se subieron los 68 archivos distintos o nuevos (855 KB) en lugar del `dist/` completo. Se copiaron con `rsync -a` sin `--delete`, primero los recursos y después HTML, XML y `llms.txt`, conservando los recursos anteriores. Hay un respaldo en `/home/tenki/hooksage-releases/before-eb41b08/`. No hubo cambios de servidor, reinicios, migraciones ni modificaciones de la configuración privada o del volumen. No se consultó la base de datos ni se enviaron formularios de prueba.
+
+Verificación: los 246 archivos de producción coinciden por `sha256` con el build. En `hooksage.com` respondieron 200 la portada, el índice del blog, los 11 artículos nuevos, `/descargas/zona-segura-1080x1920.png`, una portada, `/sitemap.xml` y `/healthz`; el video MP4 respondió 206 con HTTP Range y el borrador, 404. `sitemap-0.xml` tiene 49 URLs y 34 `lastmod`. `www.hooksage.com` redirige con 301 a `hooksage.com`. Previamente pasaron Astro check, build (50 páginas), las 24 verificaciones de interfaz y 20 pruebas de API; no se corrieron las verificaciones de consentimiento. Se enviaron las 49 URLs del sitemap a IndexNow (respuesta 200). El CLI se ejecutó como `~/.config/tenki/bin/tenki-cli`, porque no está en el `PATH`.
+
+Pendiente fuera del deploy: enviar el sitemap en Google Search Console, que no recibe IndexNow.
