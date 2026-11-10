@@ -1,0 +1,239 @@
+{
+  "summary": {
+    "health_score": 80,
+    "business_type": "SaaS con blog de contenido",
+    "top_findings": [
+      "Indexación sin medir: no hay Search Console",
+      "Autoridad en cero: el dominio no figura en Common Crawl",
+      "LCP de 4,4 s en la portada (laboratorio, móvil)",
+      "Sin página de equipo ni de contacto; email en Gmail",
+      "Recursos estáticos con caché de una a cuatro horas"
+    ],
+    "quick_wins": [
+      "Enviar el sitemap en Search Console",
+      "Incrustar el CSS y quitar la opacidad cero del título",
+      "Caché de un año para recursos con hash y fuentes",
+      "Posters de video de 360 px",
+      "Redirigir /index.html a /"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 90,
+      "what_works": [
+        "49 URLs con 200, canónica propia y gzip",
+        "301 de HTTP y www",
+        "73 enlaces internos sin errores",
+        "Hreflang recíproco con x-default",
+        "Cabeceras de seguridad básicas"
+      ],
+      "findings": [
+        {
+          "title": "Caché corta en recursos estáticos",
+          "severity": "Medium",
+          "description": "El origen envía max-age=3600 y Cloudflare lo sube a 14.400 s.",
+          "recommendation": "max-age=31536000, immutable para /_astro/ y fuentes."
+        },
+        {
+          "title": "Cloudflare pisa la caché del HTML",
+          "severity": "Medium",
+          "description": "El origen envía max-age=0 y en producción llega max-age=14400.",
+          "recommendation": "Browser Cache TTL: Respect existing headers."
+        },
+        {
+          "title": "/index.html responde 200",
+          "severity": "Low",
+          "description": "Duplica la portada; la canónica lo resuelve.",
+          "recommendation": "Redirigir con 301."
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 64,
+      "what_works": [
+        "Ninguna página con menos de 300 palabras",
+        "Fuentes citadas en el texto",
+        "Videos propios en cuatro artículos"
+      ],
+      "findings": [
+        {
+          "title": "Sin página de equipo ni de contacto",
+          "severity": "High",
+          "description": "Quiénes somos es una sección de la portada.",
+          "recommendation": "Crear la página y apuntar ahí la firma del blog."
+        },
+        {
+          "title": "Email de contacto en Gmail",
+          "severity": "Medium",
+          "description": "Figura en la portada y en el schema.",
+          "recommendation": "Usar un email del dominio."
+        },
+        {
+          "title": "34 artículos en dos días",
+          "severity": "Medium",
+          "description": "23 el 8 de noviembre y 11 el 9.",
+          "recommendation": "Dos o tres artículos nuevos por semana."
+        },
+        {
+          "title": "Sin investigación propia",
+          "severity": "Medium",
+          "description": "La prueba de cinco editores sigue en borrador.",
+          "recommendation": "Correr la prueba y publicarla."
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 90,
+      "what_works": [
+        "Títulos y descripciones únicos y dentro de largo",
+        "Un H1 por página",
+        "Sin páginas huérfanas"
+      ],
+      "findings": [
+        {
+          "title": "Categorías sin página propia",
+          "severity": "Medium",
+          "description": "Son encabezados del índice del blog.",
+          "recommendation": "Crear páginas de categoría."
+        },
+        {
+          "title": "La portada no enlaza artículos",
+          "severity": "Low",
+          "description": "Solo enlaza al índice.",
+          "recommendation": "Enlazar tres o cuatro artículos."
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 82,
+      "what_works": [
+        "Grafo JSON-LD válido en las 49 páginas",
+        "BlogPosting completo",
+        "Sin valoraciones inventadas"
+      ],
+      "findings": [
+        {
+          "title": "WebPage.about apunta al software en los artículos",
+          "severity": "Low",
+          "description": "No describe el tema del artículo.",
+          "recommendation": "Quitarlo en el blog."
+        },
+        {
+          "title": "FAQPage presente",
+          "severity": "Info",
+          "description": "Google retiró esos resultados en mayo de 2026.",
+          "recommendation": "Dejarlo."
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 72,
+      "what_works": [
+        "CLS 0 y TBT 0 ms en las tres páginas medidas",
+        "Fuentes precargadas con font-display: swap"
+      ],
+      "findings": [
+        {
+          "title": "LCP de la portada en 4,4 s",
+          "severity": "High",
+          "description": "El título entra animado desde opacidad cero después de tres hojas de estilo.",
+          "recommendation": "Incrustar el CSS y animar solo la posición."
+        },
+        {
+          "title": "CSS que bloquea el render",
+          "severity": "Medium",
+          "description": "Dos hojas en los artículos.",
+          "recommendation": "build.inlineStylesheets: always."
+        },
+        {
+          "title": "Posters de video grandes",
+          "severity": "Medium",
+          "description": "720 × 1280 mostrados a unos 180 px.",
+          "recommendation": "Versiones de 360 px."
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 74,
+      "what_works": [
+        "Rastreadores de IA con 200",
+        "Content-Signal y llms.txt",
+        "Respuesta corta al inicio de cada artículo"
+      ],
+      "findings": [
+        {
+          "title": "Sin menciones fuera del sitio",
+          "severity": "High",
+          "description": "El dominio no está en Common Crawl.",
+          "recommendation": "YouTube, directorios y comunidades."
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 88,
+      "what_works": [
+        "297 imágenes con alt y dimensiones",
+        "WebP y AVIF"
+      ],
+      "findings": [
+        {
+          "title": "Texto alternativo repetido en portadas",
+          "severity": "Low",
+          "description": "10 portadas usan el título.",
+          "recommendation": "Describir la imagen."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Fase 1: medir y autoridad",
+        "timeframe": "Semana 1",
+        "items": [
+          "Search Console y sitemap",
+          "Primeras menciones externas",
+          "LCP de la portada",
+          "Página Quiénes somos"
+        ]
+      },
+      {
+        "name": "Fase 2: velocidad y confianza",
+        "timeframe": "Semanas 2-3",
+        "items": [
+          "Caché de recursos",
+          "Browser Cache TTL en Cloudflare",
+          "Posters de 360 px",
+          "Email del dominio"
+        ]
+      },
+      {
+        "name": "Fase 3: contenido",
+        "timeframe": "Mes 2",
+        "items": [
+          "Prueba de cinco editores",
+          "Páginas de categoría",
+          "Ritmo de dos o tres artículos por semana"
+        ]
+      },
+      {
+        "name": "Fase 4: seguimiento",
+        "timeframe": "Continuo",
+        "items": [
+          "Revisar Search Console el 17 y el 24 de noviembre"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "",
+    "screenshots_dir": ""
+  }
+}

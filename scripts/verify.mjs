@@ -1297,8 +1297,8 @@ const blogSlugs = (
 )
   .filter((entry) => entry.isDirectory() && entry.name !== "covers")
   .map((entry) => entry.name);
-// 14 landing/legal URLs + the blog index + every post.
-assert.equal((sitemap.match(/<loc>/g) || []).length, 15 + blogSlugs.length);
+// 14 landing/legal URLs + about + the blog index + every post.
+assert.equal((sitemap.match(/<loc>/g) || []).length, 16 + blogSlugs.length);
 // Every post carries its updatedDate as lastmod.
 assert.equal((sitemap.match(/<lastmod>/g) || []).length, blogSlugs.length);
 ok("OG, touch icon, robots and every sitemap URL exist");

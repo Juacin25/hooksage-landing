@@ -15,6 +15,8 @@ function postLastmod(url) {
 export default defineConfig({
   site: "https://hooksage.com",
   output: "static",
+  // CSS in the HTML: no render-blocking request before the hero title paints.
+  build: { inlineStylesheets: "always" },
   vite: {
     build: { target: ["chrome80", "edge80", "firefox78", "safari14"] },
     server: { proxy: { "/api": "http://127.0.0.1:8787" } },

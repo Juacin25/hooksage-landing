@@ -31,6 +31,15 @@ const en = localeFromPath(Astro.url.pathname) === "en";
           {contactEmail}
         </a>
       </p>
+      {
+        !en && (
+          <p class="body muted">
+            <a class="text-link" href="/quienes-somos/">
+              Quiénes somos y cómo escribimos el blog
+            </a>
+          </p>
+        )
+      }
     </div>
   </div>
 </section>
